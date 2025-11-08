@@ -1,0 +1,183 @@
+.home-dashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #AAAAAA;
+}
+
+/* LRI Card */
+.lri-card {
+  text-align: center;
+}
+
+.lri-gauge-container {
+  margin: 2rem 0;
+}
+
+.lri-gauge {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.lri-status {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  letter-spacing: 2px;
+}
+
+.post-exercise-banner {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem auto;
+  max-width: 400px;
+  font-weight: bold;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+/* Component Bars */
+.lri-components {
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.component-bar {
+  margin-bottom: 1.5rem;
+}
+
+.component-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.component-value {
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+}
+
+.component-bar-fill {
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #0F0F0F;
+  position: relative;
+}
+
+.component-bar-value {
+  height: 100%;
+  background: inherit;
+  transition: width 0.5s ease;
+  border-radius: 6px;
+}
+
+/* DNOS Card */
+.dnos-card {
+  text-align: center;
+}
+
+.dnos-score-display {
+  margin: 1.5rem 0;
+}
+
+.dnos-components {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.dnos-component-item {
+  background: #0F0F0F;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dnos-component-label {
+  font-size: 0.85rem;
+  color: #AAAAAA;
+}
+
+.dnos-component-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  color: #00FF88;
+}
+
+/* Quick Stats */
+.quick-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.stat-card {
+  background: #1A1A1A;
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  color: #00FF88;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #AAAAAA;
+  margin-top: 0.25rem;
+}
+
+.refresh-note {
+  text-align: center;
+  margin-top: 2rem;
+  color: #777777;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .lri-gauge {
+    max-width: 250px;
+  }
+  
+  .quick-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+  }
+}
