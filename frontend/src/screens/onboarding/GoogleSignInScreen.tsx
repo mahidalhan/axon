@@ -10,13 +10,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
 import { colors, typography, spacing, borderRadius } from '../../constants/designTokens';
 import { useOnboarding } from '../../contexts/OnboardingContext';
 
 WebBrowser.maybeCompleteAuthSession();
 
 const EMERGENT_AUTH_URL = 'https://auth.emergentagent.com';
-const REDIRECT_URL = 'https://sciencebuild.preview.emergentagent.com'; // Will be updated with actual URL
+// For Expo Go, we need to use the expo.dev redirect URL
+const REDIRECT_URL = Linking.createURL('/');
 
 interface GoogleSignInScreenProps {
   navigation: any;
@@ -30,24 +32,48 @@ export default function GoogleSignInScreen({ navigation }: GoogleSignInScreenPro
     try {
       setLoading(true);
       
-      // Emergent Auth flow
+      // Emergent Auth flow with proper redirect
       const authUrl = `${EMERGENT_AUTH_URL}/?redirect=${encodeURIComponent(REDIRECT_URL)}`;
+      
+      console.log('[Auth] Opening auth URL:', authUrl);
+      console.log('[Auth] Redirect URL:', REDIRECT_URL);
       
       const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URL);
       
-      if (result.type === 'success') {
+      console.log('[Auth] Result:', result);
+      
+      if (result.type === 'success' && result.url) {
         // Extract session_id from URL fragment
         const url = result.url;
-        const hashParams = new URLSearchParams(url.split('#')[1]);
+        const hashParams = new URLSearchParams(url.split('#')[1] || '');
         const sessionId = hashParams.get('session_id');
         
+        console.log('[Auth] Session ID:', sessionId);
+        
         if (sessionId) {
-          // Call backend to exchange session_id for user data
-          // TODO: Implement in Phase 2
-          console.log('[Auth] Session ID:', sessionId);
-          Alert.alert('Success', 'Signed in successfully!');
-          setCurrentStep(2);
-          navigation.navigate('NameInput');
+          // Exchange session_id for user data
+          try {
+            const response = await fetch('https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data', {
+              headers: {
+                'X-Session-ID': sessionId,
+              },
+            });
+            
+            if (response.ok) {
+              const userData = await response.json();
+              console.log('[Auth] User data:', userData);
+              
+              // TODO: Save to backend in Phase 2
+              Alert.alert('Success', `Welcome ${userData.name}!`);
+              setCurrentStep(2);
+              navigation.navigate('NameInput');
+            } else {
+              throw new Error('Failed to get user data');
+            }
+          } catch (error) {
+            console.error('[Auth] Error getting user data:', error);
+            Alert.alert('Error', 'Failed to complete sign-in');
+          }
         }
       } else if (result.type === 'cancel') {
         console.log('[Auth] User cancelled');
