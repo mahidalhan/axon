@@ -294,10 +294,25 @@ const styles = StyleSheet.create({
   metricInfo: {
     flex: 1,
   },
+  metricTitleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   metricTitle: {
     fontSize: 16,
     fontWeight: '700',
     color: '#1F2937',
+    flex: 1,
+  },
+  metricWeight: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#6366F1',
+    backgroundColor: '#EEF2FF',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 8,
   },
   metricOptimal: {
     fontSize: 12,
