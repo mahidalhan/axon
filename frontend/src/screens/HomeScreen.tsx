@@ -142,7 +142,7 @@ export default function HomeScreen() {
           <View style={styles.windowHeader}>
             <View style={styles.windowIcon}>
               <Ionicons 
-                name={optimalWindow?.has_window ? 'thunderbolt' : 'thunderbolt-outline'} 
+                name={optimalWindow?.has_window ? 'flash' : 'flash-outline'} 
                 size={24} 
                 color={optimalWindow?.has_window ? '#10B981' : '#9CA3AF'} 
               />
