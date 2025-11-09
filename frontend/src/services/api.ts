@@ -2,24 +2,27 @@ import axios from 'axios';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-// For mobile, we need to use the tunnel URL with /api path
-// For web preview, /api works directly
+// Backend URL configuration
+// The tunnel URL points to the frontend, but we need backend on port 8001
+// We'll construct the backend URL from the tunnel host
 const getBackendURL = () => {
-  const expoUrl = Constants.expoConfig?.hostUri;
+  // Get the tunnel host (e.g., "ixgw1ds-anonymous-3000.exp.direct")
+  const tunnelHost = Constants.expoConfig?.hostUri;
   
-  // If running on mobile via Expo Go, use the tunnel URL
-  if (expoUrl && Platform.OS !== 'web') {
-    // Use http instead of https for Expo tunnel
-    return `http://${expoUrl}/api`;
+  if (tunnelHost) {
+    // Replace port 3000 with 8001 for backend, and add /api prefix
+    // Format: http://ixgw1ds-anonymous-8001.exp.direct/api
+    const backendHost = tunnelHost.replace('-3000.exp.direct', '-8001.exp.direct');
+    console.log('[API] Using tunnel backend:', `http://${backendHost}/api`);
+    return `http://${backendHost}/api`;
   }
   
-  // For web or fallback
-  return process.env.EXPO_PUBLIC_BACKEND_URL || '/api';
+  // Fallback for web or local dev
+  console.log('[API] Using fallback backend:', '/api');
+  return '/api';
 };
 
 const BACKEND_URL = getBackendURL();
-
-console.log('Backend URL:', BACKEND_URL);
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
