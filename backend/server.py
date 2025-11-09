@@ -347,28 +347,59 @@ async def get_brain_score_today(participant_id: int = 0):
         sleep_data = load_json(APPLE_HEALTH_DIR / "sleep_last_20_days.json")
         latest_sleep = sleep_data[0] if len(sleep_data) > 0 else {}
         
-        # Calculate components
+        # === 1. LEARNING READINESS (55%) - Session Score ===
+        # Formula: 0.5 × avg_LRI + 0.3 × optimal_utilization + 0.2 × sleep_context
+        
+        avg_lri = float(windows_df['lri'].mean()) if not pd.isna(windows_df['lri'].mean()) else 0.0
+        
         optimal_minutes = len(windows_df[windows_df['lri'] >= 70]) * 2.5
         total_minutes = len(windows_df) * 2.5
-        neural_state = (optimal_minutes / total_minutes * 100) if total_minutes > 0 else 0
+        optimal_utilization = (optimal_minutes / total_minutes * 100) if total_minutes > 0 else 0
         
-        sleep_score = latest_sleep.get('sleep_score', 75)
-        consolidation = sleep_score
+        sleep_score_value = latest_sleep.get('sleep_score', 75)
+        sleep_context = sleep_score_value  # Use sleep score as context
         
-        behavior_alignment = 76  # Simplified
+        # Session score calculation
+        session_score = (
+            0.50 * avg_lri +
+            0.30 * optimal_utilization +
+            0.20 * sleep_context
+        )
         
-        brain_score = (neural_state * 0.4 + consolidation * 0.4 + behavior_alignment * 0.2)
+        # Apply soft ceiling at 92 (Yerkes-Dodson inverted-U)
+        learning_readiness = min(session_score, 92)
+        
+        # === 2. CONSOLIDATION (25%) - Sleep Score ===
+        consolidation = sleep_score_value
+        
+        # === 3. BEHAVIOR ALIGNMENT (20%) ===
+        # Baseline 50, +10 if post-exercise session, +5 per workout utilized
+        # For demo: assume 1 workout, session was in optimal window
+        behavior_alignment = 50 + 10 + 5  # = 65
+        behavior_alignment = min(behavior_alignment, 95)  # Clamp
+        
+        # === BRAIN SCORE (NEUROPLASTICITY READINESS) ===
+        brain_score = (
+            learning_readiness * 0.55 +
+            consolidation * 0.25 +
+            behavior_alignment * 0.20
+        )
         
         return {
             "brain_score": round(brain_score, 1),
             "components": {
-                "neural_state": round(neural_state, 1),
+                "learning_readiness": round(learning_readiness, 1),
                 "consolidation": round(consolidation, 1),
                 "behavior_alignment": round(behavior_alignment, 1)
             },
+            "session_details": {
+                "avg_lri": round(avg_lri, 1),
+                "optimal_utilization": round(optimal_utilization, 1),
+                "sleep_context": round(sleep_context, 1)
+            },
             "supporting_metrics": {
                 "best_session_id": f"sess_{datetime.now().strftime('%Y-%m-%d')}_morning",
-                "sleep_score": {"value": sleep_score, "version": "hrv_enabled"},
+                "sleep_score": {"value": sleep_score_value, "version": "hrv_enabled"},
                 "workout_hits": 1
             },
             "insight": "Schedule deep work in the 2h window after your run."
