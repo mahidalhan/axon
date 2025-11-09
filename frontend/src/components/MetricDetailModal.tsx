@@ -295,18 +295,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.xxl,
   },
-  scoreCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 8,
+  scoreCircleContainer: {
+    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.background.primary,
     marginBottom: spacing.md,
   },
+  scoreValueContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 140,
+    height: 140,
+  },
   scoreValue: {
-    fontSize: 52,
+    fontSize: 56,
     fontWeight: '800',
     color: colors.text.primary,
     letterSpacing: -1.5,
