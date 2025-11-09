@@ -200,7 +200,7 @@ async def get_sleep_last_20():
         # Sanitize NaN values
         def sanitize(obj):
             if isinstance(obj, float):
-                if pd.isna(obj) or not pd.isfinite(obj):
+                if pd.isna(obj) or not math.isfinite(obj):
                     return None
                 return obj
             elif isinstance(obj, dict):
@@ -223,7 +223,7 @@ async def get_workouts_last_20():
         # Sanitize NaN values
         def sanitize(obj):
             if isinstance(obj, float):
-                if pd.isna(obj) or not pd.isfinite(obj):
+                if pd.isna(obj) or not math.isfinite(obj):
                     return None
                 return obj
             elif isinstance(obj, dict):
