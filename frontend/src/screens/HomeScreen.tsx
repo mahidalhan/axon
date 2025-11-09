@@ -119,12 +119,12 @@ export default function HomeScreen() {
               }}
             >
               <CircularProgress
-                value={brainScore?.components?.neural_state || 0}
+                value={brainScore?.components?.learning_readiness || 0}
                 size={100}
                 strokeWidth={8}
                 color="#F59E0B"
               />
-              <Text style={styles.scoreLabel}>Neural State</Text>
+              <Text style={styles.scoreLabel}>Learning Readiness</Text>
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.scoreItem}
@@ -139,7 +139,7 @@ export default function HomeScreen() {
                 strokeWidth={10}
                 color="#10B981"
               />
-              <Text style={[styles.scoreLabel, styles.mainScoreLabel]}>Brain Score</Text>
+              <Text style={[styles.scoreLabel, styles.mainScoreLabel]}>Neuroplasticity</Text>
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.scoreItem}
@@ -154,7 +154,7 @@ export default function HomeScreen() {
                 strokeWidth={8}
                 color="#6366F1"
               />
-              <Text style={styles.scoreLabel}>Sleep Quality</Text>
+              <Text style={styles.scoreLabel}>Consolidation</Text>
             </TouchableOpacity>
           </View>
         </Card>
