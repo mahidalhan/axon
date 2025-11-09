@@ -112,6 +112,39 @@ export default function EducationScreen() {
           </Text>
         </Card>
 
+        {/* How Your Scores Work */}
+        <Text style={styles.sectionTitle}>How Your Scores Work</Text>
+        <Card style={styles.infoCard}>
+          <Text style={styles.cardTitle}>Neuroplasticity Readiness</Text>
+          <Text style={styles.infoText}>
+            Your daily score combining session performance (55%), sleep consolidation (25%), and behavioral timing (20%).
+          </Text>
+          <View style={styles.formulaBox}>
+            <Text style={styles.formulaText}>55% Learning Readiness (best session)</Text>
+            <Text style={styles.formulaText}>25% Sleep Consolidation (last night)</Text>
+            <Text style={styles.formulaText}>20% Behavior Alignment (workout timing)</Text>
+          </View>
+          <Text style={styles.disclaimerText}>
+            <Text style={styles.boldText}>What this measures:</Text> Brain states and conditions correlated with neuroplasticity, based on neuroscience research.{'\n\n'}
+            <Text style={styles.boldText}>What it doesn't measure:</Text> Actual learning outcomes or guaranteed plasticity. Individual results vary.
+          </Text>
+        </Card>
+
+        <Card>
+          <Text style={styles.cardTitle}>Learning Readiness Score</Text>
+          <Text style={styles.infoText}>
+            Indicates when your brain shows patterns associated with optimal learning states.
+          </Text>
+          <View style={styles.componentList}>
+            <Text style={styles.componentItem}>• 50% Average LRI during session</Text>
+            <Text style={styles.componentItem}>• 30% Time in optimal state (LRI ≥70)</Text>
+            <Text style={styles.componentItem}>• 20% Previous night's sleep quality</Text>
+          </View>
+          <Text style={styles.disclaimerText}>
+            Based on EEG beta/theta patterns correlated with alertness and focus. Not a direct measurement of neuroplasticity.
+          </Text>
+        </Card>
+
         {/* Three Phase Model */}
         <Text style={styles.sectionTitle}>Three-Phase Neuroplasticity Model</Text>
         {neuroplasticityInfo.map((phase, index) => (
