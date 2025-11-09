@@ -182,10 +182,10 @@ export default function HomeScreen() {
                     {optimalWindow.quality.toUpperCase()}
                   </Text>
                 </View>
-                <Text style={styles.lriText}>LRI: {optimalWindow.current_lri?.toFixed(0)}</Text>
+                <Text style={styles.lriText}>Neuro Score: {optimalWindow.current_lri?.toFixed(0)}</Text>
               </View>
               <Text style={styles.windowMessage}>
-                Perfect time for deep work and learning!
+                Peak state for complex tasks and deep work.
               </Text>
             </View>
           ) : (
