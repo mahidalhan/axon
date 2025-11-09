@@ -57,6 +57,15 @@ export default function MetricDetailModal({
           science: appCopy.scores.sleepConsolidation.science,
           gradient: [colors.gradients.sleepConsolidation.start, colors.gradients.sleepConsolidation.end],
         };
+      default:
+        // Fallback to neuroplasticity config if type is invalid
+        return {
+          title: appCopy.scores.neuroplasticity.title,
+          description: appCopy.scores.neuroplasticity.description,
+          longDescription: appCopy.scores.neuroplasticity.longDescription,
+          science: appCopy.scores.neuroplasticity.science,
+          gradient: [colors.gradients.neuroplasticity.start, colors.gradients.neuroplasticity.end],
+        };
     }
   };
 
