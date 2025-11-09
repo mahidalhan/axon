@@ -22,50 +22,50 @@ export const api = {
   },
 
   getOptimalWindowStatus: async (participantId: number = 0) => {
-    const response = await apiClient.get(`/api/session/optimal-window-status?participant_id=${participantId}`);
+    const response = await apiClient.get(`/session/optimal-window-status?participant_id=${participantId}`);
     return response.data;
   },
 
   getTodaySummary: async (participantId: number = 0) => {
-    const response = await apiClient.get(`/api/session/today-summary?participant_id=${participantId}`);
+    const response = await apiClient.get(`/session/today-summary?participant_id=${participantId}`);
     return response.data;
   },
 
   getCurrentMetrics: async (participantId: number = 0) => {
-    const response = await apiClient.get(`/api/session/current-metrics?participant_id=${participantId}`);
+    const response = await apiClient.get(`/session/current-metrics?participant_id=${participantId}`);
     return response.data;
   },
 
   getBrainScoreToday: async (participantId: number = 0) => {
-    const response = await apiClient.get(`/api/brain-score/today?participant_id=${participantId}`);
+    const response = await apiClient.get(`/brain-score/today?participant_id=${participantId}`);
     return response.data;
   },
 
   // Sleep endpoints
   getSleepLast20: async () => {
-    const response = await apiClient.get('/api/sleep/last20');
+    const response = await apiClient.get('/sleep/last20');
     return response.data;
   },
 
   getSleepRecent: async (days: number = 7) => {
-    const response = await apiClient.get(`/api/sleep/recent?days=${days}`);
+    const response = await apiClient.get(`/sleep/recent?days=${days}`);
     return response.data;
   },
 
   // Workout endpoints
   getWorkoutsLast20: async () => {
-    const response = await apiClient.get('/api/workouts/last20');
+    const response = await apiClient.get('/workouts/last20');
     return response.data;
   },
 
   getWorkoutsRecent: async (days: number = 7) => {
-    const response = await apiClient.get(`/api/workouts/recent?days=${days}`);
+    const response = await apiClient.get(`/workouts/recent?days=${days}`);
     return response.data;
   },
 
   // Health check
   healthCheck: async () => {
-    const response = await apiClient.get('/api/health');
+    const response = await apiClient.get('/health');
     return response.data;
   },
 };
