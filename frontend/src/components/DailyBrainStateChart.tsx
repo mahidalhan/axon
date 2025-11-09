@@ -134,7 +134,7 @@ export default function DailyBrainStateChart({
         </View>
         <View style={styles.legendItem}>
           <Text style={styles.legendStar}>⭐</Text>
-          <Text style={styles.legendText}>Peak moments (Neuro Score > 70)</Text>
+          <Text style={styles.legendText}>Peak moments (Neuro Score {'>'} 70)</Text>
         </View>
       </View>
 
@@ -142,7 +142,7 @@ export default function DailyBrainStateChart({
       <View style={styles.disclaimerBox}>
         <Text style={styles.disclaimerText}>
           Gray curve shows typical brain alertness pattern based on circadian research. 
-          Session data is measured from your EEG.
+          Session data is measured from your EEG. Peak moments occur when your Neuro Score exceeds 70.
         </Text>
       </View>
     </View>
