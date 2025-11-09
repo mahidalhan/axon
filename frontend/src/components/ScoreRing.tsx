@@ -5,13 +5,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   Animated,
-  Dimensions,
 } from 'react-native';
 import Svg, {
   Circle,
   Defs,
   LinearGradient,
   Stop,
+  G,
 } from 'react-native-svg';
 import { colors, typography, spacing, shadows } from '../constants/designTokens';
 
@@ -39,16 +39,32 @@ export default function ScoreRing({
   onPress,
 }: ScoreRingProps) {
   const animatedValue = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(1)).current;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
   useEffect(() => {
-    Animated.timing(animatedValue, {
+    Animated.spring(animatedValue, {
       toValue: value,
-      duration: 1000,
+      duration: 1200,
       useNativeDriver: true,
     }).start();
   }, [value]);
+
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      friction: 3,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const strokeDashoffset = animatedValue.interpolate({
     inputRange: [0, 100],
@@ -56,69 +72,87 @@ export default function ScoreRing({
   });
 
   const displaySize = isPrimary ? size * 1.2 : size;
-  const displayStrokeWidth = isPrimary ? strokeWidth * 1.2 : strokeWidth;
+  const displayStrokeWidth = isPrimary ? strokeWidth * 1.25 : strokeWidth;
+  const displayRadius = (displaySize - displayStrokeWidth) / 2;
 
   return (
     <TouchableOpacity
       onPress={onPress}
-      activeOpacity={0.8}
-      style={[styles.container, { width: displaySize, height: displaySize }]}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      activeOpacity={0.9}
+      style={[styles.container, { width: displaySize + 20, height: displaySize + 40 }]}
     >
-      <View style={styles.svgContainer}>
-        <Svg width={displaySize} height={displaySize}>
-          <Defs>
-            <LinearGradient
-              id={`gradient-${label}`}
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
-              <Stop offset="0%" stopColor={gradientColors[0]} stopOpacity="1" />
-              <Stop offset="100%" stopColor={gradientColors[1]} stopOpacity="1" />
-            </LinearGradient>
-          </Defs>
+      <Animated.View 
+        style={[
+          styles.ringContainer,
+          { transform: [{ scale: scaleAnim }] },
+          isPrimary && shadows.glow(gradientColors[1]),
+        ]}
+      >
+        <View style={styles.svgContainer}>
+          <Svg width={displaySize} height={displaySize}>
+            <Defs>
+              <LinearGradient
+                id={`gradient-${label}`}
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
+                <Stop offset="0%" stopColor={gradientColors[0]} stopOpacity="1" />
+                <Stop offset="100%" stopColor={gradientColors[1]} stopOpacity="1" />
+              </LinearGradient>
+            </Defs>
+            
+            {/* Background circle */}
+            <Circle
+              cx={displaySize / 2}
+              cy={displaySize / 2}
+              r={displayRadius}
+              stroke="rgba(229, 231, 235, 0.3)"
+              strokeWidth={displayStrokeWidth}
+              fill="none"
+            />
+            
+            {/* Progress circle with gradient */}
+            <G rotation="-90" origin={`${displaySize / 2}, ${displaySize / 2}`}>
+              <AnimatedCircle
+                cx={displaySize / 2}
+                cy={displaySize / 2}
+                r={displayRadius}
+                stroke={`url(#gradient-${label})`}
+                strokeWidth={displayStrokeWidth}
+                fill="none"
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+              />
+            </G>
+          </Svg>
           
-          {/* Background circle */}
-          <Circle
-            cx={displaySize / 2}
-            cy={displaySize / 2}
-            r={radius}
-            stroke="rgba(229, 231, 235, 0.3)"
-            strokeWidth={displayStrokeWidth}
-            fill="none"
-          />
-          
-          {/* Progress circle */}
-          <AnimatedCircle
-            cx={displaySize / 2}
-            cy={displaySize / 2}
-            r={radius}
-            stroke={`url(#gradient-${label})`}
-            strokeWidth={displayStrokeWidth}
-            fill="none"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            rotation="-90"
-            origin={`${displaySize / 2}, ${displaySize / 2}`}
-          />
-        </Svg>
-        
-        {/* Center content */}
-        <View style={styles.centerContent}>
-          <Text style={[styles.value, isPrimary && styles.valuePrimary]}>
-            {Math.round(value)}
-          </Text>
+          {/* Center content */}
+          <View style={styles.centerContent}>
+            <Text style={[styles.value, isPrimary && styles.valuePrimary]}>
+              {Math.round(value)}
+            </Text>
+          </View>
         </View>
-      </View>
+      </Animated.View>
       
-      {/* Labels */}
+      {/* Labels with proper text wrapping */}
       <View style={styles.labelsContainer}>
-        <Text style={[styles.label, isPrimary && styles.labelPrimary]} numberOfLines={2}>
+        <Text 
+          style={[styles.label, isPrimary && styles.labelPrimary]} 
+          numberOfLines={2}
+          adjustsFontSizeToFit={true}
+          minimumFontScale={0.85}
+        >
           {label}
         </Text>
-        <Text style={styles.subtitle}>{subtitle}</Text>
+        <Text style={styles.subtitle} numberOfLines={1}>
+          {subtitle}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -126,6 +160,12 @@ export default function ScoreRing({
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingHorizontal: spacing.xs,
+  },
+  ringContainer: {
+    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -138,26 +178,33 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   value: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: '700',
     color: colors.text.primary,
+    letterSpacing: -0.5,
   },
   valuePrimary: {
-    fontSize: 40,
+    fontSize: 44,
   },
   labelsContainer: {
     marginTop: spacing.sm,
     alignItems: 'center',
-    maxWidth: 120,
+    width: '100%',
+    paddingHorizontal: spacing.xs,
   },
   label: {
     fontSize: typography.sizes.caption,
-    fontWeight: typography.weights.semibold,
+    fontWeight: typography.weights.bold,
     color: colors.text.primary,
     textAlign: 'center',
     marginBottom: 2,
+    lineHeight: 14,
   },
   labelPrimary: {
     fontSize: typography.sizes.bodySmall,
