@@ -275,9 +275,9 @@ export default function HomeScreen() {
             <View style={styles.modalContent}>
               <View style={styles.modalHeader}>
                 <Text style={styles.modalTitle}>
-                  {selectedMetric === 'neural' && 'Learning Readiness'}
-                  {selectedMetric === 'brain' && 'Neuroplasticity Readiness'}
-                  {selectedMetric === 'sleep' && 'Sleep Consolidation'}
+                  {selectedMetric === 'neural' && appCopy.scores.currentNeuroState.title}
+                  {selectedMetric === 'brain' && appCopy.scores.neuroplasticity.title}
+                  {selectedMetric === 'sleep' && appCopy.scores.sleepConsolidation.title}
                 </Text>
                 <TouchableOpacity onPress={() => setShowMetricModal(false)}>
                   <Ionicons name="close" size={28} color="#6B7280" />
