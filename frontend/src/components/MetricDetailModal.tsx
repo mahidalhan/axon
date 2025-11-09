@@ -82,12 +82,8 @@ export default function MetricDetailModal({
       transparent={true}
       onRequestClose={onClose}
     >
-      <TouchableOpacity 
-        style={styles.overlay} 
-        activeOpacity={1}
-        onPress={onClose}
-      >
-        <SafeAreaView style={styles.modalContainer} edges={['bottom']}>
+      <View style={styles.overlay}>
+        <View style={styles.modalContainer}>
           {/* Header */}
           <View style={[styles.header, { backgroundColor: gradientColor + '15' }]}>
             <Text style={styles.headerTitle}>{config.title}</Text>
@@ -102,7 +98,8 @@ export default function MetricDetailModal({
           <ScrollView 
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
-            showsVerticalScrollIndicator={false}
+            showsVerticalScrollIndicator={true}
+            bounces={true}
           >
             {/* Big Score */}
             <View style={styles.scoreSection}>
