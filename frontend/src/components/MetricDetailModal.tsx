@@ -98,7 +98,7 @@ export default function MetricDetailModal({
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           {/* Header with gradient background */}
-          <View style={[styles.header, { backgroundColor: config.gradient[0] + '20' }]}>
+          <View style={[styles.header, { backgroundColor: gradientColor + '20' }]}>
             <View style={styles.headerContent}>
               <Text style={styles.headerTitle}>{config.title}</Text>
               <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
@@ -114,10 +114,10 @@ export default function MetricDetailModal({
           >
             {/* Big Score Display */}
             <View style={styles.scoreDisplay}>
-              <View style={[styles.scoreCircle, { borderColor: config.gradient[0] }]}>
+              <View style={[styles.scoreCircle, { borderColor: gradientColor }]}>
                 <Text style={styles.scoreValue}>{Math.round(scoreValue)}</Text>
               </View>
-              <Text style={[styles.scoreLabel, { color: config.gradient[0] }]}>
+              <Text style={[styles.scoreLabel, { color: gradientColor }]}>
                 {getScoreLabel(scoreValue)}
               </Text>
             </View>
@@ -125,7 +125,7 @@ export default function MetricDetailModal({
             {/* What This Means Section */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Ionicons name="information-circle" size={20} color={config.gradient[0]} />
+                <Ionicons name="information-circle" size={20} color={gradientColor} />
                 <Text style={styles.sectionTitle}>WHAT THIS MEANS</Text>
               </View>
               <Text style={styles.descriptionText}>{config.description}</Text>
@@ -145,7 +145,7 @@ export default function MetricDetailModal({
             {metricType === 'sleep' && supportingMetrics && (
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
-                  <Ionicons name="analytics" size={20} color={config.gradient[0]} />
+                  <Ionicons name="analytics" size={20} color={gradientColor} />
                   <Text style={styles.sectionTitle}>YOUR METRICS</Text>
                 </View>
                 <View style={styles.metricsGrid}>
@@ -168,7 +168,7 @@ export default function MetricDetailModal({
               activeOpacity={0.7}
             >
               <View style={styles.sectionHeader}>
-                <Ionicons name="flask" size={20} color={config.gradient[0]} />
+                <Ionicons name="flask" size={20} color={gradientColor} />
                 <Text style={styles.sectionTitle}>THE SCIENCE</Text>
                 <Ionicons 
                   name={scienceExpanded ? "chevron-up" : "chevron-down"} 
@@ -186,7 +186,7 @@ export default function MetricDetailModal({
 
             {/* CTA Button */}
             <TouchableOpacity 
-              style={[styles.ctaButton, { backgroundColor: config.gradient[0] }]}
+              style={[styles.ctaButton, { backgroundColor: gradientColor }]}
               onPress={onClose}
               activeOpacity={0.8}
             >
