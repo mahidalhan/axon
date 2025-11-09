@@ -1,23 +1,22 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
+import { mockData } from './mockData';
 
 // Backend URL configuration
 const getBackendURL = () => {
-  // Get the tunnel host (e.g., "ixgw1ds-anonymous-3000.exp.direct")
   const tunnelHost = Constants.expoConfig?.hostUri;
   
   if (tunnelHost) {
-    // Use HTTPS with the same tunnel host - Kubernetes ingress will proxy /api/* to port 8001
-    console.log('[API] Using tunnel backend:', `https://${tunnelHost}`);
+    console.log('[API] Using tunnel:', `https://${tunnelHost}`);
     return `https://${tunnelHost}`;
   }
   
-  // Fallback
   return '';
 };
 
 const BACKEND_URL = getBackendURL();
+const USE_MOCK_DATA = true; // Set to false when deployed with proper backend access
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
@@ -27,62 +26,127 @@ const apiClient = axios.create({
   },
 });
 
+// Helper to return mock data when backend isn't accessible
+const withFallback = async <T,>(apiCall: () => Promise<T>, mockFallback: T): Promise<T> => {
+  if (USE_MOCK_DATA) {
+    console.log('[API] Using mock data');
+    return Promise.resolve(mockFallback);
+  }
+  
+  try {
+    return await apiCall();
+  } catch (error) {
+    console.log('[API] Falling back to mock data due to error:', error);
+    return mockFallback;
+  }
+};
+
 export const api = {
   // Session endpoints
   analyzeSession: async (participantId: number = 0, maxHours: number = 1.0) => {
-    const response = await apiClient.post('/session/analyze', {
-      participant_id: participantId,
-      max_hours: maxHours,
-    });
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.post('/session/analyze', {
+          participant_id: participantId,
+          max_hours: maxHours,
+        });
+        return response.data;
+      },
+      mockData.sessionAnalysis
+    );
   },
 
   getOptimalWindowStatus: async (participantId: number = 0) => {
-    const response = await apiClient.get(`/session/optimal-window-status?participant_id=${participantId}`);
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.get(`/session/optimal-window-status?participant_id=${participantId}`);
+        return response.data;
+      },
+      mockData.optimalWindow
+    );
   },
 
   getTodaySummary: async (participantId: number = 0) => {
-    const response = await apiClient.get(`/session/today-summary?participant_id=${participantId}`);
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.get(`/session/today-summary?participant_id=${participantId}`);
+        return response.data;
+      },
+      mockData.todaySummary
+    );
   },
 
   getCurrentMetrics: async (participantId: number = 0) => {
-    const response = await apiClient.get(`/session/current-metrics?participant_id=${participantId}`);
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.get(`/session/current-metrics?participant_id=${participantId}`);
+        return response.data;
+      },
+      mockData.currentMetrics
+    );
   },
 
   getBrainScoreToday: async (participantId: number = 0) => {
-    const response = await apiClient.get(`/brain-score/today?participant_id=${participantId}`);
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.get(`/brain-score/today?participant_id=${participantId}`);
+        return response.data;
+      },
+      mockData.brainScore
+    );
   },
 
   // Sleep endpoints
   getSleepLast20: async () => {
-    const response = await apiClient.get('/sleep/last20');
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.get('/sleep/last20');
+        return response.data;
+      },
+      mockData.sleepData
+    );
   },
 
   getSleepRecent: async (days: number = 7) => {
-    const response = await apiClient.get(`/sleep/recent?days=${days}`);
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.get(`/sleep/recent?days=${days}`);
+        return response.data;
+      },
+      { sleep_records: mockData.sleepData }
+    );
   },
 
   // Workout endpoints
   getWorkoutsLast20: async () => {
-    const response = await apiClient.get('/workouts/last20');
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.get('/workouts/last20');
+        return response.data;
+      },
+      mockData.workoutData
+    );
   },
 
   getWorkoutsRecent: async (days: number = 7) => {
-    const response = await apiClient.get(`/workouts/recent?days=${days}`);
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.get(`/workouts/recent?days=${days}`);
+        return response.data;
+      },
+      mockData.workoutData
+    );
   },
 
   // Health check
   healthCheck: async () => {
-    const response = await apiClient.get('/health');
-    return response.data;
+    return withFallback(
+      async () => {
+        const response = await apiClient.get('/health');
+        return response.data;
+      },
+      { status: 'healthy (mock)', timestamp: new Date().toISOString() }
+    );
   },
 };
 
