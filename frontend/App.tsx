@@ -2,6 +2,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -10,8 +11,19 @@ import SessionScreen from './src/screens/SessionScreen';
 import HealthScreen from './src/screens/HealthScreen';
 import EducationScreen from './src/screens/EducationScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import AppleHealthImportScreen from './src/screens/AppleHealthImportScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+function SettingsStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="SettingsMain" component={SettingsScreen} />
+      <Stack.Screen name="AppleHealthImport" component={AppleHealthImportScreen} />
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   return (
