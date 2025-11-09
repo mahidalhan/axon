@@ -114,51 +114,40 @@ export default function HomeScreen() {
         {/* Brain Score Rings */}
         <Card style={styles.scoreCard}>
           <View style={styles.scoresContainer}>
-            <TouchableOpacity 
-              style={styles.scoreItem}
+            <ScoreRing
+              value={todaySummary?.session_score || 0}
+              label={appCopy.scores.currentNeuroState.title}
+              subtitle={appCopy.scores.currentNeuroState.subtitle}
+              gradientColors={[colors.gradients.currentNeuroState.start, colors.gradients.currentNeuroState.end]}
+              size={100}
               onPress={() => {
                 setSelectedMetric('neural');
                 setShowMetricModal(true);
               }}
-            >
-              <CircularProgress
-                value={brainScore?.components?.learning_readiness || 0}
-                size={100}
-                strokeWidth={8}
-                color="#F59E0B"
-              />
-              <Text style={styles.scoreLabel}>Learning Readiness</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={styles.scoreItem}
+            />
+            <ScoreRing
+              value={brainScore?.brain_score || 0}
+              label={appCopy.scores.neuroplasticity.title}
+              subtitle={appCopy.scores.neuroplasticity.subtitle}
+              gradientColors={[colors.gradients.neuroplasticity.start, colors.gradients.neuroplasticity.end]}
+              size={100}
+              isPrimary={true}
               onPress={() => {
                 setSelectedMetric('brain');
                 setShowMetricModal(true);
               }}
-            >
-              <CircularProgress
-                value={brainScore?.brain_score || 0}
-                size={120}
-                strokeWidth={10}
-                color="#10B981"
-              />
-              <Text style={[styles.scoreLabel, styles.mainScoreLabel]}>Neuroplasticity</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={styles.scoreItem}
+            />
+            <ScoreRing
+              value={brainScore?.components?.consolidation || 0}
+              label={appCopy.scores.sleepConsolidation.title}
+              subtitle={appCopy.scores.sleepConsolidation.subtitle}
+              gradientColors={[colors.gradients.sleepConsolidation.start, colors.gradients.sleepConsolidation.end]}
+              size={100}
               onPress={() => {
                 setSelectedMetric('sleep');
                 setShowMetricModal(true);
               }}
-            >
-              <CircularProgress
-                value={brainScore?.components?.consolidation || 0}
-                size={100}
-                strokeWidth={8}
-                color="#6366F1"
-              />
-              <Text style={styles.scoreLabel}>Consolidation</Text>
-            </TouchableOpacity>
+            />
           </View>
         </Card>
 
