@@ -333,10 +333,10 @@ export default function HomeScreen() {
                     <Text style={styles.metricWeight}>20%</Text>
                   </View>
                   <Text style={styles.metricExplanation}>
-                    Neuroplasticity Readiness combines session performance (55%), sleep consolidation (25%), and behavioral alignment with optimal timing (20%).
+                    {appCopy.scores.neuroplasticity.longDescription}
                   </Text>
                   <Text style={styles.metricDisclaimer}>
-                    Based on Huberman Lab neuroplasticity protocols. Validation ongoing.
+                    {appCopy.scores.neuroplasticity.science}
                   </Text>
                 </View>
               )}
