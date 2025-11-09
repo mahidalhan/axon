@@ -6,11 +6,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AccordionSection from '../components/AccordionSection';
-import FormulaBar from '../components/FormulaBar';
+import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing } from '../constants/designTokens';
-import { appCopy } from '../constants/copy';
 
 export default function EducationScreen() {
   return (
