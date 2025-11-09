@@ -50,6 +50,50 @@ export const mockData = {
   },
 
   sessionAnalysis: {
+    session_duration_minutes: 40,
+    peak_lri: 84.3,
+    peak_timestamp: '2025-11-09T09:42:00Z',
+    avg_lri: 72.5,
+    median_lri: 74.0,
+    std_dev: 6.2,
+    optimal_windows: [
+      {
+        start: '2025-11-09T09:38:00Z',
+        end: '2025-11-09T09:50:00Z',
+        duration_minutes: 12,
+        avg_lri: 82,
+        quality: 'excellent',
+      },
+      {
+        start: '2025-11-09T09:58:00Z',
+        end: '2025-11-09T10:05:00Z',
+        duration_minutes: 7,
+        avg_lri: 76,
+        quality: 'very_good',
+      },
+    ],
+    time_in_state: {
+      optimal_minutes: 24,
+      moderate_minutes: 14,
+      low_minutes: 2,
+    },
+    session_score: 78,
+    component_scores: {
+      alertness: 78,
+      focus: 86,
+      arousal_balance: 72,
+    },
+    insights: [
+      'Peak occurred 15 min into session',
+      'You maintained optimal state for 48% of session',
+      'Post-exercise boost detected (1.3x multiplier)',
+    ],
+    recommendations: [
+      'Schedule deep work at 9:15 AM daily',
+      'Your optimal window appears 1-2h after morning workout',
+    ],
+    lri_timeline: [],
+  },
     session_duration_minutes: 40.2,
     peak_lri: 84.3,
     peak_timestamp: '2025-11-09T09:15:30',
