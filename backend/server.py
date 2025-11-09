@@ -281,14 +281,28 @@ async def get_current_metrics(participant_id: int = 0):
         # Get recent values (last 20 windows for sparkline)
         recent_df = windows_df.tail(20)
         
+        def safe_mean(series, default):
+            if series.empty:
+                return default
+            mean_val = series.mean()
+            return float(mean_val) if not pd.isna(mean_val) else default
+        
+        def safe_list(series, default_val, count=20):
+            if series.empty:
+                return [default_val] * count
+            result = []
+            for val in series.tolist():
+                result.append(float(val) if not pd.isna(val) else default_val)
+            return result
+        
         return {
-            "alertness": float(windows_df['alertness'].mean()) if 'alertness' in windows_df.columns else 65,
-            "focus": float(windows_df['focus'].mean()) if 'focus' in windows_df.columns else 58,
-            "arousal_balance": float(windows_df['arousal_balance'].mean()) if 'arousal_balance' in windows_df.columns else 42,
+            "alertness": safe_mean(windows_df.get('alertness', pd.Series()), 65),
+            "focus": safe_mean(windows_df.get('focus', pd.Series()), 58),
+            "arousal_balance": safe_mean(windows_df.get('arousal_balance', pd.Series()), 42),
             "sparkline_data": {
-                "alertness": recent_df['alertness'].tolist() if 'alertness' in recent_df.columns else [65] * 20,
-                "focus": recent_df['focus'].tolist() if 'focus' in recent_df.columns else [58] * 20,
-                "arousal": recent_df['arousal_balance'].tolist() if 'arousal_balance' in recent_df.columns else [42] * 20
+                "alertness": safe_list(recent_df.get('alertness', pd.Series()), 65),
+                "focus": safe_list(recent_df.get('focus', pd.Series()), 58),
+                "arousal": safe_list(recent_df.get('arousal_balance', pd.Series()), 42)
             }
         }
     
