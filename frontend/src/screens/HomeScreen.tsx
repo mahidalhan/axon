@@ -307,10 +307,10 @@ export default function HomeScreen() {
                     <Text style={styles.metricDetailValue}>{currentMetrics?.arousal_balance?.toFixed(0) || 0}</Text>
                   </View>
                   <Text style={styles.metricExplanation}>
-                    Learning Readiness combines your peak cognitive performance, time in optimal state, and sleep context. Based on EEG patterns correlated with alertness and focus.
+                    {appCopy.scores.currentNeuroState.longDescription}
                   </Text>
                   <Text style={styles.metricDisclaimer}>
-                    Note: This measures brain states, not actual learning outcomes. Research-based but individually variable.
+                    {appCopy.scores.currentNeuroState.science}
                   </Text>
                 </View>
               )}
