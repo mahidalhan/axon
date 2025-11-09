@@ -54,7 +54,7 @@ export default function App() {
               borderBottomColor: '#E5E7EB',
             },
             headerTitleStyle: {
-              fontWeight: '700',
+              fontWeight: '700' as '700',
               fontSize: 20,
             },
           })}
