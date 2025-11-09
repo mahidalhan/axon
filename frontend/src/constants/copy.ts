@@ -25,8 +25,8 @@ Perfect for:
       science: 'EEG patterns show when your brain enters states of heightened alertness, focus, and cognitive control.',
     },
     neuroplasticity: {
-      title: 'Neuroplasticity',
-      subtitle: 'Brain readiness',
+      title: 'Neuro Readiness',
+      subtitle: 'Brain state',
       description: 'Your brain\'s capacity to adapt, learn, and rewire.',
       longDescription: `Your brain's capacity to adapt, learn, and rewire.
 
