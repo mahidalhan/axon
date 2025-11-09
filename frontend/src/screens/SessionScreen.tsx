@@ -203,24 +203,27 @@ export default function SessionScreen() {
         {sessionData.optimal_windows && sessionData.optimal_windows.length > 0 && (
           <Card>
             <Text style={styles.cardTitle}>Peak Moments Detected</Text>
-            {sessionData.optimal_windows.map((window: any, idx: number) => (
-              <View key={idx} style={styles.windowCard}>
-                <View style={styles.windowHeader}>
-                  <View style={[styles.qualityBadge, { backgroundColor: getQualityColor(window.quality) + '20' }]}>
-                    <Text style={[styles.qualityText, { color: getQualityColor(window.quality) }]}>
-                      {window.quality.toUpperCase()}
-                    </Text>
+            {sessionData.optimal_windows.map((window: any, idx: number) => {
+              const startTime = formatSafeTime(window.start);
+              const endTime = formatSafeTime(window.end);
+              
+              return (
+                <View key={idx} style={styles.windowCard}>
+                  <View style={styles.windowHeader}>
+                    <View style={[styles.qualityBadge, { backgroundColor: getQualityColor(window.quality) + '20' }]}>
+                      <Text style={[styles.qualityText, { color: getQualityColor(window.quality) }]}>
+                        {window.quality.toUpperCase()}
+                      </Text>
+                    </View>
+                    <Text style={styles.windowDuration}>{window.duration_minutes?.toFixed(0)} min</Text>
                   </View>
-                  <Text style={styles.windowDuration}>{window.duration_minutes?.toFixed(0)} min</Text>
+                  <Text style={styles.windowTime}>
+                    {startTime} - {endTime}
+                  </Text>
+                  <Text style={styles.windowLRI}>Avg Score: {window.avg_lri?.toFixed(0)}</Text>
                 </View>
-                <Text style={styles.windowTime}>
-                  {new Date(window.start).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
-                  {' - '}
-                  {new Date(window.end).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
-                </Text>
-                <Text style={styles.windowLRI}>Avg Score: {window.avg_lri?.toFixed(0)}</Text>
-              </View>
-            ))}
+              );
+            })}
           </Card>
         )}
 
