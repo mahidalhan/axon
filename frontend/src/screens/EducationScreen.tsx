@@ -134,7 +134,7 @@ export default function EducationScreen() {
           </View>
           <View style={styles.tipItem}>
             <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-            <Text style={styles.tipText}>No intense exercise <3 hours before bed</Text>
+            <Text style={styles.tipText}>No intense exercise &lt;3 hours before bed</Text>
           </View>
         </Card>
 
