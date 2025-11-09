@@ -5,10 +5,12 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
+import { useOnboarding } from '../contexts/OnboardingContext';
 
 export default function SettingsScreen({ navigation }: any) {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
