@@ -149,7 +149,7 @@ async def analyze_session(request: SessionAnalyzeRequest):
         
         # Generate insights
         insights = [
-            f"Peak LRI of {peak_row['lri']:.1f} reached",
+            f"Peak Score of {peak_row['lri']:.1f} reached",
             f"You maintained optimal state for {optimal_minutes:.0f} minutes ({(optimal_minutes/(optimal_minutes+moderate_minutes+low_minutes)*100):.0f}% of session)" if optimal_minutes > 0 else "Consider timing session after exercise for better results",
             "Your focus metrics are strong" if component_scores['focus'] > 60 else "Try reducing distractions during session"
         ]
