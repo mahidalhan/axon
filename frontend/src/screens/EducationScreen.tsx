@@ -16,6 +16,7 @@ export default function EducationScreen() {
       icon: 'time',
       color: '#6366F1',
       optimal: '7-9 hours',
+      weight: '30%',
       description: 'Your brain needs time to complete memory consolidation. Each 90-minute sleep cycle processes different types of learning.',
     },
     {
@@ -23,6 +24,7 @@ export default function EducationScreen() {
       icon: 'pulse',
       color: '#10B981',
       optimal: '>85%',
+      weight: '25%',
       description: 'Percentage of time in bed actually sleeping. High efficiency means better consolidation.',
     },
     {
@@ -30,6 +32,7 @@ export default function EducationScreen() {
       icon: 'heart',
       color: '#EF4444',
       optimal: '60-80 ms',
+      weight: '10%',
       description: 'Heart Rate Variability indicates nervous system recovery. Higher HRV during sleep correlates with better memory consolidation.',
     },
     {
@@ -37,7 +40,40 @@ export default function EducationScreen() {
       icon: 'calendar',
       color: '#F59E0B',
       optimal: '<30 min variance',
+      weight: '10%',
       description: 'Regular bedtime strengthens your circadian rhythm and improves sleep quality.',
+    },
+    {
+      title: 'WASO (Wake After Sleep Onset)',
+      icon: 'alert-circle',
+      color: '#8B5CF6',
+      optimal: '<20 minutes',
+      weight: '10%',
+      description: 'Time spent awake during the night. Less WASO means more consolidated sleep and better memory formation.',
+    },
+    {
+      title: 'Sleep Onset Latency',
+      icon: 'moon',
+      color: '#06B6D4',
+      optimal: '<15 minutes',
+      weight: '5%',
+      description: 'How quickly you fall asleep. Falling asleep within 15 minutes indicates good sleep drive and timing.',
+    },
+    {
+      title: 'Respiratory Rate',
+      icon: 'fitness',
+      color: '#14B8A6',
+      optimal: '12-16 bpm',
+      weight: '5%',
+      description: 'Breathing rate during sleep. Stable, moderate rate indicates relaxed parasympathetic state.',
+    },
+    {
+      title: 'Deep Sleep %',
+      icon: 'bed',
+      color: '#A855F7',
+      optimal: '15-25%',
+      weight: '5%',
+      description: 'Percentage of sleep in deep/slow-wave sleep. Critical for physical recovery and memory consolidation.',
     },
   ];
 
