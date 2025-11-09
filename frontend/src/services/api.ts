@@ -93,13 +93,6 @@ export const api = {
       mockData.dailyTimeline || {}
     );
   },
-          max_hours: maxHours,
-        });
-        return response.data;
-      },
-      mockData.sessionAnalysis
-    );
-  },
 
   getOptimalWindowStatus: async (participantId: number = 0) => {
     return withFallback(
