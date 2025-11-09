@@ -14,7 +14,7 @@ const apiClient = axios.create({
 export const api = {
   // Session endpoints
   analyzeSession: async (participantId: number = 0, maxHours: number = 1.0) => {
-    const response = await apiClient.post('/api/session/analyze', {
+    const response = await apiClient.post('/session/analyze', {
       participant_id: participantId,
       max_hours: maxHours,
     });
