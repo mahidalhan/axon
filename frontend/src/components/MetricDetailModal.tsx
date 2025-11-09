@@ -75,6 +75,10 @@ export default function MetricDetailModal({
   }
 
   const config = getMetricConfig();
+  
+  // Provide safe fallback values
+  const gradientColor = config.gradient?.[0] || colors.gradients.neuroplasticity.start;
+  const gradientColor2 = config.gradient?.[1] || colors.gradients.neuroplasticity.end;
 
   const getScoreLabel = (score: number) => {
     if (score >= 85) return 'Excellent';
