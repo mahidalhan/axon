@@ -1,6 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
+import GoogleSignInScreen from '../screens/onboarding/GoogleSignInScreen';
 import NameInputScreen from '../screens/onboarding/NameInputScreen';
 import CompletionScreen from '../screens/onboarding/CompletionScreen';
 
@@ -15,6 +16,7 @@ export default function OnboardingNavigator() {
       }}
     >
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="GoogleSignIn" component={GoogleSignInScreen} />
       <Stack.Screen name="NameInput" component={NameInputScreen} />
       <Stack.Screen name="Completion" component={CompletionScreen} />
     </Stack.Navigator>
