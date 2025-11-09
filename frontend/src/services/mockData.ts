@@ -151,4 +151,53 @@ export const mockData = {
       max_heart_rate: 120,
     },
   ],
+
+  dailyTimeline: {
+    date: '2025-11-09',
+    user_schedule: {
+      wake_time: 6.5,
+      sleep_time: 22.0,
+    },
+    circadian_baseline: [
+      30, 32, 35, 38, 42, 48, 55, 62, 68, 72, 75, 76,  // 6am-9am (morning rise)
+      75, 74, 72, 70, 68, 65, 62, 58, 55, 52, 50, 48,  // 9am-12pm
+      45, 43, 42, 40, 38, 37, 36, 35, 35, 36, 38, 40,  // 12pm-3pm (afternoon dip)
+      42, 45, 48, 52, 56, 60, 63, 65, 67, 68, 68, 67,  // 3pm-6pm (recovery)
+      65, 62, 58, 55, 52, 48, 45, 42, 38, 35, 32, 30,  // 6pm-9pm (wind down)
+      28, 26, 24, 22, 20, 20, 20, 20, 20, 20, 20, 20,  // 9pm-12am (sleep prep)
+      20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,  // 12am-3am (deep sleep)
+      20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,  // 3am-6am (late sleep)
+    ],
+    measured_session: {
+      start_hour: 9.25,  // 9:15 AM
+      end_hour: 9.92,    // 9:55 AM
+      lri_values: [
+        { hour: 9.25, lri: 64 },
+        { hour: 9.29, lri: 68 },
+        { hour: 9.33, lri: 72 },
+        { hour: 9.38, lri: 76 },
+        { hour: 9.42, lri: 82 },
+        { hour: 9.46, lri: 84 },
+        { hour: 9.50, lri: 78 },
+        { hour: 9.54, lri: 74 },
+        { hour: 9.58, lri: 70 },
+        { hour: 9.62, lri: 68 },
+        { hour: 9.67, lri: 72 },
+        { hour: 9.71, lri: 76 },
+        { hour: 9.75, lri: 78 },
+        { hour: 9.79, lri: 74 },
+        { hour: 9.83, lri: 70 },
+        { hour: 9.88, lri: 66 },
+      ],
+    },
+    gamma_peaks: [
+      { hour: 9.42, lri: 82, duration_min: 5 },
+      { hour: 9.62, lri: 78, duration_min: 7.5 },
+      { hour: 9.83, lri: 81, duration_min: 2.5 },
+    ],
+    events: [
+      { hour: 6.5, type: 'wake', icon: '😴', label: 'Wake' },
+      { hour: 7.25, type: 'workout', icon: '🏃', label: 'Run' },
+    ],
+  },
 };
