@@ -454,6 +454,148 @@ async def get_recent_sleep(days: int = 7):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/session/context")
+async def get_session_context(participant_id: int = 0):
+    """Get contextual information about the session."""
+    try:
+        session_data = get_muse_session_data(participant_id)
+        windows_df = get_muse_windows_data(participant_id)
+        
+        # Get workout data
+        workout_data = load_json(APPLE_HEALTH_DIR / "workouts_last_20_days.json")
+        latest_workout = workout_data[0] if len(workout_data) > 0 else None
+        
+        # Calculate post-exercise hours
+        post_exercise_hours = None
+        if latest_workout:
+            session_start = datetime.fromisoformat(session_data['session_start'].replace('Z', '+00:00'))
+            workout_end = datetime.fromisoformat(latest_workout['end_time'].replace('Z', '+00:00'))
+            diff = session_start - workout_end
+            post_exercise_hours = diff.total_seconds() / 3600
+        
+        # Count gamma peaks (LRI > 70)
+        gamma_peaks = len(windows_df[windows_df['lri'] >= 70])
+        
+        # Calculate flow minutes
+        flow_minutes = len(windows_df[windows_df['lri'] >= 70]) * 2.5
+        
+        # Determine circadian phase
+        session_hour = datetime.fromisoformat(session_data['session_start'].replace('Z', '+00:00')).hour
+        if 6 <= session_hour < 11:
+            circadian_phase = 'morning_peak'
+        elif 14 <= session_hour < 17:
+            circadian_phase = 'afternoon_dip'
+        elif 17 <= session_hour < 21:
+            circadian_phase = 'evening_peak'
+        else:
+            circadian_phase = 'sleep'
+        
+        return {
+            "participant_id": participant_id,
+            "session_time": {
+                "start": session_data['session_start'],
+                "end": session_data['session_end'],
+                "duration_minutes": session_data['session_duration_minutes']
+            },
+            "context": {
+                "post_exercise_hours": round(post_exercise_hours, 1) if post_exercise_hours else None,
+                "workout_type": latest_workout.get('workout_type', 'Unknown') if latest_workout else None,
+                "circadian_phase": circadian_phase,
+                "optimal_window": post_exercise_hours and 1 <= post_exercise_hours <= 4 if post_exercise_hours else False
+            },
+            "performance": {
+                "peak_moments": gamma_peaks,
+                "flow_minutes": round(flow_minutes, 1),
+                "peak_lri": float(windows_df['lri'].max())
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/session/daily-timeline")
+async def get_daily_timeline(participant_id: int = 0):
+    """Get full-day timeline data with circadian baseline."""
+    try:
+        session_data = get_muse_session_data(participant_id)
+        windows_df = get_muse_windows_data(participant_id)
+        
+        # Get sleep data for wake/sleep times
+        sleep_data = load_json(APPLE_HEALTH_DIR / "sleep_last_20_days.json")[0]
+        workout_data = load_json(APPLE_HEALTH_DIR / "workouts_last_20_days.json")
+        
+        # Calculate circadian baseline (simplified)
+        wake_time = 6.5  # 6:30 AM
+        sleep_time = 22.0  # 10:00 PM
+        
+        baseline = []
+        for h_idx in range(96):  # 15-min intervals for 24h
+            h = h_idx * 0.25
+            if h < wake_time or h > sleep_time:
+                baseline.append(20)
+            else:
+                hours_awake = h - wake_time
+                # Simplified circadian curve
+                value = 40 + (30 * math.sin((hours_awake / 16) * math.pi))
+                # Add morning boost
+                if hours_awake < 4:
+                    value += hours_awake * 8
+                # Afternoon dip
+                if 6 < hours_awake < 9:
+                    value -= 15
+                baseline.append(min(max(value, 30), 95))
+        
+        # Extract measured session data
+        session_start = datetime.fromisoformat(session_data['session_start'].replace('Z', '+00:00'))
+        start_hour = session_start.hour + session_start.minute / 60
+        
+        measured_lri = []
+        for idx, row in windows_df.iterrows():
+            measured_lri.append({
+                "hour": start_hour + (idx * 2.5 / 60),  # 2.5 min windows
+                "lri": float(row['lri']) if not pd.isna(row['lri']) else None
+            })
+        
+        # Get gamma peaks
+        peaks = []
+        for idx, row in windows_df[windows_df['lri'] >= 70].iterrows():
+            peaks.append({
+                "hour": start_hour + (idx * 2.5 / 60),
+                "lri": float(row['lri']),
+                "duration_min": 2.5
+            })
+        
+        # Events
+        events = [
+            {"hour": wake_time, "type": "wake", "icon": "😴", "label": "Wake"},
+        ]
+        
+        if len(workout_data) > 0:
+            workout_time = datetime.fromisoformat(workout_data[0]['start_time'].replace('Z', '+00:00'))
+            events.append({
+                "hour": workout_time.hour + workout_time.minute / 60,
+                "type": "workout",
+                "icon": "🏃",
+                "label": "Run"
+            })
+        
+        return {
+            "date": session_start.strftime("%Y-%m-%d"),
+            "user_schedule": {
+                "wake_time": wake_time,
+                "sleep_time": sleep_time
+            },
+            "circadian_baseline": baseline,
+            "measured_session": {
+                "start_hour": start_hour,
+                "end_hour": start_hour + (session_data['session_duration_minutes'] / 60),
+                "lri_values": measured_lri
+            },
+            "gamma_peaks": peaks,
+            "events": events
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
