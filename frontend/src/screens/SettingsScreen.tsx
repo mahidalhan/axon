@@ -145,6 +145,21 @@ export default function SettingsScreen({ navigation }: any) {
           </TouchableOpacity>
         </Card>
 
+        {/* Developer */}
+        <Text style={styles.sectionTitle}>Developer</Text>
+        <Card>
+          <TouchableOpacity 
+            style={styles.settingRow}
+            onPress={handleResetOnboarding}
+          >
+            <View style={styles.settingInfo}>
+              <Ionicons name="reload" size={24} color="#F59E0B" />
+              <Text style={styles.settingTitle}>Reset Onboarding</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+          </TouchableOpacity>
+        </Card>
+
         {/* Footer */}
         <Text style={styles.footer}>
           Made with neuroplasticity in mind
