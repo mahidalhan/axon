@@ -1,158 +1,250 @@
 diff --git a/backend/server.py b/backend/server.py
-index e4225b7..e0200ee 100644
+index 2af7ca9..8b996e6 100644
 --- a/backend/server.py
 +++ b/backend/server.py
-@@ -281,14 +281,28 @@ async def get_current_metrics(participant_id: int = 0):
-         # Get recent values (last 20 windows for sparkline)
-         recent_df = windows_df.tail(20)
-         
-+        def safe_mean(series, default):
-+            if series.empty:
-+                return default
-+            mean_val = series.mean()
-+            return float(mean_val) if not pd.isna(mean_val) else default
+@@ -6,6 +6,7 @@ from pydantic import BaseModel
+ from typing import Optional, Dict, List, Any
+ import json
+ import pandas as pd
++import math
+ from pathlib import Path
+ from datetime import datetime, timedelta
+ import os
+@@ -199,7 +200,7 @@ async def get_sleep_last_20():
+         # Sanitize NaN values
+         def sanitize(obj):
+             if isinstance(obj, float):
+-                if pd.isna(obj) or not pd.isfinite(obj):
++                if pd.isna(obj) or not math.isfinite(obj):
+                     return None
+                 return obj
+             elif isinstance(obj, dict):
+@@ -218,7 +219,20 @@ async def get_workouts_last_20():
+     try:
+         workouts_file = APPLE_HEALTH_DIR / "workouts_last_20_days.json"
+         data = load_json(workouts_file)
+-        return data
 +        
-+        def safe_list(series, default_val, count=20):
-+            if series.empty:
-+                return [default_val] * count
-+            result = []
-+            for val in series.tolist():
-+                result.append(float(val) if not pd.isna(val) else default_val)
-+            return result
++        # Sanitize NaN values
++        def sanitize(obj):
++            if isinstance(obj, float):
++                if pd.isna(obj) or not math.isfinite(obj):
++                    return None
++                return obj
++            elif isinstance(obj, dict):
++                return {k: sanitize(v) for k, v in obj.items()}
++            elif isinstance(obj, list):
++                return [sanitize(item) for item in obj]
++            return obj
 +        
-         return {
--            "alertness": float(windows_df['alertness'].mean()) if 'alertness' in windows_df.columns else 65,
--            "focus": float(windows_df['focus'].mean()) if 'focus' in windows_df.columns else 58,
--            "arousal_balance": float(windows_df['arousal_balance'].mean()) if 'arousal_balance' in windows_df.columns else 42,
-+            "alertness": safe_mean(windows_df.get('alertness', pd.Series()), 65),
-+            "focus": safe_mean(windows_df.get('focus', pd.Series()), 58),
-+            "arousal_balance": safe_mean(windows_df.get('arousal_balance', pd.Series()), 42),
-             "sparkline_data": {
--                "alertness": recent_df['alertness'].tolist() if 'alertness' in recent_df.columns else [65] * 20,
--                "focus": recent_df['focus'].tolist() if 'focus' in recent_df.columns else [58] * 20,
--                "arousal": recent_df['arousal_balance'].tolist() if 'arousal_balance' in recent_df.columns else [42] * 20
-+                "alertness": safe_list(recent_df.get('alertness', pd.Series()), 65),
-+                "focus": safe_list(recent_df.get('focus', pd.Series()), 58),
-+                "arousal": safe_list(recent_df.get('arousal_balance', pd.Series()), 42)
-             }
-         }
-     
++        return sanitize(data)
+     except Exception as e:
+         raise HTTPException(status_code=500, detail=str(e))
+ 
+@@ -369,7 +383,20 @@ async def get_recent_workouts(days: int = 7):
+     try:
+         workouts_file = APPLE_HEALTH_DIR / "workouts_last_20_days.json"
+         data = load_json(workouts_file)
+-        return data[:days] if len(data) > days else data
++        
++        def sanitize(obj):
++            if isinstance(obj, float):
++                if pd.isna(obj) or not math.isfinite(obj):
++                    return None
++                return obj
++            elif isinstance(obj, dict):
++                return {k: sanitize(v) for k, v in obj.items()}
++            elif isinstance(obj, list):
++                return [sanitize(item) for item in obj]
++            return obj
++        
++        result = data[:days] if len(data) > days else data
++        return sanitize(result)
+     except Exception as e:
+         raise HTTPException(status_code=500, detail=str(e))
+ 
+@@ -379,7 +406,20 @@ async def get_recent_sleep(days: int = 7):
+     try:
+         sleep_file = APPLE_HEALTH_DIR / "sleep_last_20_days.json"
+         data = load_json(sleep_file)
+-        return {"sleep_records": data[:days] if len(data) > days else data}
++        
++        def sanitize(obj):
++            if isinstance(obj, float):
++                if pd.isna(obj) or not math.isfinite(obj):
++                    return None
++                return obj
++            elif isinstance(obj, dict):
++                return {k: sanitize(v) for k, v in obj.items()}
++            elif isinstance(obj, list):
++                return [sanitize(item) for item in obj]
++            return obj
++        
++        result = data[:days] if len(data) > days else data
++        return {"sleep_records": sanitize(result)}
+     except Exception as e:
+         raise HTTPException(status_code=500, detail=str(e))
+ 
 diff --git a/model.patch b/model.patch
-index f456bd0..e69de29 100644
+index 2b9290c..e69de29 100644
 --- a/model.patch
 +++ b/model.patch
-@@ -1,114 +0,0 @@
+@@ -1,158 +0,0 @@
 -diff --git a/backend/server.py b/backend/server.py
--index 56c62d3..e4225b7 100644
+-index e4225b7..e0200ee 100644
 ---- a/backend/server.py
 -+++ b/backend/server.py
--@@ -223,12 +223,15 @@ async def get_optimal_window_status(participant_id: int = 0):
--             latest_optimal = optimal_rows.iloc[-1]
--             quality = "excellent" if latest_optimal['lri'] >= 85 else "very_good" if latest_optimal['lri'] >= 75 else "good"
--             
--+            window_start = latest_optimal['window_start']
--+            window_end = latest_optimal['window_end']
--+            
--             return {
--                 "has_window": True,
---                "window_start": latest_optimal['window_start'],
---                "window_end": latest_optimal['window_end'],
--+                "window_start": window_start.isoformat() if hasattr(window_start, 'isoformat') else str(window_start),
--+                "window_end": window_end.isoformat() if hasattr(window_end, 'isoformat') else str(window_end),
--                 "quality": quality,
---                "current_lri": float(latest_optimal['lri'])
--+                "current_lri": float(latest_optimal['lri']) if not pd.isna(latest_optimal['lri']) else 0.0
--             }
+-@@ -281,14 +281,28 @@ async def get_current_metrics(participant_id: int = 0):
+-         # Get recent values (last 20 windows for sparkline)
+-         recent_df = windows_df.tail(20)
 -         
+-+        def safe_mean(series, default):
+-+            if series.empty:
+-+                return default
+-+            mean_val = series.mean()
+-+            return float(mean_val) if not pd.isna(mean_val) else default
+-+        
+-+        def safe_list(series, default_val, count=20):
+-+            if series.empty:
+-+                return [default_val] * count
+-+            result = []
+-+            for val in series.tolist():
+-+                result.append(float(val) if not pd.isna(val) else default_val)
+-+            return result
+-+        
 -         return {
--@@ -259,7 +262,7 @@ async def get_today_summary(participant_id: int = 0):
--         return {
--             "date": datetime.now().strftime("%Y-%m-%d"),
--             "peak_lri": round(peak_lri, 1),
---            "peak_time": peak_time,
--+            "peak_time": peak_time.isoformat() if hasattr(peak_time, 'isoformat') else str(peak_time),
--             "optimal_minutes": round(optimal_minutes, 1),
--             "optimal_percentage": round(optimal_percentage, 1),
--             "session_score": round(session_score, 1),
+--            "alertness": float(windows_df['alertness'].mean()) if 'alertness' in windows_df.columns else 65,
+--            "focus": float(windows_df['focus'].mean()) if 'focus' in windows_df.columns else 58,
+--            "arousal_balance": float(windows_df['arousal_balance'].mean()) if 'arousal_balance' in windows_df.columns else 42,
+-+            "alertness": safe_mean(windows_df.get('alertness', pd.Series()), 65),
+-+            "focus": safe_mean(windows_df.get('focus', pd.Series()), 58),
+-+            "arousal_balance": safe_mean(windows_df.get('arousal_balance', pd.Series()), 42),
+-             "sparkline_data": {
+--                "alertness": recent_df['alertness'].tolist() if 'alertness' in recent_df.columns else [65] * 20,
+--                "focus": recent_df['focus'].tolist() if 'focus' in recent_df.columns else [58] * 20,
+--                "arousal": recent_df['arousal_balance'].tolist() if 'arousal_balance' in recent_df.columns else [42] * 20
+-+                "alertness": safe_list(recent_df.get('alertness', pd.Series()), 65),
+-+                "focus": safe_list(recent_df.get('focus', pd.Series()), 58),
+-+                "arousal": safe_list(recent_df.get('arousal_balance', pd.Series()), 42)
+-             }
+-         }
+-     
 -diff --git a/model.patch b/model.patch
--index f945da9..e69de29 100644
+-index f456bd0..e69de29 100644
 ---- a/model.patch
 -+++ b/model.patch
--@@ -1,77 +0,0 @@
+-@@ -1,114 +0,0 @@
 --diff --git a/backend/server.py b/backend/server.py
---index 93de522..56c62d3 100644
+--index 56c62d3..e4225b7 100644
 ----- a/backend/server.py
 --+++ b/backend/server.py
---@@ -98,9 +98,11 @@ async def analyze_session(request: SessionAnalyzeRequest):
---             else:
---                 if in_window:
---                     window_rows = windows_df.loc[window_start_idx:idx-1]
---+                    start_time = window_rows.iloc[0]['window_start']
---+                    end_time = window_rows.iloc[-1]['window_end']
---                     optimal_windows.append({
----                        "start": window_rows.iloc[0]['window_start'],
----                        "end": window_rows.iloc[-1]['window_end'],
---+                        "start": start_time.isoformat() if hasattr(start_time, 'isoformat') else str(start_time),
---+                        "end": end_time.isoformat() if hasattr(end_time, 'isoformat') else str(end_time),
---                         "duration_minutes": len(window_rows) * 2.5,  # 2.5 min windows
---                         "avg_lri": float(window_rows['lri'].mean()),
---                         "quality": "excellent" if window_rows['lri'].mean() >= 85 else "very_good" if window_rows['lri'].mean() >= 75 else "good"
---@@ -110,9 +112,11 @@ async def analyze_session(request: SessionAnalyzeRequest):
---         # Close last window if still open
---         if in_window:
---             window_rows = windows_df.loc[window_start_idx:]
---+            start_time = window_rows.iloc[0]['window_start']
---+            end_time = window_rows.iloc[-1]['window_end']
---             optimal_windows.append({
----                "start": window_rows.iloc[0]['window_start'],
----                "end": window_rows.iloc[-1]['window_end'],
---+                "start": start_time.isoformat() if hasattr(start_time, 'isoformat') else str(start_time),
---+                "end": end_time.isoformat() if hasattr(end_time, 'isoformat') else str(end_time),
---                 "duration_minutes": len(window_rows) * 2.5,
---                 "avg_lri": float(window_rows['lri'].mean()),
---                 "quality": "excellent" if window_rows['lri'].mean() >= 85 else "very_good" if window_rows['lri'].mean() >= 75 else "good"
+--@@ -223,12 +223,15 @@ async def get_optimal_window_status(participant_id: int = 0):
+--             latest_optimal = optimal_rows.iloc[-1]
+--             quality = "excellent" if latest_optimal['lri'] >= 85 else "very_good" if latest_optimal['lri'] >= 75 else "good"
+--             
+--+            window_start = latest_optimal['window_start']
+--+            window_end = latest_optimal['window_end']
+--+            
+--             return {
+--                 "has_window": True,
+---                "window_start": latest_optimal['window_start'],
+---                "window_end": latest_optimal['window_end'],
+--+                "window_start": window_start.isoformat() if hasattr(window_start, 'isoformat') else str(window_start),
+--+                "window_end": window_end.isoformat() if hasattr(window_end, 'isoformat') else str(window_end),
+--                 "quality": quality,
+---                "current_lri": float(latest_optimal['lri'])
+--+                "current_lri": float(latest_optimal['lri']) if not pd.isna(latest_optimal['lri']) else 0.0
+--             }
+--         
+--         return {
+--@@ -259,7 +262,7 @@ async def get_today_summary(participant_id: int = 0):
+--         return {
+--             "date": datetime.now().strftime("%Y-%m-%d"),
+--             "peak_lri": round(peak_lri, 1),
+---            "peak_time": peak_time,
+--+            "peak_time": peak_time.isoformat() if hasattr(peak_time, 'isoformat') else str(peak_time),
+--             "optimal_minutes": round(optimal_minutes, 1),
+--             "optimal_percentage": round(optimal_percentage, 1),
+--             "session_score": round(session_score, 1),
 --diff --git a/model.patch b/model.patch
---index b799a7d..e69de29 100644
+--index f945da9..e69de29 100644
 ----- a/model.patch
 --+++ b/model.patch
---@@ -1,40 +0,0 @@
+--@@ -1,77 +0,0 @@
 ---diff --git a/backend/server.py b/backend/server.py
----index 14b6818..93de522 100644
+---index 93de522..56c62d3 100644
 ------ a/backend/server.py
 ---+++ b/backend/server.py
----@@ -154,13 +154,21 @@ async def analyze_session(request: SessionAnalyzeRequest):
----             "Optimal windows typically occur 1-3 hours post-exercise"
----         ]
----         
----+        # Prepare timeline data with proper serialization
----+        timeline_data = []
----+        for _, row in windows_df[['window_start', 'lri']].head(50).iterrows():
----+            timeline_data.append({
----+                'window_start': row['window_start'].isoformat() if hasattr(row['window_start'], 'isoformat') else str(row['window_start']),
----+                'lri': float(row['lri']) if not pd.isna(row['lri']) else 0.0
----+            })
----+        
----         return {
----             "session_duration_minutes": session_data.get('session_duration_minutes', 0),
-----            "peak_lri": float(peak_row['lri']),
-----            "peak_timestamp": peak_row['window_start'],
-----            "avg_lri": float(windows_df['lri'].mean()),
-----            "median_lri": float(windows_df['lri'].median()),
-----            "std_dev": float(windows_df['lri'].std()),
----+            "peak_lri": float(peak_row['lri']) if not pd.isna(peak_row['lri']) else 0.0,
----+            "peak_timestamp": peak_row['window_start'].isoformat() if hasattr(peak_row['window_start'], 'isoformat') else str(peak_row['window_start']),
----+            "avg_lri": float(windows_df['lri'].mean()) if not pd.isna(windows_df['lri'].mean()) else 0.0,
----+            "median_lri": float(windows_df['lri'].median()) if not pd.isna(windows_df['lri'].median()) else 0.0,
----+            "std_dev": float(windows_df['lri'].std()) if not pd.isna(windows_df['lri'].std()) else 0.0,
----             "optimal_windows": optimal_windows,
----             "time_in_state": {
----                 "optimal_minutes": round(optimal_minutes, 2),
----@@ -171,7 +179,7 @@ async def analyze_session(request: SessionAnalyzeRequest):
----             "session_score": round(session_score, 1),
----             "insights": insights,
----             "recommendations": recommendations,
-----            "lri_timeline": windows_df[['window_start', 'lri']].to_dict('records')[:50]  # First 50 points for chart
----+            "lri_timeline": timeline_data
----         }
----     
----     except Exception as e:
+---@@ -98,9 +98,11 @@ async def analyze_session(request: SessionAnalyzeRequest):
+---             else:
+---                 if in_window:
+---                     window_rows = windows_df.loc[window_start_idx:idx-1]
+---+                    start_time = window_rows.iloc[0]['window_start']
+---+                    end_time = window_rows.iloc[-1]['window_end']
+---                     optimal_windows.append({
+----                        "start": window_rows.iloc[0]['window_start'],
+----                        "end": window_rows.iloc[-1]['window_end'],
+---+                        "start": start_time.isoformat() if hasattr(start_time, 'isoformat') else str(start_time),
+---+                        "end": end_time.isoformat() if hasattr(end_time, 'isoformat') else str(end_time),
+---                         "duration_minutes": len(window_rows) * 2.5,  # 2.5 min windows
+---                         "avg_lri": float(window_rows['lri'].mean()),
+---                         "quality": "excellent" if window_rows['lri'].mean() >= 85 else "very_good" if window_rows['lri'].mean() >= 75 else "good"
+---@@ -110,9 +112,11 @@ async def analyze_session(request: SessionAnalyzeRequest):
+---         # Close last window if still open
+---         if in_window:
+---             window_rows = windows_df.loc[window_start_idx:]
+---+            start_time = window_rows.iloc[0]['window_start']
+---+            end_time = window_rows.iloc[-1]['window_end']
+---             optimal_windows.append({
+----                "start": window_rows.iloc[0]['window_start'],
+----                "end": window_rows.iloc[-1]['window_end'],
+---+                "start": start_time.isoformat() if hasattr(start_time, 'isoformat') else str(start_time),
+---+                "end": end_time.isoformat() if hasattr(end_time, 'isoformat') else str(end_time),
+---                 "duration_minutes": len(window_rows) * 2.5,
+---                 "avg_lri": float(window_rows['lri'].mean()),
+---                 "quality": "excellent" if window_rows['lri'].mean() >= 85 else "very_good" if window_rows['lri'].mean() >= 75 else "good"
+---diff --git a/model.patch b/model.patch
+---index b799a7d..e69de29 100644
+------ a/model.patch
+---+++ b/model.patch
+---@@ -1,40 +0,0 @@
+----diff --git a/backend/server.py b/backend/server.py
+----index 14b6818..93de522 100644
+------- a/backend/server.py
+----+++ b/backend/server.py
+----@@ -154,13 +154,21 @@ async def analyze_session(request: SessionAnalyzeRequest):
+----             "Optimal windows typically occur 1-3 hours post-exercise"
+----         ]
+----         
+----+        # Prepare timeline data with proper serialization
+----+        timeline_data = []
+----+        for _, row in windows_df[['window_start', 'lri']].head(50).iterrows():
+----+            timeline_data.append({
+----+                'window_start': row['window_start'].isoformat() if hasattr(row['window_start'], 'isoformat') else str(row['window_start']),
+----+                'lri': float(row['lri']) if not pd.isna(row['lri']) else 0.0
+----+            })
+----+        
+----         return {
+----             "session_duration_minutes": session_data.get('session_duration_minutes', 0),
+-----            "peak_lri": float(peak_row['lri']),
+-----            "peak_timestamp": peak_row['window_start'],
+-----            "avg_lri": float(windows_df['lri'].mean()),
+-----            "median_lri": float(windows_df['lri'].median()),
+-----            "std_dev": float(windows_df['lri'].std()),
+----+            "peak_lri": float(peak_row['lri']) if not pd.isna(peak_row['lri']) else 0.0,
+----+            "peak_timestamp": peak_row['window_start'].isoformat() if hasattr(peak_row['window_start'], 'isoformat') else str(peak_row['window_start']),
+----+            "avg_lri": float(windows_df['lri'].mean()) if not pd.isna(windows_df['lri'].mean()) else 0.0,
+----+            "median_lri": float(windows_df['lri'].median()) if not pd.isna(windows_df['lri'].median()) else 0.0,
+----+            "std_dev": float(windows_df['lri'].std()) if not pd.isna(windows_df['lri'].std()) else 0.0,
+----             "optimal_windows": optimal_windows,
+----             "time_in_state": {
+----                 "optimal_minutes": round(optimal_minutes, 2),
+----@@ -171,7 +179,7 @@ async def analyze_session(request: SessionAnalyzeRequest):
+----             "session_score": round(session_score, 1),
+----             "insights": insights,
+----             "recommendations": recommendations,
+-----            "lri_timeline": windows_df[['window_start', 'lri']].to_dict('records')[:50]  # First 50 points for chart
+----+            "lri_timeline": timeline_data
+----         }
+----     
+----     except Exception as e:
