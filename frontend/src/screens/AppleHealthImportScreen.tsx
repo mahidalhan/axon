@@ -106,7 +106,7 @@ export default function AppleHealthImportScreen({ navigation }: any) {
           <Ionicons
             name={hideDataSources ? 'chevron-down' : 'chevron-up'}
             size={20}
-            color=\"#6B7280\"
+            color="#6B7280"
           />
         </TouchableOpacity>
 
