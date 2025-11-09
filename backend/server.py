@@ -11,7 +11,6 @@ from pathlib import Path
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
-from models import Supplement, DailySupplements, SUPPLEMENT_LIBRARY
 
 load_dotenv()
 
