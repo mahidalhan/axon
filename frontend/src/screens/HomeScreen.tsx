@@ -352,10 +352,10 @@ export default function HomeScreen() {
                     <Text style={styles.metricDetailValue}>{brainScore?.supporting_metrics?.sleep_score?.version || 'N/A'}</Text>
                   </View>
                   <Text style={styles.metricExplanation}>
-                    Sleep Consolidation reflects conditions favorable for memory consolidation. Based on 8 research-validated metrics: Duration, Efficiency, HRV, Consistency, WASO, SOL, Respiratory Rate, Deep Sleep %.
+                    {appCopy.scores.sleepConsolidation.longDescription}
                   </Text>
                   <Text style={styles.metricDisclaimer}>
-                    Research: Walker (2017), Stickgold (2005), Frontiers in Neuroscience (2025)
+                    {appCopy.scores.sleepConsolidation.science}
                   </Text>
                 </View>
               )}
