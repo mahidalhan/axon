@@ -111,7 +111,13 @@ export default function HomeScreen() {
         {/* Brain Score Rings */}
         <Card style={styles.scoreCard}>
           <View style={styles.scoresContainer}>
-            <View style={styles.scoreItem}>
+            <TouchableOpacity 
+              style={styles.scoreItem}
+              onPress={() => {
+                setSelectedMetric('neural');
+                setShowMetricModal(true);
+              }}
+            >
               <CircularProgress
                 value={brainScore?.components?.neural_state || 0}
                 size={100}
@@ -119,8 +125,14 @@ export default function HomeScreen() {
                 color="#F59E0B"
               />
               <Text style={styles.scoreLabel}>Neural State</Text>
-            </View>
-            <View style={styles.scoreItem}>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.scoreItem}
+              onPress={() => {
+                setSelectedMetric('brain');
+                setShowMetricModal(true);
+              }}
+            >
               <CircularProgress
                 value={brainScore?.brain_score || 0}
                 size={120}
@@ -128,8 +140,14 @@ export default function HomeScreen() {
                 color="#10B981"
               />
               <Text style={[styles.scoreLabel, styles.mainScoreLabel]}>Brain Score</Text>
-            </View>
-            <View style={styles.scoreItem}>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.scoreItem}
+              onPress={() => {
+                setSelectedMetric('sleep');
+                setShowMetricModal(true);
+              }}
+            >
               <CircularProgress
                 value={brainScore?.components?.consolidation || 0}
                 size={100}
@@ -137,7 +155,7 @@ export default function HomeScreen() {
                 color="#6366F1"
               />
               <Text style={styles.scoreLabel}>Sleep Quality</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </Card>
 
