@@ -16,7 +16,7 @@ const getBackendURL = () => {
 };
 
 const BACKEND_URL = getBackendURL();
-const USE_MOCK_DATA = true; // Set to false when deployed with proper backend access
+const USE_MOCK_DATA = false; // Using real backend data now
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
