@@ -11,10 +11,7 @@ import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function SettingsScreen() {
-  const [selectedParticipant, setSelectedParticipant] = useState(0);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-
-  const participants = Array.from({ length: 20 }, (_, i) => i);
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -26,43 +23,13 @@ export default function SettingsScreen() {
               <Ionicons name="analytics" size={40} color="#4F46E5" />
             </View>
             <View style={styles.appInfo}>
-              <Text style={styles.appName}>Brain Score</Text>
+              <Text style={styles.appName}>AXON</Text>
               <Text style={styles.appVersion}>Version 1.0.0</Text>
             </View>
           </View>
           <Text style={styles.appDescription}>
             Optimize your learning and cognitive performance using EEG analysis and sleep tracking.
           </Text>
-        </Card>
-
-        {/* Participant Selection */}
-        <Text style={styles.sectionTitle}>EEG Session Data</Text>
-        <Card>
-          <Text style={styles.settingLabel}>Participant ID</Text>
-          <Text style={styles.settingDescription}>
-            Select which Muse EEG participant data to display (demo mode)
-          </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.participantScroll}>
-            {participants.map((id) => (
-              <TouchableOpacity
-                key={id}
-                style={[
-                  styles.participantChip,
-                  selectedParticipant === id && styles.participantChipActive,
-                ]}
-                onPress={() => setSelectedParticipant(id)}
-              >
-                <Text
-                  style={[
-                    styles.participantText,
-                    selectedParticipant === id && styles.participantTextActive,
-                  ]}
-                >
-                  {id}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
         </Card>
 
         {/* Preferences */}
@@ -214,41 +181,6 @@ const styles = StyleSheet.create({
     color: '#1F2937',
     marginTop: 24,
     marginBottom: 12,
-  },
-  settingLabel: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#1F2937',
-    marginBottom: 4,
-  },
-  settingDescription: {
-    fontSize: 14,
-    color: '#6B7280',
-    marginBottom: 16,
-    lineHeight: 20,
-  },
-  participantScroll: {
-    marginHorizontal: -4,
-  },
-  participantChip: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: '#F3F4F6',
-    marginHorizontal: 4,
-    minWidth: 48,
-    alignItems: 'center',
-  },
-  participantChipActive: {
-    backgroundColor: '#4F46E5',
-  },
-  participantText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#6B7280',
-  },
-  participantTextActive: {
-    color: '#FFFFFF',
   },
   settingRow: {
     flexDirection: 'row',
