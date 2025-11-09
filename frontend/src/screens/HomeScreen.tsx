@@ -7,6 +7,8 @@ import {
   RefreshControl,
   ActivityIndicator,
   Dimensions,
+  TouchableOpacity,
+  Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api } from '../services/api';
@@ -23,6 +25,8 @@ export default function HomeScreen() {
   const [todaySummary, setTodaySummary] = useState<any>(null);
   const [optimalWindow, setOptimalWindow] = useState<any>(null);
   const [currentMetrics, setCurrentMetrics] = useState<any>(null);
+  const [showMetricModal, setShowMetricModal] = useState(false);
+  const [selectedMetric, setSelectedMetric] = useState<string>('');
 
   const loadData = async () => {
     try {
