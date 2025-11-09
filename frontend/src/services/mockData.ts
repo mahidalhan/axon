@@ -3,9 +3,14 @@ export const mockData = {
   brainScore: {
     brain_score: 78.4,
     components: {
-      neural_state: 82.0,
+      learning_readiness: 82.0,
       consolidation: 74.0,
-      behavior_alignment: 76.0,
+      behavior_alignment: 65.0,
+    },
+    session_details: {
+      avg_lri: 46.8,
+      optimal_utilization: 48.5,
+      sleep_context: 74.0,
     },
     supporting_metrics: {
       best_session_id: 'sess_2025-11-09_morning',
