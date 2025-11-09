@@ -5,33 +5,13 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
-import { useOnboarding } from '../contexts/OnboardingContext';
 
 export default function SettingsScreen({ navigation }: any) {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const { resetOnboarding } = useOnboarding();
-
-  const handleResetOnboarding = () => {
-    Alert.alert(
-      'Reset Onboarding',
-      'This will show the onboarding flow again. Continue?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Reset',
-          style: 'destructive',
-          onPress: async () => {
-            await resetOnboarding();
-          },
-        },
-      ]
-    );
-  };
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
