@@ -1,20 +1,71 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+
+import HomeScreen from './src/screens/HomeScreen';
+import SessionScreen from './src/screens/SessionScreen';
+import HealthScreen from './src/screens/HealthScreen';
+import EducationScreen from './src/screens/EducationScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName: any;
+
+              if (route.name === 'Home') {
+                iconName = focused ? 'home' : 'home-outline';
+              } else if (route.name === 'Session') {
+                iconName = focused ? 'pulse' : 'pulse-outline';
+              } else if (route.name === 'Health') {
+                iconName = focused ? 'heart' : 'heart-outline';
+              } else if (route.name === 'Learn') {
+                iconName = focused ? 'school' : 'school-outline';
+              } else if (route.name === 'Settings') {
+                iconName = focused ? 'settings' : 'settings-outline';
+              }
+
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: '#4F46E5',
+            tabBarInactiveTintColor: '#9CA3AF',
+            tabBarStyle: {
+              backgroundColor: '#FFFFFF',
+              borderTopWidth: 1,
+              borderTopColor: '#E5E7EB',
+              height: 60,
+              paddingBottom: 8,
+              paddingTop: 8,
+            },
+            headerStyle: {
+              backgroundColor: '#FFFFFF',
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 1,
+              borderBottomColor: '#E5E7EB',
+            },
+            headerTitleStyle: {
+              fontWeight: '700',
+              fontSize: 20,
+            },
+          })}
+        >
+          <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Brain Score' }} />
+          <Tab.Screen name="Session" component={SessionScreen} options={{ title: 'Session Analysis' }} />
+          <Tab.Screen name="Health" component={HealthScreen} options={{ title: 'Health Data' }} />
+          <Tab.Screen name="Learn" component={EducationScreen} options={{ title: 'Learn' }} />
+          <Tab.Screen name="Settings" component={SettingsScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+      <StatusBar style="dark" />
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
