@@ -151,7 +151,16 @@ export default function HomeScreen() {
           </View>
           {optimalWindow?.has_window ? (
             <View>
-              <Text style={styles.windowStatus}>Active Now</Text>
+              <View style={styles.activeNowContainer}>
+                <Text style={styles.windowStatus}>Active Now</Text>
+                <Text style={styles.currentTime}>
+                  {new Date().toLocaleTimeString('en-US', { 
+                    hour: 'numeric', 
+                    minute: '2-digit',
+                    hour12: true 
+                  })}
+                </Text>
+              </View>
               <View style={styles.windowDetails}>
                 <View style={[styles.qualityBadge, { backgroundColor: getQualityColor(optimalWindow.quality) + '20' }]}>
                   <Text style={[styles.qualityText, { color: getQualityColor(optimalWindow.quality) }]}>
