@@ -262,7 +262,7 @@ async def get_today_summary(participant_id: int = 0):
         return {
             "date": datetime.now().strftime("%Y-%m-%d"),
             "peak_lri": round(peak_lri, 1),
-            "peak_time": peak_time,
+            "peak_time": peak_time.isoformat() if hasattr(peak_time, 'isoformat') else str(peak_time),
             "optimal_minutes": round(optimal_minutes, 1),
             "optimal_percentage": round(optimal_percentage, 1),
             "session_score": round(session_score, 1),
