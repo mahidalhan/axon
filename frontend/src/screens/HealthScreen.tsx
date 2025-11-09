@@ -22,13 +22,20 @@ export default function HealthScreen() {
 
   const loadHealthData = async () => {
     try {
-      const [sleep, workouts] = await Promise.all([
+      const [sleepResponse, workouts] = await Promise.all([
         api.getSleepLast20(),
         api.getWorkoutsLast20(),
       ]);
 
-      setSleepData(sleep.slice(0, 7)); // Show last 7 days
-      setWorkoutData(workouts.slice(0, 7));
+      // Handle sleep data - API returns array directly or {sleep_records: [...]}
+      const sleepArray = Array.isArray(sleepResponse) 
+        ? sleepResponse 
+        : sleepResponse?.sleep_records || [];
+      
+      const workoutsArray = Array.isArray(workouts) ? workouts : [];
+
+      setSleepData(sleepArray.slice(0, 7)); // Show last 7 days
+      setWorkoutData(workoutsArray.slice(0, 7));
     } catch (error) {
       console.error('Error loading health data:', error);
     } finally {
