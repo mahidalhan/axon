@@ -109,9 +109,9 @@ export default function SessionScreen() {
                 yAxisColor="#E5E7EB"
                 xAxisColor="#E5E7EB"
                 yAxisTextStyle={{ color: '#9CA3AF', fontSize: 10 }}
-                hideRules
-                curved
-                areaChart
+                hideRules={true}
+                curved={true}
+                areaChart={true}
               />
             </View>
             <View style={styles.thresholdLegend}>
