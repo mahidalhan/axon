@@ -1,7 +1,25 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
-const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '/api';
+// For mobile, we need to use the tunnel URL with /api path
+// For web preview, /api works directly
+const getBackendURL = () => {
+  const expoUrl = Constants.expoConfig?.hostUri;
+  
+  // If running on mobile via Expo Go, use the tunnel URL
+  if (expoUrl && Platform.OS !== 'web') {
+    // Use http instead of https for Expo tunnel
+    return `http://${expoUrl}/api`;
+  }
+  
+  // For web or fallback
+  return process.env.EXPO_PUBLIC_BACKEND_URL || '/api';
+};
+
+const BACKEND_URL = getBackendURL();
+
+console.log('Backend URL:', BACKEND_URL);
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
