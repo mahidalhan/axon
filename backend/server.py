@@ -98,9 +98,11 @@ async def analyze_session(request: SessionAnalyzeRequest):
             else:
                 if in_window:
                     window_rows = windows_df.loc[window_start_idx:idx-1]
+                    start_time = window_rows.iloc[0]['window_start']
+                    end_time = window_rows.iloc[-1]['window_end']
                     optimal_windows.append({
-                        "start": window_rows.iloc[0]['window_start'],
-                        "end": window_rows.iloc[-1]['window_end'],
+                        "start": start_time.isoformat() if hasattr(start_time, 'isoformat') else str(start_time),
+                        "end": end_time.isoformat() if hasattr(end_time, 'isoformat') else str(end_time),
                         "duration_minutes": len(window_rows) * 2.5,  # 2.5 min windows
                         "avg_lri": float(window_rows['lri'].mean()),
                         "quality": "excellent" if window_rows['lri'].mean() >= 85 else "very_good" if window_rows['lri'].mean() >= 75 else "good"
@@ -110,9 +112,11 @@ async def analyze_session(request: SessionAnalyzeRequest):
         # Close last window if still open
         if in_window:
             window_rows = windows_df.loc[window_start_idx:]
+            start_time = window_rows.iloc[0]['window_start']
+            end_time = window_rows.iloc[-1]['window_end']
             optimal_windows.append({
-                "start": window_rows.iloc[0]['window_start'],
-                "end": window_rows.iloc[-1]['window_end'],
+                "start": start_time.isoformat() if hasattr(start_time, 'isoformat') else str(start_time),
+                "end": end_time.isoformat() if hasattr(end_time, 'isoformat') else str(end_time),
                 "duration_minutes": len(window_rows) * 2.5,
                 "avg_lri": float(window_rows['lri'].mean()),
                 "quality": "excellent" if window_rows['lri'].mean() >= 85 else "very_good" if window_rows['lri'].mean() >= 75 else "good"
