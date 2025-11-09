@@ -1,0 +1,40 @@
+diff --git a/backend/server.py b/backend/server.py
+index 14b6818..93de522 100644
+--- a/backend/server.py
++++ b/backend/server.py
+@@ -154,13 +154,21 @@ async def analyze_session(request: SessionAnalyzeRequest):
+             "Optimal windows typically occur 1-3 hours post-exercise"
+         ]
+         
++        # Prepare timeline data with proper serialization
++        timeline_data = []
++        for _, row in windows_df[['window_start', 'lri']].head(50).iterrows():
++            timeline_data.append({
++                'window_start': row['window_start'].isoformat() if hasattr(row['window_start'], 'isoformat') else str(row['window_start']),
++                'lri': float(row['lri']) if not pd.isna(row['lri']) else 0.0
++            })
++        
+         return {
+             "session_duration_minutes": session_data.get('session_duration_minutes', 0),
+-            "peak_lri": float(peak_row['lri']),
+-            "peak_timestamp": peak_row['window_start'],
+-            "avg_lri": float(windows_df['lri'].mean()),
+-            "median_lri": float(windows_df['lri'].median()),
+-            "std_dev": float(windows_df['lri'].std()),
++            "peak_lri": float(peak_row['lri']) if not pd.isna(peak_row['lri']) else 0.0,
++            "peak_timestamp": peak_row['window_start'].isoformat() if hasattr(peak_row['window_start'], 'isoformat') else str(peak_row['window_start']),
++            "avg_lri": float(windows_df['lri'].mean()) if not pd.isna(windows_df['lri'].mean()) else 0.0,
++            "median_lri": float(windows_df['lri'].median()) if not pd.isna(windows_df['lri'].median()) else 0.0,
++            "std_dev": float(windows_df['lri'].std()) if not pd.isna(windows_df['lri'].std()) else 0.0,
+             "optimal_windows": optimal_windows,
+             "time_in_state": {
+                 "optimal_minutes": round(optimal_minutes, 2),
+@@ -171,7 +179,7 @@ async def analyze_session(request: SessionAnalyzeRequest):
+             "session_score": round(session_score, 1),
+             "insights": insights,
+             "recommendations": recommendations,
+-            "lri_timeline": windows_df[['window_start', 'lri']].to_dict('records')[:50]  # First 50 points for chart
++            "lri_timeline": timeline_data
+         }
+     
+     except Exception as e:
