@@ -59,6 +59,7 @@ VALIDATION SUMMARY
 - **Optimal windows**: 2 windows totaling 15.5 minutes
 - **Session score**: 72.3/100
 - **Post-exercise boost**: Detected (1.3x multiplier, 2h after workout)
+- **Full payload:** `docs/shared/session-analysis-example.md`
 
 ## Dataset Quality
 
@@ -84,28 +85,7 @@ VALIDATION SUMMARY
 # Analyze single session
 curl -X POST http://localhost:8001/api/session/analyze?participant_id=0&max_hours=1.0
 
-# Returns session analysis
-{
-  "success": true,
-  "session_analysis": {
-    "peak_lri": 84.3,
-    "peak_timestamp": "2025-11-08T18:15:30",
-    "optimal_windows": [
-      {
-        "start": "18:15:00",
-        "end": "18:27:30",
-        "duration_minutes": 12.5,
-        "avg_lri": 76.2,
-        "quality": "excellent"
-      }
-    ],
-    "session_score": 72.3,
-    "insights": [
-      "Peak occurred 15 min into session",
-      "Post-exercise boost detected"
-    ]
-  }
-}
+# Returns session analysis (see docs/shared/session-analysis-example.md for payload)
 ```
 
 ## Frontend Integration

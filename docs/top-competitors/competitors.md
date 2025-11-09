@@ -1,4 +1,0 @@
-
-Muse headset
-Neurosity headset
-

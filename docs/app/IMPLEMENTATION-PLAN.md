@@ -12,7 +12,7 @@
 - **PIVOT:** From 28-day neuroplasticity tracking → Single-session optimal window detection
 - **ADD:** Apple Health integration for workouts AND sleep
 - **ADD:** Supplement tracking (UI only, no algorithm changes)
-- **DELETE:** Brain Score calculator (invalid with current data)
+- **REPLACE:** 28-day Brain Score → Daily Brain Score (session + sleep composite)
 - **DELETE:** Multi-participant stitching (scientifically dishonest)
 
 **Why:**
@@ -93,13 +93,27 @@ backend/models.py (UPDATE - add WorkoutRecord, SleepRecord, SupplementLog)
 
 ## Part 2: Algorithm Changes
 
-### 2.1 DELETE: 28-Day Brain Score
+### 2.1 REPLACE: Brain Score (Daily Composite)
 
 **File:** `backend/scores/brain_score_calculator.py`
 
-**Reason:** Cannot calculate valid 28-day score when using different participants for each day. This creates false "improvement trends" that are actually inter-individual variance.
+**Reason:** The legacy 28-day implementation assumed longitudinal data from one participant. The MVP now uses daily session data + sleep consolidation, so we need a replacement algorithm rather than deletion.
 
-**Action:** Delete entire file
+**Action:** Implement the daily Brain Score formula defined in `docs/shared/brain-score-proposal.md`:
+
+```
+brain_score = (
+    0.55 × neural_state_score +
+    0.25 × consolidation_score +
+    0.20 × behavior_alignment
+)
+```
+
+- `neural_state_score`: best `session_score` of the day with diminishing returns from optimal window utilisation.
+- `consolidation_score`: prior-night Neuroplasticity Sleep Score (HRV-enabled when available).
+- `behavior_alignment`: post-exercise window usage + circadian alignment bonus.
+
+Update API payloads so the daily brain score and its components are returned alongside session summaries.
 
 ---
 
@@ -125,61 +139,8 @@ class SessionAnalyzer:
         Main analysis function.
 
         Returns:
-        {
-            "session_duration_minutes": 40.2,
-            "peak_lri": 84.3,
-            "peak_timestamp": "2025-11-08T09:15:30",
-            "avg_lri": 46.8,
-            "median_lri": 45.2,
-            "std_dev": 12.3,
-
-            "optimal_windows": [
-                {
-                    "start": "09:15:00",
-                    "end": "09:27:30",
-                    "duration_minutes": 12.5,
-                    "avg_lri": 76.2,
-                    "quality": "excellent"
-                }
-            ],
-
-            "time_in_state": {
-                "optimal_minutes": 19.5,
-                "moderate_minutes": 15.7,
-                "low_minutes": 5.0
-            },
-
-            "component_scores": {
-                "alertness": 65.3,
-                "focus": 58.2,
-                "arousal_balance": 42.1
-            },
-
-            "workout_context": {
-                "workout_detected": true,
-                "hours_since_workout": 2.25,
-                "post_exercise_multiplier": 1.3,
-                "peak_in_optimal_window": true
-            },
-
-            "sleep_context": {
-                "previous_night_score": 82,
-                "sleep_impact": "positive"
-            },
-
-            "session_score": 72.3,
-
-            "insights": [
-                "Peak occurred 15 min into session",
-                "You maintained optimal state for 48% of session",
-                "Post-exercise boost detected (1.3x)"
-            ],
-
-            "recommendations": [
-                "Schedule deep work at 9:15 AM daily",
-                "Your optimal window appears 1-2h after morning workout"
-            ]
-        }
+            Dict summary of session analysis. See `docs/shared/session-analysis-example.md`
+            for the canonical payload structure used across docs and API responses.
         """
 
     def find_optimal_windows(self, lri_samples: List[Dict],
@@ -1053,8 +1014,9 @@ async def get_optimal_window_status():
    - REMOVE daily aggregation references
 
 2. **Section "Brain Score: 28-day rolling neuroplasticity health metric"**
-   - DELETE entire section
-   - Add note: "Brain Score requires 28 days of longitudinal data from same individual. Not available in MVP due to data constraints."
+   - RENAME to "Brain Score (Daily Composite)"
+   - Summarize the MVP formula and link to `docs/shared/brain-score-proposal.md`
+   - Clarify future work: reintroduce 28-day trends once longitudinal data exists
 
 3. **Section "Data Requirements"**
    - UPDATE: Remove "28-day baseline calibration" requirement
@@ -1067,9 +1029,11 @@ async def get_optimal_window_status():
      - ✅ Session-level optimal window detection
      - ✅ Post-exercise window tracking (Apple Health)
      - ✅ Sleep score from Apple Health
+
+     - ✅ Daily Brain Score composite
      - ✅ Supplement logging (UI only)
    - UPDATE Out of Scope:
-     - ❌ 28-day Brain Score (insufficient longitudinal data)
+     - ❌ 28-day Brain Score trendline (requires longitudinal data)
      - ❌ Personalized z-score baselines (need 28 days from one person)
      - ❌ Push notifications (in-app only for MVP)
 
@@ -1144,10 +1108,10 @@ Example:
 - Grounded in real data (not fake 28-day trends)
 ```
 
-**DELETE:**
-- ❌ All references to "28 days"
-- ❌ Brain Score calculation section
-- ❌ Multi-day aggregation
+**UPDATE:**
+- Replace "28-Day Brain Score" mentions with "Daily Brain Score (MVP)"
+- Remove instructions describing multi-day aggregation
+- Emphasize session analysis outputs feeding the daily score
 
 ---
 
@@ -1609,7 +1573,7 @@ def aggregate_sleep_sessions(samples):
 2. Implement SessionAnalyzer
 3. Add workout/sleep API routes
 4. Update algorithm documentation
-5. Delete Brain Score calculator
+5. Implement Daily Brain Score calculator & expose API payload
 6. Test end-to-end flow
 
 ---

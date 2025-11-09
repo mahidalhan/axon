@@ -34,36 +34,10 @@ Sleep is where neuroplasticity consolidation occurs. Our algorithm incorporates 
 ## Sleep Score Formulas
 
 ### Version A: HRV-Enabled (Preferred)
-
-```
-Sleep_Score = (
-    0.30 × Duration_Score +
-    0.25 × Efficiency_Score +
-    0.10 × HRV_Sleep_Score +
-    0.10 × Consistency_Score +
-    0.10 × WASO_Score +
-    0.05 × SOL_Score +
-    0.05 × Respiratory_Rate_Score +
-    0.05 × Deep_Sleep_Percent_Score
-)
-```
-
-**Requirements:** Apple Watch or Oura Ring with HRV tracking
+Canonical weights are maintained in [`docs/shared/sleep-score-snippets.md`](../shared/sleep-score-snippets.md#hrv-enabled-formula). Requires Apple Watch or Oura Ring HRV data.
 
 ### Version B: Base (No HRV Device)
-
-```
-Sleep_Score = (
-    0.35 × Duration_Score +
-    0.30 × Efficiency_Score +
-    0.15 × Consistency_Score +
-    0.10 × WASO_Score +
-    0.05 × SOL_Score +
-    0.05 × Respiratory_Rate_Score
-)
-```
-
-**Requirements:** Apple Health sleep tracking (iPhone only)
+See [`docs/shared/sleep-score-snippets.md`](../shared/sleep-score-snippets.md#base-formula-no-hrv-device) for the authoritative non-HRV formula. Works with Apple Health sleep tracking only.
 
 ---
 
@@ -82,18 +56,7 @@ Sleep_Score = (
 - Minimum 4-5 cycles (6-7.5 hours) needed for complete consolidation
 
 **Scoring Logic:**
-```python
-def score_duration(hours: float) -> float:
-    """Score sleep duration based on optimal 7-9 hour range."""
-    if 7 <= hours <= 9:
-        return 100
-    elif 6 <= hours < 7:
-        return 80 - (7 - hours) * 40  # Linear penalty
-    elif 9 < hours <= 10:
-        return 80 - (hours - 9) * 40
-    else:
-        return max(40, 100 - abs(hours - 8) * 15)
-```
+Implementation reference: [`score_duration` example](../shared/sleep-score-snippets.md#component-function-example).
 
 **Optimal Range:** 7-9 hours
 **Why This Weight:** Primary determinant of consolidation window duration. Foundational metric.

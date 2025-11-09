@@ -8,13 +8,13 @@
 
 **What we have:**
 - ✅ Muse dataset: 20 participants × 40 min each
-- ✅ Algorithm: LRI → DNOS → Brain Score
-- ⚠️ 28-day demo: Stitched from different people (not scientifically valid)
+- ✅ Algorithm: LRI → Session Score → Brain Score (daily composite)
+- ⚠️ No longitudinal dataset yet (can't validate multi-week trends)
 
 **What's missing:**
-- ❌ No 28 consecutive days from ONE person
-- ❌ No sleep data (consolidation component synthetic)
-- ❌ No daytime + sleep from same participants
+- ❌ Multi-day sessions per participant (needed for 28-day trendlines)
+- ❌ Matched sleep + daytime recordings per subject
+- ❌ Real-world behavioural outcomes for correlation studies
 
 ---
 
@@ -39,9 +39,9 @@ class COGBCIDataLoader:
 ```
 
 **Result:** 3-session tracking per participant
-- Session 1 (baseline): DNOS = 58/100
-- Session 2 (week 2): DNOS = 67/100 ↑ +15.5%
-- Session 3 (week 3): DNOS = 74/100 ↑ +27.6%
+- Session 1 (baseline): Session Score = 58/100
+- Session 2 (week 2): Session Score = 67/100 ↑ +15.5%
+- Session 3 (week 3): Session Score = 74/100 ↑ +27.6%
 
 **Scientific claim:** ✅ "Multi-session neuroplasticity trends validated on 29 participants"
 
@@ -77,7 +77,7 @@ class SleepDataLoader:
         # Return: deep_sleep_pct, rem_pct, efficiency
 ```
 
-**Result:** Real sleep consolidation component for DNOS
+**Result:** Real sleep consolidation component feeding the daily Brain Score
 
 **Scientific claim:** ✅ "Sleep algorithm validated on 320 consecutive nights"
 
@@ -163,8 +163,8 @@ Week 6: Data processing + analysis
 **Per participant:**
 - 28 days of daytime LRI (50-100 samples/day)
 - 28 nights of sleep data
-- 28 DNOS scores
-- 1 Brain Score (28-day rolling)
+- 28 Session Scores
+- 28 Daily Brain Scores + 28-day rolling average
 
 **Validation:**
 - Personal baseline normalization (z-score against own mean)
@@ -180,7 +180,7 @@ Week 6: Data processing + analysis
 
 **1. Algorithm Reliability**
 - Test-retest correlation for LRI (target: r > 0.8)
-- DNOS stability across similar days
+- Session Score stability across similar days
 - Brain Score consistency
 
 **2. Predictive Validity**

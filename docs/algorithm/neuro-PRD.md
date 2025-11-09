@@ -478,10 +478,11 @@ gamma_power = psd_integral(30, 50)
 ✅ Supplement logging (UI only, not factored into algorithm)
 ✅ Mobile app UI mockup (Figma + basic React Native screens)
 ✅ Session history visualization
+✅ Daily Brain Score composite (session + sleep)
 ✅ Algorithm validation using EEGLearn dataset
 
 ### Out of Scope (Post-Hackathon)
-❌ 28-day Brain Score (requires longitudinal data from same individual, only have 40-min snapshots)
+❌ 28-day Brain Score trendline (requires longitudinal data from same individual, only have 40-min snapshots)
 ❌ Personalized z-score baselines (requires 28-day rolling baseline, using population norms instead)
 ❌ Real-time Bluetooth streaming (using 40-min snapshot data)
 ❌ Actual hardware prototype (use Muse headband for demo)
@@ -491,7 +492,7 @@ gamma_power = psd_integral(30, 50)
 ❌ Clinical validation studies
 
 ### Note on Brain Score
-**Brain Score requires 28 days of longitudinal data from the same individual. Not available in MVP due to data constraints (only have 40-min snapshots).** Future versions will incorporate rolling baseline calculations once continuous user data becomes available.
+The MVP ships with a **Daily Brain Score** that blends the best session score, sleep consolidation, and behaviour alignment (see `docs/shared/brain-score-proposal.md`). A 28-day trendline will be introduced once we capture longitudinal data from the same participant.
 
 ---
 
@@ -513,7 +514,7 @@ gamma_power = psd_integral(30, 50)
 1. Partner with neuroscience lab (e.g., Huberman Lab)
 2. N=100 users, 8 weeks, controlled learning tasks
 3. Compare neuroplasticity outcomes (skill acquisition rate) for high-LRI vs. low-LRI study sessions
-4. Collect longitudinal data to enable 28-day Brain Score calculation
+4. Collect longitudinal data to enable 28-day Brain Score trendline
 5. Publish peer-reviewed validation study
 
 ---

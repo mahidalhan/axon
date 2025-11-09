@@ -305,9 +305,10 @@ Before using any dataset, confirm:
 ---
 
 **See Also:**
-- `/docs/neuro-PRD.md` - Full product requirements
-- `/docs/brain-score-spec.md` - Brain Score formula details
-- `/docs/dataset-processing-guide.md` - Detailed preprocessing steps (create if needed)
+- `/docs/data-pipeline/` - Cleaning pipelines for Muse EEG & Apple Health
+- `/docs/emergent-build/` - Backend/UI build specifications
+- `/docs/algorithm/neuro-PRD.md` - Full product requirements
+- `/docs/shared/TERMINOLOGY.md` - Glossary of shared metrics
 
 ---
 

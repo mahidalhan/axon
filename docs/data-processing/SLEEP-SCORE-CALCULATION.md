@@ -68,28 +68,14 @@ sleep_data = {
 
 ### Step 2: Score Each Component
 
-Each component is scored 0-100 based on optimal ranges from research.
+Each component is scored 0-100 based on optimal ranges from research. Reuse the canonical implementations in [`docs/shared/sleep-score-snippets.md`](../shared/sleep-score-snippets.md) to avoid divergence.
 
 #### 2.1 Duration Score
 
-**Optimal Range:** 7-9 hours
+**Optimal Range:** 7-9 hours  
 **Scientific Basis:** Walker (2017) - Sleep duration directly impacts consolidation
 
-```python
-def score_duration(hours: float) -> float:
-    """Score sleep duration based on optimal 7-9 hour range."""
-    if 7 <= hours <= 9:
-        return 100
-    elif 6 <= hours < 7:
-        # Linear penalty from 7h down to 6h
-        return 80 - (7 - hours) * 40  # 6h = 40, 6.5h = 60
-    elif 9 < hours <= 10:
-        # Linear penalty from 9h up to 10h
-        return 80 - (hours - 9) * 40  # 10h = 40, 9.5h = 60
-    else:
-        # Outside 6-10h range
-        return max(40, 100 - abs(hours - 8) * 15)
-```
+> Use the implementation shown in [`docs/shared/sleep-score-snippets.md`](../shared/sleep-score-snippets.md#component-function-example) for the authoritative scoring logic.
 
 **Examples:**
 - 8.0 hours → 100

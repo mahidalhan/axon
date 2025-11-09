@@ -151,7 +151,48 @@ GET /api/session/current-metrics
 
 ---
 
-#### D. Recent Workouts List
+#### D. Daily Brain Score Tile
+```
+┌─────────────────────────────────────────────┐
+│  Brain Score (Today)                        │
+│                                             │
+│  78 / 100                                   │
+│  Neural State: 82                           │
+│  Sleep Consolidation: 74                    │
+│  Behavior Alignment: 76                     │
+│                                             │
+│  Tip: Post-exercise session 2h after run    │
+│  boosted your neural state component.       │
+│                                             │
+│  [View Component Details →]                 │
+└─────────────────────────────────────────────┘
+```
+
+**Data from Backend:**
+```json
+GET /api/brain-score/today
+{
+  "brain_score": 78.4,
+  "components": {
+    "neural_state": 82.0,
+    "consolidation": 74.0,
+    "behavior_alignment": 76.0
+  },
+  "supporting_metrics": {
+    "best_session_id": "sess_2025-11-08_morning",
+    "sleep_score": {
+      "value": 82,
+      "version": "hrv_enabled"
+    },
+    "workout_hits": 1
+  },
+  "insight": "Schedule deep work in the 2h window after your run."
+}
+```
+
+---
+
+#### E. Recent Workouts List
 ```
 ┌─────────────────────────────────────────────┐
 │  Recent Workouts                            │
@@ -493,9 +534,9 @@ file: export.xml
 │  • Cycling - Yesterday 6:00 PM              │
 │  • HIIT - Nov 6, 7:30 AM                   │
 │                                             │
-│  Recent Sleep:                              │
-│  • Last Night: 7h 32m (Score: 82/100)      │
-│  • Nov 6: 6h 45m (Score: 71/100)           │
+│  Neuroplasticity Sleep Score:               │
+│  • Last Night: 7h 32m (NSS: 82/100)        │
+│  • Nov 6: 6h 45m (NSS: 71/100)             │
 │                                             │
 │  [Done]                                     │
 └─────────────────────────────────────────────┘
