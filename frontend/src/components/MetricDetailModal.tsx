@@ -6,11 +6,13 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  Animated,
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../constants/designTokens';
 import { appCopy } from '../constants/copy';
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface MetricDetailModalProps {
   visible: boolean;
@@ -31,54 +33,38 @@ export default function MetricDetailModal({
 }: MetricDetailModalProps) {
   const [scienceExpanded, setScienceExpanded] = useState(false);
 
-  const getMetricConfig = () => {
-    switch (metricType) {
-      case 'neural':
-        return {
-          title: appCopy.scores.currentNeuroState.title,
-          description: appCopy.scores.currentNeuroState.description,
-          longDescription: appCopy.scores.currentNeuroState.longDescription,
-          science: appCopy.scores.currentNeuroState.science,
-          gradient: [colors.gradients.currentNeuroState.start, colors.gradients.currentNeuroState.end],
-        };
-      case 'brain':
-        return {
-          title: appCopy.scores.neuroplasticity.title,
-          description: appCopy.scores.neuroplasticity.description,
-          longDescription: appCopy.scores.neuroplasticity.longDescription,
-          science: appCopy.scores.neuroplasticity.science,
-          gradient: [colors.gradients.neuroplasticity.start, colors.gradients.neuroplasticity.end],
-        };
-      case 'sleep':
-        return {
-          title: appCopy.scores.sleepConsolidation.title,
-          description: appCopy.scores.sleepConsolidation.description,
-          longDescription: appCopy.scores.sleepConsolidation.longDescription,
-          science: appCopy.scores.sleepConsolidation.science,
-          gradient: [colors.gradients.sleepConsolidation.start, colors.gradients.sleepConsolidation.end],
-        };
-      default:
-        // Fallback to neuroplasticity config if type is invalid
-        return {
-          title: appCopy.scores.neuroplasticity.title,
-          description: appCopy.scores.neuroplasticity.description,
-          longDescription: appCopy.scores.neuroplasticity.longDescription,
-          science: appCopy.scores.neuroplasticity.science,
-          gradient: [colors.gradients.neuroplasticity.start, colors.gradients.neuroplasticity.end],
-        };
-    }
-  };
-
-  // Don't render anything if modal is not visible
   if (!visible) {
     return null;
   }
 
+  const getMetricConfig = () => {
+    switch (metricType) {
+      case 'neural':
+        return appCopy.scores.currentNeuroState;
+      case 'brain':
+        return appCopy.scores.neuroplasticity;
+      case 'sleep':
+        return appCopy.scores.sleepConsolidation;
+      default:
+        return appCopy.scores.neuroplasticity;
+    }
+  };
+
+  const getGradientColor = () => {
+    switch (metricType) {
+      case 'neural':
+        return colors.gradients.currentNeuroState.start;
+      case 'brain':
+        return colors.gradients.neuroplasticity.start;
+      case 'sleep':
+        return colors.gradients.sleepConsolidation.start;
+      default:
+        return colors.gradients.neuroplasticity.start;
+    }
+  };
+
   const config = getMetricConfig();
-  
-  // Provide safe fallback values
-  const gradientColor = config.gradient?.[0] || colors.gradients.neuroplasticity.start;
-  const gradientColor2 = config.gradient?.[1] || colors.gradients.neuroplasticity.end;
+  const gradientColor = getGradientColor();
 
   const getScoreLabel = (score: number) => {
     if (score >= 85) return 'Excellent';
@@ -95,16 +81,25 @@ export default function MetricDetailModal({
       transparent={true}
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
-          {/* Header with gradient background */}
-          <View style={[styles.header, { backgroundColor: gradientColor + '20' }]}>
-            <View style={styles.headerContent}>
-              <Text style={styles.headerTitle}>{config.title}</Text>
-              <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                <Ionicons name="close" size={28} color={colors.text.secondary} />
-              </TouchableOpacity>
-            </View>
+      <TouchableOpacity 
+        style={styles.overlay} 
+        activeOpacity={1}
+        onPress={onClose}
+      >
+        <TouchableOpacity 
+          style={styles.modalContainer} 
+          activeOpacity={1}
+          onPress={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <View style={[styles.header, { backgroundColor: gradientColor + '15' }]}>
+            <Text style={styles.headerTitle}>{config.title}</Text>
+            <TouchableOpacity 
+              onPress={onClose} 
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Ionicons name="close-circle" size={32} color={colors.text.secondary} />
+            </TouchableOpacity>
           </View>
 
           <ScrollView 
@@ -112,91 +107,105 @@ export default function MetricDetailModal({
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {/* Big Score Display */}
-            <View style={styles.scoreDisplay}>
+            {/* Big Score */}
+            <View style={styles.scoreSection}>
               <View style={[styles.scoreCircle, { borderColor: gradientColor }]}>
                 <Text style={styles.scoreValue}>{Math.round(scoreValue)}</Text>
               </View>
-              <Text style={[styles.scoreLabel, { color: gradientColor }]}>
+              <Text style={[styles.scoreStatus, { color: gradientColor }]}>
                 {getScoreLabel(scoreValue)}
               </Text>
             </View>
 
-            {/* What This Means Section */}
+            {/* Description */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Ionicons name="information-circle" size={20} color={gradientColor} />
+                <Ionicons name="information-circle" size={22} color={gradientColor} />
                 <Text style={styles.sectionTitle}>WHAT THIS MEANS</Text>
               </View>
-              <Text style={styles.descriptionText}>{config.description}</Text>
+              <Text style={styles.bodyText}>{config.description}</Text>
             </View>
 
-            {/* Key Points */}
+            {/* Bullet Points */}
             <View style={styles.section}>
-              {config.longDescription.split('\n').filter(line => line.startsWith('•')).map((point, idx) => (
-                <View key={idx} style={styles.bulletPoint}>
-                  <Text style={styles.bullet}>•</Text>
-                  <Text style={styles.bulletText}>{point.replace('• ', '')}</Text>
-                </View>
-              ))}
+              <Text style={styles.subHeader}>Perfect for:</Text>
+              <View style={styles.bulletRow}>
+                <View style={[styles.bulletDot, { backgroundColor: gradientColor }]} />
+                <Text style={styles.bulletText}>Deep work that demands focus</Text>
+              </View>
+              <View style={styles.bulletRow}>
+                <View style={[styles.bulletDot, { backgroundColor: gradientColor }]} />
+                <Text style={styles.bulletText}>Complex problem-solving</Text>
+              </View>
+              <View style={styles.bulletRow}>
+                <View style={[styles.bulletDot, { backgroundColor: gradientColor }]} />
+                <Text style={styles.bulletText}>Creative breakthroughs</Text>
+              </View>
+              <View style={styles.bulletRow}>
+                <View style={[styles.bulletDot, { backgroundColor: gradientColor }]} />
+                <Text style={styles.bulletText}>Strategic thinking</Text>
+              </View>
             </View>
 
-            {/* Metrics Display for Sleep */}
-            {metricType === 'sleep' && supportingMetrics && (
+            {/* Sleep Metrics */}
+            {metricType === 'sleep' && supportingMetrics?.sleep_score && (
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
-                  <Ionicons name="analytics" size={20} color={gradientColor} />
+                  <Ionicons name="moon" size={22} color={gradientColor} />
                   <Text style={styles.sectionTitle}>YOUR METRICS</Text>
                 </View>
-                <View style={styles.metricsGrid}>
+                <View style={styles.metricsCard}>
                   <View style={styles.metricRow}>
                     <Text style={styles.metricLabel}>Sleep Score</Text>
-                    <Text style={styles.metricValue}>{supportingMetrics.sleep_score?.value || 'N/A'}</Text>
+                    <Text style={styles.metricValue}>{supportingMetrics.sleep_score.value}</Text>
                   </View>
+                  <View style={styles.divider} />
                   <View style={styles.metricRow}>
                     <Text style={styles.metricLabel}>Formula Version</Text>
-                    <Text style={styles.metricValue}>{supportingMetrics.sleep_score?.version || 'N/A'}</Text>
+                    <Text style={styles.metricValue}>
+                      {supportingMetrics.sleep_score.version.replace('_', ' ')}
+                    </Text>
                   </View>
                 </View>
               </View>
             )}
 
-            {/* Collapsible Science Section */}
+            {/* Science Section */}
             <TouchableOpacity 
               style={styles.section}
               onPress={() => setScienceExpanded(!scienceExpanded)}
               activeOpacity={0.7}
             >
-              <View style={styles.sectionHeader}>
-                <Ionicons name="flask" size={20} color={gradientColor} />
-                <Text style={styles.sectionTitle}>THE SCIENCE</Text>
+              <View style={styles.scienceHeader}>
+                <View style={styles.scienceHeaderLeft}>
+                  <Ionicons name="flask" size={22} color={gradientColor} />
+                  <Text style={styles.sectionTitle}>THE SCIENCE</Text>
+                </View>
                 <Ionicons 
                   name={scienceExpanded ? "chevron-up" : "chevron-down"} 
                   size={20} 
-                  color={colors.text.secondary} 
-                  style={styles.chevron}
+                  color={colors.text.secondary}
                 />
               </View>
               {scienceExpanded && (
-                <View style={styles.scienceContent}>
+                <View style={styles.scienceBox}>
                   <Text style={styles.scienceText}>{config.science}</Text>
                 </View>
               )}
             </TouchableOpacity>
 
-            {/* CTA Button */}
+            {/* CTA */}
             <TouchableOpacity 
               style={[styles.ctaButton, { backgroundColor: gradientColor }]}
               onPress={onClose}
-              activeOpacity={0.8}
             >
-              <Text style={styles.ctaButtonText}>Got It</Text>
+              <Text style={styles.ctaText}>Got It</Text>
             </TouchableOpacity>
 
             <View style={{ height: 40 }} />
           </ScrollView>
-        </View>
-      </View>
+        </TouchableOpacity>
+      </TouchableOpacity>
     </Modal>
   );
 }
@@ -211,20 +220,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background.secondary,
     borderTopLeftRadius: borderRadius.xl,
     borderTopRightRadius: borderRadius.xl,
-    maxHeight: '90%',
-    overflow: 'hidden',
+    maxHeight: SCREEN_HEIGHT * 0.85,
+    minHeight: SCREEN_HEIGHT * 0.5,
   },
   header: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(229, 231, 235, 0.3)',
-  },
-  headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(229, 231, 235, 0.3)',
   },
   headerTitle: {
     fontSize: typography.sizes.h2,
@@ -236,12 +242,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.xl,
     paddingTop: spacing.xl,
+    paddingBottom: spacing.xxl,
   },
-  scoreDisplay: {
+  scoreSection: {
     alignItems: 'center',
-    marginBottom: spacing.xl,
+    marginBottom: spacing.xxl,
   },
   scoreCircle: {
     width: 120,
@@ -254,12 +261,12 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   scoreValue: {
-    fontSize: 48,
-    fontWeight: '700',
+    fontSize: 52,
+    fontWeight: '800',
     color: colors.text.primary,
-    letterSpacing: -1,
+    letterSpacing: -1.5,
   },
-  scoreLabel: {
+  scoreStatus: {
     fontSize: typography.sizes.h3,
     fontWeight: typography.weights.bold,
   },
@@ -276,28 +283,31 @@ const styles = StyleSheet.create({
     fontWeight: typography.weights.bold,
     color: colors.text.primary,
     marginLeft: spacing.sm,
-    letterSpacing: 0.5,
-    flex: 1,
+    letterSpacing: 1,
   },
-  chevron: {
-    marginLeft: 'auto',
+  subHeader: {
+    fontSize: typography.sizes.body,
+    fontWeight: typography.weights.bold,
+    color: colors.text.primary,
+    marginBottom: spacing.md,
   },
-  descriptionText: {
+  bodyText: {
     fontSize: typography.sizes.body,
     lineHeight: 24,
     color: colors.text.primary,
     fontWeight: typography.weights.medium,
   },
-  bulletPoint: {
+  bulletRow: {
     flexDirection: 'row',
-    marginBottom: spacing.sm,
-    paddingLeft: spacing.sm,
+    alignItems: 'flex-start',
+    marginBottom: spacing.md,
   },
-  bullet: {
-    fontSize: typography.sizes.body,
-    color: colors.text.primary,
-    marginRight: spacing.sm,
-    fontWeight: typography.weights.bold,
+  bulletDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginTop: 8,
+    marginRight: spacing.md,
   },
   bulletText: {
     flex: 1,
@@ -305,16 +315,16 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: colors.text.primary,
   },
-  metricsGrid: {
-    gap: spacing.md,
+  metricsCard: {
+    backgroundColor: colors.background.primary,
+    borderRadius: borderRadius.md,
+    padding: spacing.lg,
   },
   metricRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(229, 231, 235, 0.2)',
   },
   metricLabel: {
     fontSize: typography.sizes.body,
@@ -326,26 +336,44 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     fontWeight: typography.weights.bold,
   },
-  scienceContent: {
+  divider: {
+    height: 1,
+    backgroundColor: 'rgba(229, 231, 235, 0.3)',
+    marginVertical: spacing.sm,
+  },
+  scienceHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  scienceHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  scienceBox: {
     marginTop: spacing.md,
-    padding: spacing.md,
+    padding: spacing.lg,
     backgroundColor: colors.background.primary,
     borderRadius: borderRadius.md,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.gradients.neuroplasticity.start,
   },
   scienceText: {
     fontSize: typography.sizes.bodySmall,
-    lineHeight: 20,
+    lineHeight: 22,
     color: colors.text.secondary,
   },
   ctaButton: {
     paddingVertical: spacing.lg,
     borderRadius: borderRadius.md,
     alignItems: 'center',
-    marginTop: spacing.md,
+    marginTop: spacing.lg,
   },
-  ctaButtonText: {
+  ctaText: {
     fontSize: typography.sizes.body,
     fontWeight: typography.weights.bold,
     color: colors.white,
+    letterSpacing: 0.5,
   },
 });
