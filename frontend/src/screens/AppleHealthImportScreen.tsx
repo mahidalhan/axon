@@ -47,7 +47,7 @@ export default function AppleHealthImportScreen({ navigation }: any) {
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name=\"chevron-back\" size={28} color=\"#1F2937\" />
+          <Ionicons name="chevron-back" size={28} color="#1F2937" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Sleep</Text>
         <View style={{ width: 28 }} />
