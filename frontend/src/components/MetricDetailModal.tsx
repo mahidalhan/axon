@@ -198,8 +198,8 @@ export default function MetricDetailModal({
 
             <View style={{ height: 60 }} />
           </ScrollView>
-        </SafeAreaView>
-      </TouchableOpacity>
+        </View>
+      </View>
     </Modal>
   );
 }
