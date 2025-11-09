@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingHorizontal: spacing.xs,
   },
   ringContainer: {
     position: 'relative',
