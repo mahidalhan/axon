@@ -25,11 +25,18 @@ export default function SessionScreen() {
 
   const loadData = async () => {
     try {
+      // Use participant 5 (has higher peak around 65)
       const [session, context, timeline] = await Promise.all([
-        api.analyzeSession(0, 1.0),
-        api.getSessionContext(0),
-        api.getDailyTimeline(0),
+        api.analyzeSession(5, 1.0),
+        api.getSessionContext(5),
+        api.getDailyTimeline(5),
       ]);
+
+      console.log('[SessionScreen] Timeline data:', {
+        baselineLength: timeline?.circadian_baseline?.length,
+        sessionData: timeline?.measured_session,
+        gammaPeaks: timeline?.gamma_peaks?.length,
+      });
 
       setSessionData(session);
       setContextData(context);
