@@ -10,7 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function SettingsScreen() {
+export default function SettingsScreen({ navigation }: any) {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   return (
