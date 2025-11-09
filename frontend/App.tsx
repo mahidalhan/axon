@@ -34,17 +34,26 @@ export default function App() {
                 iconName = focused ? 'settings' : 'settings-outline';
               }
 
-              return <Ionicons name={iconName} size={size} color={color} />;
+              return <Ionicons name={iconName} size={28} color={color} />;
             },
             tabBarActiveTintColor: '#4F46E5',
             tabBarInactiveTintColor: '#9CA3AF',
+            tabBarLabelStyle: {
+              fontSize: 12,
+              fontWeight: '600',
+              marginTop: 4,
+            },
             tabBarStyle: {
               backgroundColor: '#FFFFFF',
               borderTopWidth: 1,
               borderTopColor: '#E5E7EB',
-              height: 60,
-              paddingBottom: 8,
-              paddingTop: 8,
+              height: 88,
+              paddingBottom: 20,
+              paddingTop: 12,
+              paddingHorizontal: 8,
+            },
+            tabBarItemStyle: {
+              paddingVertical: 8,
             },
             headerStyle: {
               backgroundColor: '#FFFFFF',
