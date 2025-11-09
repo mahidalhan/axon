@@ -230,13 +230,27 @@ export default function EducationScreen() {
 
         {/* Research Foundation */}
         <View style={styles.referenceCard}>
-          <Ionicons name="library" size={24} color={colors.text.secondary} />
-          <Text style={styles.referenceTitle}>Scientific Foundation</Text>
+          <View style={styles.referenceHeader}>
+            <Ionicons name="library" size={28} color={colors.gradients.neuroplasticity.start} />
+            <Text style={styles.referenceTitle}>Scientific Foundation</Text>
+          </View>
           <Text style={styles.referenceText}>
-            AXON is based on peer-reviewed research from the Huberman Lab, 
-            Matthew Walker's sleep science, and 2024-2025 EEG studies on 
-            neuroplasticity and cognitive performance.
+            AXON is based on peer-reviewed research from:
           </Text>
+          <View style={styles.referenceList}>
+            <View style={styles.referenceItem}>
+              <Text style={styles.referenceBullet}>•</Text>
+              <Text style={styles.referenceItemText}>Huberman Lab neuroplasticity protocols</Text>
+            </View>
+            <View style={styles.referenceItem}>
+              <Text style={styles.referenceBullet}>•</Text>
+              <Text style={styles.referenceItemText}>Matthew Walker's sleep science (2017)</Text>
+            </View>
+            <View style={styles.referenceItem}>
+              <Text style={styles.referenceBullet}>•</Text>
+              <Text style={styles.referenceItemText}>2024-2025 EEG studies on cognitive performance</Text>
+            </View>
+          </View>
         </View>
 
         <View style={{ height: 40 }} />
