@@ -387,4 +387,31 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     lineHeight: 18,
   },
+  formulaBox: {
+    backgroundColor: '#F3F4F6',
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 12,
+    gap: 4,
+  },
+  formulaText: {
+    fontSize: 13,
+    color: '#374151',
+    fontWeight: '500',
+  },
+  disclaimerText: {
+    fontSize: 13,
+    color: '#6B7280',
+    lineHeight: 20,
+    marginTop: 12,
+  },
+  componentList: {
+    marginVertical: 12,
+    gap: 6,
+  },
+  componentItem: {
+    fontSize: 14,
+    color: '#374151',
+    lineHeight: 20,
+  },
 });
