@@ -199,9 +199,9 @@ export default function MetricDetailModal({
               <Text style={styles.ctaText}>Got It</Text>
             </TouchableOpacity>
 
-            <View style={{ height: 40 }} />
+            <View style={{ height: 60 }} />
           </ScrollView>
-        </TouchableOpacity>
+        </SafeAreaView>
       </TouchableOpacity>
     </Modal>
   );
