@@ -46,8 +46,53 @@ export const api = {
   analyzeSession: async (participantId: number = 0, maxHours: number = 1.0) => {
     return withFallback(
       async () => {
-        const response = await apiClient.post('/session/analyze', {
+        const response = await apiClient.post('/api/session/analyze', {
           participant_id: participantId,
+          max_hours: maxHours,
+        });
+        return response.data;
+      },
+      mockData.sessionAnalysis
+    );
+  },
+
+  getSessionContext: async (participantId: number = 0) => {
+    return withFallback(
+      async () => {
+        const response = await apiClient.get(`/api/session/context?participant_id=${participantId}`);
+        return response.data;
+      },
+      {
+        participant_id: participantId,
+        session_time: {
+          start: "2025-11-09T09:15:00",
+          end: "2025-11-09T09:55:00",
+          duration_minutes: 40
+        },
+        context: {
+          post_exercise_hours: 2.0,
+          workout_type: "Running",
+          circadian_phase: "morning_peak",
+          optimal_window: true
+        },
+        performance: {
+          peak_moments: 3,
+          flow_minutes: 24.0,
+          peak_lri: 84.3
+        }
+      }
+    );
+  },
+
+  getDailyTimeline: async (participantId: number = 0) => {
+    return withFallback(
+      async () => {
+        const response = await apiClient.get(`/api/session/daily-timeline?participant_id=${participantId}`);
+        return response.data;
+      },
+      mockData.dailyTimeline || {}
+    );
+  },
           max_hours: maxHours,
         });
         return response.data;
