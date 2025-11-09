@@ -223,12 +223,15 @@ async def get_optimal_window_status(participant_id: int = 0):
             latest_optimal = optimal_rows.iloc[-1]
             quality = "excellent" if latest_optimal['lri'] >= 85 else "very_good" if latest_optimal['lri'] >= 75 else "good"
             
+            window_start = latest_optimal['window_start']
+            window_end = latest_optimal['window_end']
+            
             return {
                 "has_window": True,
-                "window_start": latest_optimal['window_start'],
-                "window_end": latest_optimal['window_end'],
+                "window_start": window_start.isoformat() if hasattr(window_start, 'isoformat') else str(window_start),
+                "window_end": window_end.isoformat() if hasattr(window_end, 'isoformat') else str(window_end),
                 "quality": quality,
-                "current_lri": float(latest_optimal['lri'])
+                "current_lri": float(latest_optimal['lri']) if not pd.isna(latest_optimal['lri']) else 0.0
             }
         
         return {
