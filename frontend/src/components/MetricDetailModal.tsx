@@ -31,6 +31,11 @@ export default function MetricDetailModal({
 }: MetricDetailModalProps) {
   const [scienceExpanded, setScienceExpanded] = useState(false);
 
+  // Safeguard: Don't render if modal not visible or invalid metric type
+  if (!visible || !metricType) {
+    return null;
+  }
+
   const getMetricConfig = () => {
     switch (metricType) {
       case 'neural':
