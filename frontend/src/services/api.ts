@@ -5,8 +5,15 @@ import { mockData } from './mockData';
 
 // Backend URL configuration
 const getBackendURL = () => {
-  const tunnelHost = Constants.expoConfig?.hostUri;
+  // Use environment variable first (for production/preview)
+  const envBackendURL = process.env.EXPO_PUBLIC_BACKEND_URL;
+  if (envBackendURL) {
+    console.log('[API] Using backend URL from env:', envBackendURL);
+    return envBackendURL;
+  }
   
+  // Fallback to tunnel hostname for development
+  const tunnelHost = Constants.expoConfig?.hostUri;
   if (tunnelHost) {
     console.log('[API] Using tunnel:', `https://${tunnelHost}`);
     return `https://${tunnelHost}`;
@@ -16,7 +23,7 @@ const getBackendURL = () => {
 };
 
 const BACKEND_URL = getBackendURL();
-const USE_MOCK_DATA = false; // Using real backend data now
+const USE_MOCK_DATA = false; // Using real backend data
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
