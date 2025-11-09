@@ -14,7 +14,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { api } from '../services/api';
 import CircularProgress from '../components/CircularProgress';
 import Card from '../components/Card';
+import ScoreRing from '../components/ScoreRing';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '../constants/designTokens';
+import { appCopy } from '../constants/copy';
 
 const { width } = Dimensions.get('window');
 
