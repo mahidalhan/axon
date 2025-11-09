@@ -109,10 +109,53 @@ export default function MetricDetailModal({
             showsVerticalScrollIndicator={true}
             bounces={true}
           >
-            {/* Big Score */}
+            {/* Big Score with Progress Circle */}
             <View style={styles.scoreSection}>
-              <View style={[styles.scoreCircle, { borderColor: gradientColor }]}>
-                <Text style={styles.scoreValue}>{Math.round(scoreValue)}</Text>
+              <View style={styles.scoreCircleContainer}>
+                <Svg width={circleSize} height={circleSize}>
+                  <Defs>
+                    <LinearGradient
+                      id="modal-gradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="100%"
+                    >
+                      <Stop offset="0%" stopColor={gradientColor} stopOpacity="1" />
+                      <Stop offset="100%" stopColor={gradientColor} stopOpacity="0.6" />
+                    </LinearGradient>
+                  </Defs>
+                  
+                  {/* Background circle */}
+                  <Circle
+                    cx={circleSize / 2}
+                    cy={circleSize / 2}
+                    r={radius}
+                    stroke="rgba(229, 231, 235, 0.3)"
+                    strokeWidth={strokeWidth}
+                    fill="none"
+                  />
+                  
+                  {/* Progress circle */}
+                  <G rotation="-90" origin={`${circleSize / 2}, ${circleSize / 2}`}>
+                    <Circle
+                      cx={circleSize / 2}
+                      cy={circleSize / 2}
+                      r={radius}
+                      stroke="url(#modal-gradient)"
+                      strokeWidth={strokeWidth}
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeDasharray={circumference}
+                      strokeDashoffset={strokeDashoffset}
+                    />
+                  </G>
+                </Svg>
+                
+                {/* Center value */}
+                <View style={styles.scoreValueContainer}>
+                  <Text style={styles.scoreValue}>{Math.round(scoreValue)}</Text>
+                </View>
               </View>
               <Text style={[styles.scoreStatus, { color: gradientColor }]}>
                 {getScoreLabel(scoreValue)}
