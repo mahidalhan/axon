@@ -114,32 +114,116 @@ Where:
 - 2-4h post-exercise: 1.1x
 - 4+h post-exercise: 1.0x
 
-### Sleep Consolidation Index (Overnight Analysis)
+### Session Analysis: Optimal Window Detection
+
+**Goal:** Identify specific minutes within a session when brain is in peak learning state.
+
+**Method:**
+1. Calculate LRI every 30 seconds during 40-min session
+2. Find consecutive periods where LRI >= 70 (optimal threshold)
+3. Classify window quality based on average LRI
+4. Match to post-exercise timing (1-4h window per Huberman)
+
+**Output:**
+- Peak LRI score + timestamp
+- Total minutes in optimal state
+- List of optimal time windows
+- Actionable recommendation: "Schedule deep work at 9:15 AM daily"
+
+**Scientific Basis:**
+Per Huberman: "organizing your bouts of learning... to come in the two to three hours, maybe even four hours, but certainly in the 1 to two hours after you do some sort of exercise"
+
+### Sleep Score (Research-Validated Formula)
+
+**See `/docs/algorithm/SLEEP-METRICS-SPECIFICATION.md` for complete details.**
+
+**Version A: HRV-Enabled (Preferred)**
+```
+Sleep_Score = (
+    0.30 × Duration_Score +          # 7-9 hours optimal (Walker 2017)
+    0.25 × Efficiency_Score +        # >85% optimal (Ohayon 2017)
+    0.10 × HRV_Sleep_Score +         # Parasympathetic recovery (Frontiers 2025)
+    0.10 × Consistency_Score +       # <30 min bedtime variance (Phillips 2017)
+    0.10 × WASO_Score +              # <30 min awake during sleep (Scullin 2019)
+    0.05 × SOL_Score +               # 10-20 min optimal (Ohayon 2000)
+    0.05 × Respiratory_Rate_Score +  # 12-16 bpm (Kryger 2011)
+    0.05 × Deep_Sleep_Percent       # >15% of total sleep (Stickgold 2005)
+)
+```
+
+**Version B: Base (No HRV Device)**
+```
+Sleep_Score = (
+    0.35 × Duration_Score +          # Increased weight when no HRV
+    0.30 × Efficiency_Score +
+    0.15 × Consistency_Score +       # Redistributed from HRV weight
+    0.10 × WASO_Score +
+    0.05 × SOL_Score +
+    0.05 × Respiratory_Rate_Score
+)
+```
+
+**Component Definitions:**
+
+1. **Duration Score (30-35%)** - Scientific Basis: Walker (2017)
+   - Optimal: 7-9 hours
+   - Why: Sleep duration directly impacts memory consolidation
+   - Each 2-hour reduction = 60-80% reduction in REM sleep
+
+2. **Efficiency Score (25-30%)** - Scientific Basis: Ohayon et al. (2017)
+   - Formula: (Total Sleep Time / Time in Bed) × 100
+   - Optimal: ≥85%
+   - Why: Reflects sleep quality, fragmentation disrupts consolidation
+
+3. **HRV During Sleep (10%)** - Scientific Basis: Frontiers (2025)
+   - RMSSD during deep sleep stages
+   - Explains 70% of variance in overnight memory improvement
+   - Why: Parasympathetic dominance supports synaptic plasticity
+   - **Requires:** Apple Watch or Oura Ring
+
+4. **Sleep Consistency (10-15%)** - Scientific Basis: Phillips et al. (2017)
+   - Bedtime variability (SD over 7 days)
+   - Accounts for 25% of academic performance variance
+   - Optimal: <30 min SD
+   - Why: Circadian rhythm stability enhances consolidation
+
+5. **WASO - Wake After Sleep Onset (10%)** - Scientific Basis: Scullin (2019)
+   - Total wake time during sleep period
+   - Optimal: <30 min
+   - Why: Fragmentation interrupts memory reactivation
+
+6. **Sleep Onset Latency (5%)** - Scientific Basis: Ohayon et al. (2000)
+   - Time to fall asleep
+   - Optimal: 10-20 min (SOL <5 min = sleep deprivation)
+   - Why: Indicates circadian alignment
+
+7. **Respiratory Rate (5%)** - Scientific Basis: Kryger et al. (2011)
+   - Breaths per minute during sleep
+   - Optimal: 12-16 bpm
+   - Why: Detects sleep apnea risk (disrupts consolidation)
+
+8. **Deep Sleep Percent (5%)** - Scientific Basis: Stickgold (2005)
+   - % of total sleep in N3 stage
+   - Optimal: >15%
+   - Why: Slow-wave activity drives memory replay
+
+### Session Quality Score
 
 ```
-Sleep_Consolidation_Score (0-100) = weighted_sum(SWS, Spindles, REM, Efficiency)
+Session_Quality_Score (0-100) = single_session_analysis
 
 Where:
-  SWS_Quality = 0.4 × slow_wave_density (delta power in N3)
-  Spindle_Count = 0.3 × sleep_spindle_density (12-15 Hz bursts)
-  REM_Percentage = 0.2 × (REM_minutes / total_sleep_time)
-  Sleep_Efficiency = 0.1 × (sleep_time / time_in_bed)
+  Session_Quality = 0.50 × avg_LRI_during_session +
+                   0.30 × optimal_window_utilization +
+                   0.20 × sleep_context_score
+
+Time Scale: Per Session (40 min snapshot analysis)
 ```
 
-### Daily Neuroplasticity Opportunity Score (DNOS)
-
-```
-DNOS (0-100) = integration_across_day
-
-Where:
-  DNOS = 0.50 × avg_LRI_during_active_learning +
-         0.30 × optimal_window_utilization_rate +
-         0.20 × previous_night_sleep_consolidation
-```
-
-**Optimal Window Utilization Rate:**
-- Percentage of post-exercise peak hours (1-4h window) spent in focused learning activities
-- Tracked via manual logging or app integration
+**Optimal Window Utilization:**
+- Binary indicator: Was this session during post-exercise peak window (1-4h)?
+- Detected via Apple Health workout data
+- Sleep context score: Previous night's sleep quality from Apple Health
 
 ---
 
@@ -151,7 +235,7 @@ Where:
 - **Source:** Texas State University Cognitive Electrophysiology Lab
 - **Link:** https://dataverse.tdl.org/dataverse/txstatecogelectro
 - **Contents:** 22 subjects, 72 channels, 8 min rest (4 min eyes-closed, 4 min eyes-open)
-- **Use case:** Train individual baseline models for alpha/beta/theta power norms
+- **Use case:** Train population baseline models for alpha/beta/theta power norms
 
 **2. Working Memory Task EEG (Focus State Classifier)**
 - **Source:** EEGLearn (Bashivan et al., 2016)
@@ -164,6 +248,56 @@ Where:
 - **Link:** https://physionet.org/content/sleep-edfx/1.0.0/
 - **Contents:** Full-night polysomnography with EEG, sleep stage annotations
 - **Use case:** Extract slow-wave density, spindle counts, REM characteristics
+
+**4. Apple Health Export (Contextual Data)**
+- **Source:** User's iPhone export.xml file
+- **Contents:**
+  - Workouts: High-intensity exercise timing (Running, HIIT, Cycling, Strength)
+  - Sleep: Duration, sleep stages, efficiency metrics
+- **Use case:**
+  - Detect post-exercise optimal windows (1-4h)
+  - Calculate sleep quality score for session context
+  - Enable actionable recommendations based on workout timing
+
+### Apple Health Integration
+
+**Data Sources:**
+1. **Workouts:** Extract high-intensity workouts (Running, HIIT, Cycling, Strength)
+   - Used to detect post-exercise optimal windows (1-4h)
+2. **Sleep:** Calculate enhanced sleep score with 8 metrics
+   - Used as context for session quality and consolidation prediction
+
+**Sleep Data Requirements:**
+
+**Required Fields (All Users):**
+- Sleep start/end timestamps
+- Sleep stage samples (Core, Deep, REM, Awake, In Bed)
+- Time in bed duration
+
+**Optional Fields (Enhanced Scoring):**
+- **HRV Samples:** RMSSD or SDNN during sleep window (enables HRV-enhanced formula)
+- **Respiratory Rate:** Breaths per minute during sleep
+- **7-Day History:** Previous 6 nights for consistency calculation
+
+**Derived Metrics:**
+- **Duration:** Total sleep time (hours)
+- **Efficiency:** (Total Sleep Time / Time in Bed) × 100
+- **WASO:** Wake After Sleep Onset (awake minutes during sleep period)
+- **SOL:** Sleep Onset Latency (time to fall asleep)
+- **Deep Sleep %:** Deep sleep minutes / Total sleep time
+- **Consistency:** Standard deviation of bedtimes over 7 days
+
+**Fallback Behavior:**
+- No HRV device → Use base formula (6 components)
+- Missing sleep stages → Estimate from movement data
+- <7 days history → Use available nights, flag as "insufficient data"
+- Missing WASO/SOL → Estimate from stage transitions or use neutral score
+
+**Why It Matters:**
+- Workout timing determines when LRI boost occurs
+- Sleep quality affects baseline cognitive state
+- Enhanced sleep metrics enable accurate consolidation prediction
+- Enables actionable recommendations: "Your peak is 2h after morning run"
 
 ### Data Preprocessing Pipeline
 
@@ -188,8 +322,9 @@ gamma_power = psd_integral(30, 50)
 - Baseline drift correction (high-pass filter >0.5 Hz)
 
 **Step 3: Normalization**
-- Z-score against personal 28-day rolling baseline
+- Normalize against population norms from baseline datasets
 - Per-band normalization (each frequency band scaled independently)
+- **Note:** Personal z-score baselines require 28 days of longitudinal data (not available in MVP)
 
 **Step 4: Feature Engineering**
 - Theta/Beta ratio
@@ -224,16 +359,16 @@ gamma_power = psd_integral(30, 50)
    - Arousal Zone: Optimal (green indicator)
 4. Haptic feedback if LRI drops below 60 → "Take a 5-min break"
 
-**Evening Summary:**
-- "Today's Neuroplasticity Score: 78/100"
-- "You captured 2.5 hours in optimal state (87th percentile)"
-- "Post-exercise window utilization: 65% (improved from 40% last week)"
+**Session Summary (Post 40-min snapshot):**
+- "Session Quality Score: 78/100"
+- "Peak LRI: 86 at 9:47 AM"
+- "Total minutes in optimal state: 24/40 (60%)"
+- "Optimal windows detected: 9:15-9:30 AM, 9:42-10:00 AM"
+- "Actionable insight: Schedule deep work at 9:15 AM daily"
 
-**Next Morning (Sleep Consolidation Report):**
-- "Sleep Consolidation: 81/100"
-- "Slow-wave sleep: 22% of night (excellent)"
-- "Sleep spindles: 145 detected (above average)"
-- "Estimated learning retention: High"
+**Context from Apple Health:**
+- "This session was 2h after your morning run (optimal window)"
+- "Last night's sleep: 7.2 hours, 85% efficiency"
 
 ### Mobile App UI Components
 
@@ -242,8 +377,8 @@ gamma_power = psd_integral(30, 50)
   - 0-40: Red (low readiness)
   - 40-70: Yellow (moderate readiness)
   - 70-100: Green (optimal readiness)
-- **Post-exercise countdown:** "2h 15m remaining in peak window"
-- **Today's DNOS:** 78/100 with 7-day sparkline trend
+- **Post-exercise countdown:** "2h 15m remaining in peak window" (from Apple Health workout)
+- **Session Quality Score:** 78/100 with session history list
 
 **Focus Mode (Live Monitoring):**
 - **Real-time meters:**
@@ -253,21 +388,21 @@ gamma_power = psd_integral(30, 50)
 - **Session timer:** Duration in optimal state
 - **Haptic alerts:** Vibrate when dropping out of zone
 
-**Sleep Tab:**
-- **Overnight consolidation score:** 81/100
-- **Sleep architecture:** Hypnogram showing N1/N2/N3/REM stages
-- **Key metrics:**
-  - Slow-wave density (minutes in N3)
-  - Spindle count
-  - REM percentage
-- **Insight:** "Your deep sleep increased 15% compared to 7-day average"
+**Sleep Tab (Apple Health Data):**
+- **Last night's sleep score:** 81/100
+- **Key metrics from Apple Health:**
+  - Sleep duration: 7.2 hours
+  - Sleep efficiency: 85%
+  - Time in bed: 8.5 hours
+- **Insight:** "Good sleep detected - baseline cognitive state should be strong"
 
 **Journal Tab:**
-- **Daily log:** Manual entry for learning activities
-- **Top drivers:** "Why your score changed today"
-  - "Morning exercise → 1.5x multiplier activated"
-  - "Low alpha during study → high engagement detected"
-  - "Poor sleep last night → reduced consolidation"
+- **Session history:** List of past 40-min sessions with timestamps
+- **Supplement logging:** Manual entry (UI only, not factored into algorithm)
+- **Top insights:** "Why this session scored high/low"
+  - "Session 2h after morning run → 1.3x multiplier"
+  - "Low alpha during session → high engagement detected"
+  - "Good sleep last night (7.2h) → strong baseline"
 
 ---
 
@@ -319,14 +454,15 @@ gamma_power = psd_integral(30, 50)
 - `GET /api/state/focus` → Get current focus score
 
 **Historical Endpoints:**
-- `GET /api/scores/daily` → Get DNOS for specified date
-- `GET /api/scores/trend?days=7` → Get 7-day trend data
-- `GET /api/sleep/consolidation?date=YYYY-MM-DD` → Get sleep report
+- `GET /api/scores/session/:id` → Get Session Quality Score for specific session
+- `GET /api/scores/history?limit=10` → Get recent session history
+- `GET /api/sleep/apple-health` → Get sleep data from Apple Health export
 
 **Event Endpoints:**
-- `POST /api/events/exercise` → Log exercise completion
-- `POST /api/events/learning_session` → Log learning activity
-- `POST /api/calibration/baseline` → Store morning baseline
+- `POST /api/events/session` → Log 40-min session completion
+- `POST /api/events/supplement` → Log supplement intake (UI only)
+- `POST /api/apple-health/import` → Import Apple Health export.xml
+- `POST /api/calibration/baseline` → Store session baseline
 
 ---
 
@@ -336,19 +472,26 @@ gamma_power = psd_integral(30, 50)
 ✅ Real-time band power extraction from TP9/TP10
 ✅ Alertness + Focus score calculation
 ✅ Learning Readiness Index algorithm
-✅ Post-exercise window tracker (manual exercise logging)
-✅ Sleep consolidation scorer (offline analysis)
+✅ Session-level optimal window detection (40-min snapshots)
+✅ Post-exercise window tracking via Apple Health workouts
+✅ Sleep score calculation from Apple Health export.xml
+✅ Supplement logging (UI only, not factored into algorithm)
 ✅ Mobile app UI mockup (Figma + basic React Native screens)
-✅ 7-day demo data visualization
+✅ Session history visualization
 ✅ Algorithm validation using EEGLearn dataset
 
 ### Out of Scope (Post-Hackathon)
+❌ 28-day Brain Score (requires longitudinal data from same individual, only have 40-min snapshots)
+❌ Personalized z-score baselines (requires 28-day rolling baseline, using population norms instead)
+❌ Real-time Bluetooth streaming (using 40-min snapshot data)
 ❌ Actual hardware prototype (use Muse headband for demo)
-❌ Real-time Bluetooth streaming (use pre-recorded data)
 ❌ Cloud backend (local processing only)
 ❌ User authentication / multi-user support
 ❌ App store deployment
 ❌ Clinical validation studies
+
+### Note on Brain Score
+**Brain Score requires 28 days of longitudinal data from the same individual. Not available in MVP due to data constraints (only have 40-min snapshots).** Future versions will incorporate rolling baseline calculations once continuous user data becomes available.
 
 ---
 
@@ -361,38 +504,51 @@ gamma_power = psd_integral(30, 50)
 4. Generate synthetic 7-day user journey with realistic band power curves
 
 ### Phase 2: Pilot Testing (Post-Hackathon)
-1. N=10 users, 2 weeks of daily measurements
-2. Compare self-reported learning quality vs. LRI scores
-3. Measure correlation between post-exercise window usage and DNOS
-4. Validate sleep consolidation scores against Oura Ring data
+1. N=10 users, 2 weeks of session measurements
+2. Compare self-reported learning quality vs. Session Quality Scores
+3. Measure correlation between post-exercise window usage and peak LRI
+4. Validate sleep scores against Apple Health + Oura Ring data
 
 ### Phase 3: Clinical Validation (Future)
 1. Partner with neuroscience lab (e.g., Huberman Lab)
 2. N=100 users, 8 weeks, controlled learning tasks
 3. Compare neuroplasticity outcomes (skill acquisition rate) for high-LRI vs. low-LRI study sessions
-4. Publish peer-reviewed validation study
+4. Collect longitudinal data to enable 28-day Brain Score calculation
+5. Publish peer-reviewed validation study
 
 ---
 
 ## Success Criteria
 
 ### MVP (Hackathon Demo)
-- [ ] Algorithm processes real EEG data from datasets
+- [ ] Algorithm processes real EEG data from 40-min sessions
 - [ ] Generates Learning Readiness Index in <2 seconds
+- [ ] Detects optimal windows within session (LRI >= 70)
 - [ ] Mobile app mockup shows real-time LRI updates
-- [ ] Sleep consolidation analysis produces interpretable scores
-- [ ] 7-day demo data shows realistic variability and trends
+- [ ] Enhanced sleep score calculated from Apple Health export (8 metrics)
+- [ ] HRV-enabled and base formula support
+- [ ] Post-exercise window detection from Apple Health workouts
+- [ ] Session history visualization shows multiple snapshots
+
+### Sleep Algorithm Validation
+- [ ] Sleep score correlates with self-reported sleep quality (r > 0.7 target)
+- [ ] Consistency component detects irregular sleep patterns correctly
+- [ ] HRV-enabled formula outperforms base formula (validated on N=50 users)
+- [ ] WASO detection matches subjective awakenings within 20% error
+- [ ] All 8 metrics successfully extracted from Apple Health export
 
 ### Beta Launch (3 months post-hackathon)
 - [ ] Hardware prototype with behind-ear dry electrodes
-- [ ] 10 pilot users complete 2-week testing
+- [ ] 10 pilot users complete 2-week testing (multiple sessions)
 - [ ] 80%+ accuracy on high/low focus state classification
 - [ ] Users report 40%+ increase in optimal window utilization
+- [ ] Begin collecting 28-day longitudinal data for Brain Score baseline
 
 ### Product-Market Fit (12 months)
 - [ ] 1,000 active users
 - [ ] Average engagement: 5+ sessions/week
-- [ ] Demonstrated correlation (r > 0.6) between DNOS and self-reported learning outcomes
+- [ ] Demonstrated correlation (r > 0.6) between Session Quality Score and self-reported learning outcomes
+- [ ] 28-day Brain Score enabled with longitudinal user data
 - [ ] Revenue: $50k MRR from device sales + subscription
 
 ---
@@ -493,11 +649,34 @@ def detect_spindles(eeg_signal, fs=256):
 
 ## References
 
+### Neuroplasticity & EEG
 1. Huberman, A. (2024). "Vagus Nerve Stimulation & Neuroplasticity" - Huberman Lab Podcast
 2. Merzenich, M. et al. (2014). "Nucleus basalis stimulation enhances cortical plasticity" - Nature
 3. Bashivan, P. et al. (2016). "Learning Representations from EEG with Deep RNNs" - ICLR
-4. Walker, M. (2017). "Why We Sleep" - Sleep consolidation mechanisms
-5. Yerkes, R.M. & Dodson, J.D. (1908). "The relation of strength of stimulus to rapidity of habit-formation" - Optimal arousal theory
+4. Yerkes, R.M. & Dodson, J.D. (1908). "The relation of strength of stimulus to rapidity of habit-formation" - Optimal arousal theory
+
+### Sleep & Memory Consolidation
+5. Walker, M. (2017). "Why We Sleep: Unlocking the Power of Sleep and Dreams" - Scribner
+6. Stickgold, R. (2005). "Sleep-dependent memory consolidation" - Nature, 437(7063), 1272-1278
+7. Walker, M. & Stickgold, R. (2006). "Sleep, memory, and plasticity" - Annual Review of Psychology, 57, 139-166
+8. Tononi, G. & Cirelli, C. (2014). "Sleep and the price of plasticity" - Neuron, 81(1), 12-34
+
+### Sleep Quality Metrics
+9. Ohayon, M. et al. (2017). "National Sleep Foundation's sleep quality recommendations" - Sleep Health, 3(1), 6-19
+10. Ohayon, M. et al. (2000). "Meta-analysis of quantitative sleep parameters" - Sleep, 27(7), 1255-1273
+11. Scullin, M. (2019). "Sleep, memory, and aging" - Psychology and Aging, 34(1), 126-139
+12. Krystal, A. & Edinger, J. (2008). "Measuring sleep quality" - Sleep Medicine, 9(Suppl 1), S10-S17
+
+### Sleep Consistency & HRV
+13. Phillips, A. et al. (2017). "Irregular sleep/wake patterns and poorer academic performance" - Scientific Reports, 7(1), 3216
+14. Bei, B. et al. (2016). "Beyond the mean: Quantifying sleep heterogeneity" - Sleep Medicine Reviews, 28, 108-124
+15. Buchheit, M. & Gindre, C. (2006). "Cardiac parasympathetic regulation" - American Journal of Physiology, 291(1), H451-H458
+16. Stein, P. & Pu, Y. (2012). "Heart rate variability, sleep and sleep disorders" - Sleep Medicine Reviews, 16(1), 47-66
+17. Frontiers (2025). "Vagal HRV during REM reduces negative memory bias" - Frontiers in Neuroscience
+
+### Respiratory & Sleep Architecture
+18. Kryger, M. et al. (2011). "Principles and Practice of Sleep Medicine" (5th ed.) - Elsevier Saunders
+19. Nature Communications (2023). "Respiration modulates oscillatory neural network activity" - Nature Communications, 14(1), 4404
 
 ---
 

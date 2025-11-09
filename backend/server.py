@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 
 from models import User, LRIScore, SleepRecord, DNOSScore, BrainScore
 from processors.synthetic_generator import SyntheticJourneyGenerator
+from processors.real_data_processor import RealDataProcessor
 
 load_dotenv()
 
@@ -71,7 +72,8 @@ async def root():
         "message": "Brain Score API",
         "version": "1.0.0",
         "endpoints": {
-            "demo": "/api/demo/generate",
+            "demo_synthetic": "/api/demo/generate",
+            "demo_real": "/api/demo/generate-real",
             "lri": "/api/lri/current",
             "dnos": "/api/dnos/today",
             "brain_score": "/api/brain-score/current",
@@ -189,6 +191,137 @@ async def generate_demo_data():
         }
     
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/demo/generate-real")
+async def generate_real_demo_data(participant_id: Optional[int] = 0, max_hours: Optional[float] = 24.0):
+    """
+    Generate demo data from real Muse EEG participant.
+
+    Args:
+        participant_id: Participant ID (0-19)
+        max_hours: Maximum hours of data to process
+    """
+    try:
+        user = await get_demo_user()
+        user_id = user["_id"]
+
+        # Clear existing data
+        await db.lri_scores.delete_many({"user_id": user_id})
+        await db.sleep_records.delete_many({"user_id": user_id})
+        await db.dnos_scores.delete_many({"user_id": user_id})
+        await db.brain_scores.delete_many({"user_id": user_id})
+
+        # Process real data
+        processor = RealDataProcessor()
+        result = processor.process_participant_sample(
+            participant_id=participant_id,
+            max_hours=max_hours,
+            window_seconds=30
+        )
+
+        # Insert LRI samples
+        lri_docs = []
+        for sample in result['lri_samples']:
+            doc = LRIScore(
+                user_id=user_id,
+                timestamp=sample['timestamp'],
+                lri=sample['lri'],
+                alertness=sample['alertness'],
+                focus=sample['focus'],
+                arousal_balance=sample['arousal_balance'],
+                status=sample['status'],
+                post_exercise_window=sample.get('post_exercise_window', False),
+                window_remaining_minutes=sample.get('window_remaining_minutes', 0)
+            )
+            lri_docs.append(doc.model_dump(by_alias=True))
+
+        if lri_docs:
+            await db.lri_scores.insert_many(lri_docs)
+
+        # Insert DNOS scores
+        dnos_docs = []
+        for dnos in result['dnos_scores']:
+            doc = DNOSScore(
+                user_id=user_id,
+                date=dnos['date'],
+                dnos=dnos['dnos'],
+                avg_lri=dnos['avg_lri'],
+                optimal_window_utilization=dnos['optimal_window_utilization'],
+                sleep_consolidation=dnos['sleep_consolidation'],
+                insights=dnos['insights']
+            )
+            dnos_docs.append(doc.model_dump(by_alias=True))
+
+        if dnos_docs:
+            await db.dnos_scores.insert_many(dnos_docs)
+
+        # Insert sleep records
+        sleep_docs = []
+        for day_date, sleep_score in result['sleep_scores'].items():
+            doc = SleepRecord(
+                user_id=user_id,
+                date=day_date,
+                sleep_score=sleep_score,
+                total_sleep_min=420.0,  # Placeholder
+                deep_sleep_min=90.0,
+                deep_sleep_pct=22.0,
+                rem_sleep_min=84.0,
+                rem_sleep_pct=20.0,
+                core_sleep_min=180.0,
+                efficiency=90.0,
+                awake_min=30.0,
+                components={
+                    "sws_quality": 85.0,
+                    "rem_quality": 80.0,
+                    "efficiency": 90.0,
+                    "duration": 85.0
+                }
+            )
+            sleep_docs.append(doc.model_dump(by_alias=True))
+
+        if sleep_docs:
+            await db.sleep_records.insert_many(sleep_docs)
+
+        # Insert Brain Score if available
+        if result['brain_score']:
+            bs = result['brain_score']
+            brain_score_doc = BrainScore(
+                user_id=user_id,
+                period_start=bs['period_start'],
+                period_end=bs['period_end'],
+                brain_score=bs['brain_score'],
+                cycle_completion_score=bs['cycle_completion_score'],
+                complete_cycles=bs['complete_cycles'],
+                baseline_capacity_score=bs['baseline_capacity_score'],
+                morning_lri_avg=bs['morning_lri_avg'],
+                efficiency_trend_score=bs['efficiency_trend_score'],
+                improvement_pct=bs['improvement_pct'],
+                vagus_health_score=bs['vagus_health_score'],
+                exercise_days=bs['exercise_days'],
+                interpretation=bs['interpretation'],
+                recommendations=bs['recommendations']
+            )
+            await db.brain_scores.insert_one(brain_score_doc.model_dump(by_alias=True))
+
+        return {
+            "success": True,
+            "message": f"Real EEG data processed from participant {participant_id}",
+            "stats": {
+                "participant_id": participant_id,
+                "lri_samples": len(lri_docs),
+                "dnos_scores": len(dnos_docs),
+                "sleep_records": len(sleep_docs),
+                "brain_score": result['brain_score']['brain_score'] if result['brain_score'] else None,
+                "data_duration_hours": result['summary']['data_duration_hours'],
+                "avg_lri": result['summary']['avg_lri']
+            }
+        }
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 
