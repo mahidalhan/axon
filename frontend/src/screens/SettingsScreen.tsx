@@ -78,12 +78,15 @@ export default function SettingsScreen({ navigation }: any) {
         {/* Data & Privacy */}
         <Text style={styles.sectionTitle}>Data & Privacy</Text>
         <Card>
-          <TouchableOpacity style={styles.settingRow}>
+          <TouchableOpacity 
+            style={styles.settingRow}
+            onPress={() => navigation.navigate('AppleHealthImport')}
+          >
             <View style={styles.settingInfo}>
-              <Ionicons name="download" size={24} color="#F59E0B" />
+              <Ionicons name="heart" size={24} color="#EF4444" />
               <View style={styles.settingTextContainer}>
                 <Text style={styles.settingTitle}>Import Apple Health Data</Text>
-                <Text style={styles.settingSubtitle}>Upload export.xml</Text>
+                <Text style={styles.settingSubtitle}>Connect your devices</Text>
               </View>
             </View>
             <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
