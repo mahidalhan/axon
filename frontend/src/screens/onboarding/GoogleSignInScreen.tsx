@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
+import { useOnboarding } from '../../contexts/OnboardingContext';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -22,6 +23,7 @@ interface GoogleSignInScreenProps {
 
 export default function GoogleSignInScreen({ navigation }: GoogleSignInScreenProps) {
   const [loading, setLoading] = useState(false);
+  const { setUserName } = useOnboarding();
 
   const handleGoogleSignIn = async () => {
     try {
@@ -46,8 +48,12 @@ export default function GoogleSignInScreen({ navigation }: GoogleSignInScreenPro
           if (response.ok) {
             const userData = await response.json();
             console.log('[Auth] User:', userData.name);
-            Alert.alert('Success', `Welcome ${userData.name}!`);
-            navigation.navigate('NameInput');
+            
+            // Save user's name from Google
+            await setUserName(userData.name);
+            
+            // Skip name input, go straight to completion
+            navigation.navigate('Completion');
           }
         }
       }
@@ -60,6 +66,7 @@ export default function GoogleSignInScreen({ navigation }: GoogleSignInScreenPro
   };
 
   const handleSkip = () => {
+    // If they skip, ask for name manually
     navigation.navigate('NameInput');
   };
 
