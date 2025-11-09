@@ -89,7 +89,7 @@ export default function App() {
           <Tab.Screen name="Session" component={SessionScreen} options={{ title: 'Session Analysis' }} />
           <Tab.Screen name="Health" component={HealthScreen} options={{ title: 'Health Data' }} />
           <Tab.Screen name="Learn" component={EducationScreen} options={{ title: 'Learn' }} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
+          <Tab.Screen name="Settings" component={SettingsStack} options={{ headerShown: false }} />
         </Tab.Navigator>
       </NavigationContainer>
       <StatusBar style="dark" />
