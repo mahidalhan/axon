@@ -283,9 +283,9 @@ export default function HomeScreen() {
             <View style={styles.modalContent}>
               <View style={styles.modalHeader}>
                 <Text style={styles.modalTitle}>
-                  {selectedMetric === 'neural' && 'Neural State'}
-                  {selectedMetric === 'brain' && 'Brain Score'}
-                  {selectedMetric === 'sleep' && 'Sleep Quality'}
+                  {selectedMetric === 'neural' && 'Learning Readiness'}
+                  {selectedMetric === 'brain' && 'Neuroplasticity Readiness'}
+                  {selectedMetric === 'sleep' && 'Sleep Consolidation'}
                 </Text>
                 <TouchableOpacity onPress={() => setShowMetricModal(false)}>
                   <Ionicons name="close" size={28} color="#6B7280" />
@@ -315,7 +315,10 @@ export default function HomeScreen() {
                     <Text style={styles.metricDetailValue}>{currentMetrics?.arousal_balance?.toFixed(0) || 0}</Text>
                   </View>
                   <Text style={styles.metricExplanation}>
-                    Neural State combines your peak cognitive performance, optimal time duration, and current alertness/focus levels.
+                    Learning Readiness combines your peak cognitive performance, time in optimal state, and sleep context. Based on EEG patterns correlated with alertness and focus.
+                  </Text>
+                  <Text style={styles.metricDisclaimer}>
+                    Note: This measures brain states, not actual learning outcomes. Research-based but individually variable.
                   </Text>
                 </View>
               )}
@@ -323,19 +326,25 @@ export default function HomeScreen() {
               {selectedMetric === 'brain' && (
                 <View style={styles.modalBody}>
                   <View style={styles.metricDetailRow}>
-                    <Text style={styles.metricDetailLabel}>Neural State</Text>
-                    <Text style={styles.metricDetailValue}>{brainScore?.components?.neural_state?.toFixed(0) || 0}</Text>
+                    <Text style={styles.metricDetailLabel}>Learning Readiness</Text>
+                    <Text style={styles.metricDetailValue}>{brainScore?.components?.learning_readiness?.toFixed(0) || 0}</Text>
+                    <Text style={styles.metricWeight}>55%</Text>
                   </View>
                   <View style={styles.metricDetailRow}>
-                    <Text style={styles.metricDetailLabel}>Sleep Quality</Text>
+                    <Text style={styles.metricDetailLabel}>Sleep Consolidation</Text>
                     <Text style={styles.metricDetailValue}>{brainScore?.components?.consolidation?.toFixed(0) || 0}</Text>
+                    <Text style={styles.metricWeight}>25%</Text>
                   </View>
                   <View style={styles.metricDetailRow}>
                     <Text style={styles.metricDetailLabel}>Behavior Alignment</Text>
                     <Text style={styles.metricDetailValue}>{brainScore?.components?.behavior_alignment?.toFixed(0) || 0}</Text>
+                    <Text style={styles.metricWeight}>20%</Text>
                   </View>
                   <Text style={styles.metricExplanation}>
-                    Brain Score is a composite of your neural performance (40%), sleep consolidation (40%), and behavioral alignment (20%).
+                    Neuroplasticity Readiness combines session performance (55%), sleep consolidation (25%), and behavioral alignment with optimal timing (20%).
+                  </Text>
+                  <Text style={styles.metricDisclaimer}>
+                    Based on Huberman Lab neuroplasticity protocols. Validation ongoing.
                   </Text>
                 </View>
               )}
@@ -347,11 +356,14 @@ export default function HomeScreen() {
                     <Text style={styles.metricDetailValue}>{brainScore?.supporting_metrics?.sleep_score?.value || 0}</Text>
                   </View>
                   <View style={styles.metricDetailRow}>
-                    <Text style={styles.metricDetailLabel}>Version</Text>
+                    <Text style={styles.metricDetailLabel}>Formula Version</Text>
                     <Text style={styles.metricDetailValue}>{brainScore?.supporting_metrics?.sleep_score?.version || 'N/A'}</Text>
                   </View>
                   <Text style={styles.metricExplanation}>
-                    Sleep Quality reflects how well your brain consolidated memories during sleep. Based on duration, efficiency, HRV, and consistency.
+                    Sleep Consolidation reflects conditions favorable for memory consolidation. Based on 8 research-validated metrics: Duration, Efficiency, HRV, Consistency, WASO, SOL, Respiratory Rate, Deep Sleep %.
+                  </Text>
+                  <Text style={styles.metricDisclaimer}>
+                    Research: Walker (2017), Stickgold (2005), Frontiers in Neuroscience (2025)
                   </Text>
                 </View>
               )}
