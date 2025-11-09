@@ -87,11 +87,7 @@ export default function MetricDetailModal({
         activeOpacity={1}
         onPress={onClose}
       >
-        <TouchableOpacity 
-          style={styles.modalContainer} 
-          activeOpacity={1}
-          onPress={(e) => e.stopPropagation()}
-        >
+        <SafeAreaView style={styles.modalContainer} edges={['bottom']}>
           {/* Header */}
           <View style={[styles.header, { backgroundColor: gradientColor + '15' }]}>
             <Text style={styles.headerTitle}>{config.title}</Text>
