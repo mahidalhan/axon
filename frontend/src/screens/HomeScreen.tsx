@@ -204,7 +204,7 @@ export default function HomeScreen() {
           <View style={styles.metricsGrid}>
             <View style={styles.metricBox}>
               <Text style={styles.metricValue}>{todaySummary?.peak_lri?.toFixed(0) || 0}</Text>
-              <Text style={styles.metricLabel}>Peak LRI</Text>
+              <Text style={styles.metricLabel}>Peak Score</Text>
             </View>
             <View style={styles.metricBox}>
               <Text style={styles.metricValue}>{todaySummary?.optimal_minutes?.toFixed(0) || 0}</Text>
