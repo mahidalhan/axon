@@ -13,10 +13,12 @@ data/
     muse/
       participant_00_windows.parquet
       participant_00_session.json
-      daily_brain_scores.csv
     apple_health/
       sleep_records.parquet
       sleep_records.json
+      workouts.parquet
+      workouts.json
+    manifest.json
 ```
 
 ## File Details
@@ -33,9 +35,6 @@ data/
 - Follows `docs/shared/session-analysis-example.md`
 - Fields: `session_score`, `optimal_windows`, `time_in_state`, `component_scores`, etc.
 
-### daily_brain_scores.csv
-- Columns: `date`, `brain_score`, `neural_state`, `consolidation`, `behavior_alignment`, `best_session_id`
-
 ### sleep_records.parquet / sleep_records.json
 - Columns/fields:
   - `date`, `duration_hours`, `time_in_bed_hours`, `sleep_efficiency`
@@ -44,7 +43,24 @@ data/
   - `sleep_score`, `sleep_score_version`, component scores if included
   - Consistency metadata (`bedtime_consistency_sd`, `days_for_consistency`)
 
+### workouts.parquet / workouts.json
+- Columns/fields:
+  - `workout_type`, `start_time`, `end_time`, `duration_minutes`, `is_high_intensity`
+  - Optional: `avg_heart_rate`, `max_heart_rate`, `source`
+
+> Note: Demo-only slices live separately:
+> - `data/processed/apple_health/sleep_last_20_days.json`
+> - `data/processed/apple_health/workouts_last_20_days.json`
+> See `docs/data-pipeline/demo-timeline.md` for usage and join rules.
+
 ## Handoff Notes
+- Run both pipelines together:
+  ```bash
+  python -m pipeline_scripts.run_pipelines \
+    --muse-dir data/raw/muse \
+    --apple-export data/raw/apple_health/export.xml \
+    --output-root data/processed
+  ```
 - Provide sample rows/files alongside scripts to Emergent engineering team.
 - Ensure timestamps are ISO 8601 (UTC) and numeric fields use consistent units.
 - Document any optional fields that may be null when source data is absent (e.g., HRV, REM).

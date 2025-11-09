@@ -1,0 +1,92 @@
+{
+  "muse": [
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData0_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData0_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData1_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData1_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData10_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData10_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData11_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData11_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData12_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData12_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData13_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData13_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData14_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData14_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData15_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData15_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData16_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData16_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData17_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData17_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData18_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData18_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData19_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData19_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData2_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData2_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData3_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData3_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData4_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData4_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData5_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData5_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData6_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData6_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData7_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData7_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData8_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData8_session.json"
+    },
+    {
+      "windows": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData9_windows.parquet",
+      "session": "/Users/mahidalhan/code/brain_score/data/processed/muse/participant_museData9_session.json"
+    }
+  ],
+  "apple_health": [
+    {
+      "parquet": "/Users/mahidalhan/code/brain_score/data/processed/apple_health/sleep_records.parquet",
+      "json": "/Users/mahidalhan/code/brain_score/data/processed/apple_health/sleep_records.json",
+      "workouts_parquet": "/Users/mahidalhan/code/brain_score/data/processed/apple_health/workouts.parquet",
+      "workouts_json": "/Users/mahidalhan/code/brain_score/data/processed/apple_health/workouts.json"
+    }
+  ]
+}

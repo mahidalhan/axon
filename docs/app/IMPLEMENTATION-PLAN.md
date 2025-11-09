@@ -73,13 +73,13 @@ backend/models.py (UPDATE - add WorkoutRecord, SleepRecord, SupplementLog)
 ### Files to DELETE
 
 ```
-❌ backend/scores/brain_score_calculator.py
 ❌ backend/processors/synthetic_generator.py (28-day journey logic)
 ```
 
 ### Files to UPDATE
 
 ```
+🔄 backend/scores/brain_score_calculator.py (replace 28-day logic with daily composite)
 🔄 backend/scores/lri_calculator.py (add post-exercise multipliers)
 🔄 backend/scores/dnos_calculator.py → session_score_calculator.py (rename + simplify)
 🔄 backend/processors/real_data_processor.py (remove multi-participant stitching)
@@ -1587,3 +1587,25 @@ def aggregate_sleep_sessions(samples):
 ---
 
 **End of Implementation Plan**
+
+---
+
+## Hackathon Demo Mode (Synthetic 14–20 Day Timeline)
+
+Purpose: Repurpose the 20 processed Muse sessions (multi-subject) as consecutive “days” for a single demo user to power charts, with clear disclaimers. Align 14 of them with Apple Health sleep (previous night), defaulting to 50 when unavailable.
+
+Demo outputs (written to `data/processed/muse/`):
+- `demo_mapping.json` — day→source session mapping (reproducibility)
+- `daily_sessions.json` — per-day session summary: peak_lri, avg_lri, optimal_windows, session_score
+- `daily_brain_scores.csv` — columns: `date, brain_score, neural_state, consolidation, behavior_alignment, session_id`
+- `timeline.json` — array of `{date, session_score, brain_score, sleep_score}`
+
+Implementation notes:
+- Minutes fix: session analysis now computes durations from timestamps and unions overlapping windows to avoid double-counting.
+- Behavior alignment (demo heuristic): 70 if `optimal_windows` non-empty, else 50 (until workout context is integrated).
+- Sleep consolidation: previous-night `sleep_score`; default 50 if missing.
+- Daily Brain Score (MVP): `0.55 × neural_state + 0.25 × consolidation + 0.20 × behavior_alignment`.
+
+Disclaimers:
+- Multi-subject sessions are repurposed as consecutive days for a single demo user for hackathon visualization only. Do not infer within-person longitudinal change.
+- Numbers may change after full backend integration (workout context, sleep alignment, reruns with minutes fix).

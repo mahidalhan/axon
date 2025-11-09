@@ -1,0 +1,16 @@
+date,brain_score,neural_state,consolidation,behavior_alignment,session_id
+2025-10-27,38.3,21.44,50,70,participant_museData15_session.json
+2025-10-28,33.5,19.92,50,50,participant_museData17_session.json
+2025-10-29,33.3,19.58,50,50,participant_museData11_session.json
+2025-10-30,32.1,17.42,50,50,participant_museData2_session.json
+2025-10-31,35.8,16.97,50,70,participant_museData12_session.json
+2025-11-01,31.5,16.28,50,50,participant_museData1_session.json
+2025-11-02,35.3,16.02,50,70,participant_museData16_session.json
+2025-11-03,30.6,14.79,50,50,participant_museData3_session.json
+2025-11-04,30.6,14.78,50,50,participant_museData19_session.json
+2025-11-05,30.6,14.65,50,50,participant_museData14_session.json
+2025-11-06,30.3,14.27,50,50,participant_museData4_session.json
+2025-11-07,29.6,12.84,50,50,participant_museData18_session.json
+2025-11-08,29.5,12.66,50,50,participant_museData9_session.json
+2025-11-09,29.2,12.16,50,50,participant_museData10_session.json
+

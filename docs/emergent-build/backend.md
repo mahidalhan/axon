@@ -16,6 +16,29 @@ Emergent backend should expose endpoints aligning with the session-first Brain S
   ```
 - **Response:** `session_analysis` object identical to `docs/shared/session-analysis-example.md`.
 
+### GET `/api/sleep/last20`
+- Returns the demo slice from `data/processed/apple_health/sleep_last_20_days.json`
+- Response: array of `SleepNight` (see `docs/shared/data-schemas.md`)
+
+### GET `/api/workouts/last20`
+- Returns the demo slice from `data/processed/apple_health/workouts_last_20_days.json`
+- Response: array of `WorkoutSession` (see `docs/shared/data-schemas.md`)
+
+### GET `/api/session/optimal-window-status`
+- **Description:** Lightweight status for whether there is an active optimal window right now and its quality.
+- **Response:**
+  ```json
+  {
+    "has_window": true,
+    "window_start": "2025-11-09T09:15:00Z",
+    "window_end": "2025-11-09T09:45:00Z",
+    "quality": "excellent"
+  }
+  ```
+  - `has_window`: boolean indicating active optimal window
+  - `quality`: one of `excellent|very_good|good|moderate`
+  - Timestamps ISO-8601 (UTC). UI can poll this endpoint or derive from `session_analysis`.
+
 ### GET `/api/session/today-summary`
 - Returns daily summary:
   ```json
@@ -91,6 +114,9 @@ Emergent backend should expose endpoints aligning with the session-first Brain S
 
 ## Data Sources
 - Use processed outputs from `data/processed/muse/` and `data/processed/apple_health/`.
+- Demo-only slices live at:
+  - `data/processed/apple_health/sleep_last_20_days.json`
+  - `data/processed/apple_health/workouts_last_20_days.json`
 - Daily Brain Score computed per `docs/shared/brain-score-proposal.md`.
 
 ## Authentication & Deployment

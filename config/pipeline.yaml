@@ -1,0 +1,16 @@
+# Default configuration for data pipelines
+
+raw_data_dir: data/raw
+processed_data_dir: data/processed
+
+muse:
+  hsi_threshold: 2.5
+  window_size_seconds: 30
+  window_overlap_seconds: 15
+
+apple_health:
+  min_session_hours: 3
+  session_start_hour_min: 18
+  session_start_hour_max: 2
+  consistency_window_days: 7
+

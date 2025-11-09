@@ -1,0 +1,209 @@
+[
+  {
+    "date": "2025-10-27",
+    "session_path": "data/processed/muse/participant_museData15_session.json",
+    "session_score": 21.44,
+    "peak_lri": 76.14282543342496,
+    "avg_lri": 53.27763267308122,
+    "optimal_windows": [
+      {
+        "start": "2023-05-08T19:40:07.751000",
+        "end": "2023-05-08T19:40:08.459000",
+        "duration_minutes": 5.5,
+        "avg_lri": 70.88,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-08T19:40:15.477000",
+        "end": "2023-05-08T19:40:15.861000",
+        "duration_minutes": 2.5,
+        "avg_lri": 70.48,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-08T19:40:18.174000",
+        "end": "2023-05-08T19:40:18.534000",
+        "duration_minutes": 2.5,
+        "avg_lri": 70.2,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-08T19:41:00.715000",
+        "end": "2023-05-08T19:41:01.467000",
+        "duration_minutes": 6.0,
+        "avg_lri": 71.17,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-08T19:41:23.213000",
+        "end": "2023-05-08T19:41:23.451000",
+        "duration_minutes": 1.5,
+        "avg_lri": 70.02,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-08T19:41:23.462000",
+        "end": "2023-05-08T19:41:24.672000",
+        "duration_minutes": 10.0,
+        "avg_lri": 72.06,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-08T19:52:16.946000",
+        "end": "2023-05-08T19:52:28.050000",
+        "duration_minutes": 37.0,
+        "avg_lri": 74.98,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-08T19:52:28.469000",
+        "end": "2023-05-08T19:52:28.932000",
+        "duration_minutes": 3.5,
+        "avg_lri": 70.86,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-08T19:58:30.139000",
+        "end": "2023-05-08T19:58:30.170000",
+        "duration_minutes": 1.5,
+        "avg_lri": 70.71,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-08T20:02:34.170000",
+        "end": "2023-05-08T20:02:34.258000",
+        "duration_minutes": 5.5,
+        "avg_lri": 72.45,
+        "quality": "good"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-28",
+    "session_path": "data/processed/muse/participant_museData17_session.json",
+    "session_score": 19.92,
+    "peak_lri": 66.00758625721568,
+    "avg_lri": 49.80772136881123,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-10-29",
+    "session_path": "data/processed/muse/participant_museData11_session.json",
+    "session_score": 19.58,
+    "peak_lri": 60.760591258186764,
+    "avg_lri": 48.941313829792,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-10-30",
+    "session_path": "data/processed/muse/participant_museData2_session.json",
+    "session_score": 17.42,
+    "peak_lri": 68.27211283468077,
+    "avg_lri": 43.55821218863451,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-10-31",
+    "session_path": "data/processed/muse/participant_museData12_session.json",
+    "session_score": 16.97,
+    "peak_lri": 75.04960868401682,
+    "avg_lri": 42.39779465181831,
+    "optimal_windows": [
+      {
+        "start": "2023-05-02T21:45:16.445000",
+        "end": "2023-05-02T21:45:17.258000",
+        "duration_minutes": 6.0,
+        "avg_lri": 73.14,
+        "quality": "good"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-01",
+    "session_path": "data/processed/muse/participant_museData1_session.json",
+    "session_score": 16.28,
+    "peak_lri": 58.179452835217994,
+    "avg_lri": 40.70502823725498,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-11-02",
+    "session_path": "data/processed/muse/participant_museData16_session.json",
+    "session_score": 16.02,
+    "peak_lri": 73.64466508705637,
+    "avg_lri": 39.99606200400716,
+    "optimal_windows": [
+      {
+        "start": "2023-05-09T20:44:35.519000",
+        "end": "2023-05-09T20:44:36.921000",
+        "duration_minutes": 12.0,
+        "avg_lri": 72.27,
+        "quality": "good"
+      },
+      {
+        "start": "2023-05-09T21:01:16.105000",
+        "end": "2023-05-09T21:01:16.168000",
+        "duration_minutes": 4.0,
+        "avg_lri": 71.0,
+        "quality": "good"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-03",
+    "session_path": "data/processed/muse/participant_museData3_session.json",
+    "session_score": 14.79,
+    "peak_lri": 68.8504544050142,
+    "avg_lri": 36.97210961862472,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-11-04",
+    "session_path": "data/processed/muse/participant_museData19_session.json",
+    "session_score": 14.78,
+    "peak_lri": 59.9009225906696,
+    "avg_lri": 36.96177566634753,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-11-05",
+    "session_path": "data/processed/muse/participant_museData14_session.json",
+    "session_score": 14.65,
+    "peak_lri": 66.57530937609185,
+    "avg_lri": 36.63573838489,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-11-06",
+    "session_path": "data/processed/muse/participant_museData4_session.json",
+    "session_score": 14.27,
+    "peak_lri": 57.40880553648408,
+    "avg_lri": 35.672883472300356,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-11-07",
+    "session_path": "data/processed/muse/participant_museData18_session.json",
+    "session_score": 12.84,
+    "peak_lri": 63.437349717960515,
+    "avg_lri": 32.10098628781375,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-11-08",
+    "session_path": "data/processed/muse/participant_museData9_session.json",
+    "session_score": 12.66,
+    "peak_lri": 60.87688195542983,
+    "avg_lri": 31.66167808360972,
+    "optimal_windows": []
+  },
+  {
+    "date": "2025-11-09",
+    "session_path": "data/processed/muse/participant_museData10_session.json",
+    "session_score": 12.16,
+    "peak_lri": 63.58409184266293,
+    "avg_lri": 30.40619701667926,
+    "optimal_windows": []
+  }
+]
+

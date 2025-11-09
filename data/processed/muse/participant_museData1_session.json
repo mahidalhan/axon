@@ -1,0 +1,29 @@
+{
+  "session_start": "2023-04-23T18:46:41.037000",
+  "session_end": "2023-04-23T19:18:40.305000",
+  "session_duration_minutes": 31.99,
+  "peak_lri": 52.55302874703608,
+  "peak_timestamp": "2023-04-23T18:46:41.037000",
+  "avg_lri": 41.95246322371458,
+  "median_lri": 43.08440268481893,
+  "std_dev": 4.9396522183542055,
+  "session_score": 16.78,
+  "optimal_windows": [],
+  "time_in_state": {
+    "optimal_minutes": 0.0,
+    "moderate_minutes": 7.46,
+    "low_minutes": 2.98
+  },
+  "component_scores": {
+    "alertness": 60.835484727891135,
+    "focus": 10.698811790715338,
+    "arousal_balance": 71.2551478179425
+  },
+  "insights": [
+    "Consider exercise or focus drills to raise peak readiness.",
+    "No sustained optimal windows detected in this session."
+  ],
+  "recommendations": [
+    "Experiment with high-intensity exercise 60\u201390 minutes before sessions."
+  ]
+}

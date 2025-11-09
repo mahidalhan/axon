@@ -1,0 +1,7 @@
+apple_health:
+  min_session_hours: 1.5
+  session_start_hour_min: 16
+  session_start_hour_max: 6
+  consistency_window_days: 14
+
+

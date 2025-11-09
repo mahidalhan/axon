@@ -1,0 +1,202 @@
+[
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-08-11T20:55:06-08:00",
+    "end_time": "2025-08-11T21:19:15-08:00",
+    "duration_minutes": 24.15260009765625,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-08-16T04:00:39-08:00",
+    "end_time": "2025-08-16T04:47:18-08:00",
+    "duration_minutes": 46.65851643880208,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-08-18T17:24:54-08:00",
+    "end_time": "2025-08-18T18:03:32-08:00",
+    "duration_minutes": 38.63955078125,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-08-28T04:40:11-08:00",
+    "end_time": "2025-08-28T05:05:40-08:00",
+    "duration_minutes": 25.49134928385417,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-09-02T04:29:10-08:00",
+    "end_time": "2025-09-02T05:18:14-08:00",
+    "duration_minutes": 49.07803141276042,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-09-04T04:27:10-08:00",
+    "end_time": "2025-09-04T04:54:10-08:00",
+    "duration_minutes": 27.00868326822917,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-09-13T17:46:33-08:00",
+    "end_time": "2025-09-13T18:25:49-08:00",
+    "duration_minutes": 39.28218180338542,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-09-16T04:06:34-08:00",
+    "end_time": "2025-09-16T04:53:22-08:00",
+    "duration_minutes": 46.80366617838542,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-09-20T19:19:50-08:00",
+    "end_time": "2025-09-20T19:41:37-08:00",
+    "duration_minutes": 21.78758341471354,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-09-21T20:16:55-08:00",
+    "end_time": "2025-09-21T21:03:07-08:00",
+    "duration_minutes": 46.211767578125,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-09-22T20:53:29-08:00",
+    "end_time": "2025-09-22T20:58:47-08:00",
+    "duration_minutes": 5.308350118001302,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-09-25T04:45:13-08:00",
+    "end_time": "2025-09-25T05:34:23-08:00",
+    "duration_minutes": 49.1801513671875,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-09-29T04:39:52-08:00",
+    "end_time": "2025-09-29T05:16:55-08:00",
+    "duration_minutes": 37.05533447265625,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-10-01T01:37:35-08:00",
+    "end_time": "2025-10-01T02:12:33-08:00",
+    "duration_minutes": 34.98295084635416,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-10-04T04:16:34-08:00",
+    "end_time": "2025-10-04T05:04:53-08:00",
+    "duration_minutes": 48.32818196614583,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-10-05T17:17:03-08:00",
+    "end_time": "2025-10-05T18:28:02-08:00",
+    "duration_minutes": 70.999853515625,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-10-14T04:17:34-08:00",
+    "end_time": "2025-10-14T04:22:48-08:00",
+    "duration_minutes": 5.245616658528646,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-10-28T00:31:02-08:00",
+    "end_time": "2025-10-28T01:00:42-08:00",
+    "duration_minutes": 29.67445068359375,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-10-31T04:18:28-08:00",
+    "end_time": "2025-10-31T04:57:14-08:00",
+    "duration_minutes": 38.76875,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Connect"
+  },
+  {
+    "workout_type": "HKWorkoutActivityTypeRunning",
+    "start_time": "2025-11-05T03:59:20-08:00",
+    "end_time": "2025-11-05T04:18:19-08:00",
+    "duration_minutes": 18.94433333476384,
+    "is_high_intensity": true,
+    "avg_heart_rate": NaN,
+    "max_heart_rate": NaN,
+    "source": "Nike Run Club"
+  }
+]

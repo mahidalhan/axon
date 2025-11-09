@@ -1,5 +1,6 @@
 # Dataset files (too large for GitHub)
-data/
+data/Muse EEG Subconscious Decisions Dataset/
+data/apple_health_export/
 
 # Python
 __pycache__/
@@ -27,7 +28,7 @@ build/
 # OS
 .DS_Store
 Thumbs.db
--e 
+
 # Environment files
 *.env
 *.env.*

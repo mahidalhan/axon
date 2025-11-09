@@ -72,7 +72,7 @@ Each component is scored 0-100 based on optimal ranges from research. Reuse the 
 
 #### 2.1 Duration Score
 
-**Optimal Range:** 7-9 hours  
+**Optimal Range:** 7-9 hours
 **Scientific Basis:** Walker (2017) - Sleep duration directly impacts consolidation
 
 > Use the implementation shown in [`docs/shared/sleep-score-snippets.md`](../shared/sleep-score-snippets.md#component-function-example) for the authoritative scoring logic.

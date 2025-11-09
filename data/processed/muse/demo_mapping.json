@@ -1,0 +1,22 @@
+{
+  "user_id": "demo_user",
+  "start_date": "2025-10-27",
+  "end_date": "2025-11-09",
+  "days": [
+    { "date": "2025-10-27", "session": "data/processed/muse/participant_museData15_session.json" },
+    { "date": "2025-10-28", "session": "data/processed/muse/participant_museData17_session.json" },
+    { "date": "2025-10-29", "session": "data/processed/muse/participant_museData11_session.json" },
+    { "date": "2025-10-30", "session": "data/processed/muse/participant_museData2_session.json" },
+    { "date": "2025-10-31", "session": "data/processed/muse/participant_museData12_session.json" },
+    { "date": "2025-11-01", "session": "data/processed/muse/participant_museData1_session.json" },
+    { "date": "2025-11-02", "session": "data/processed/muse/participant_museData16_session.json" },
+    { "date": "2025-11-03", "session": "data/processed/muse/participant_museData3_session.json" },
+    { "date": "2025-11-04", "session": "data/processed/muse/participant_museData19_session.json" },
+    { "date": "2025-11-05", "session": "data/processed/muse/participant_museData14_session.json" },
+    { "date": "2025-11-06", "session": "data/processed/muse/participant_museData4_session.json" },
+    { "date": "2025-11-07", "session": "data/processed/muse/participant_museData18_session.json" },
+    { "date": "2025-11-08", "session": "data/processed/muse/participant_museData9_session.json" },
+    { "date": "2025-11-09", "session": "data/processed/muse/participant_museData10_session.json" }
+  ]
+}
+

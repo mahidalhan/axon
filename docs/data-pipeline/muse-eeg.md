@@ -44,7 +44,7 @@
   - One row per 30s window with band averages + derived metrics.
 - `data/processed/muse/participant_<id>_session.json`
   - SessionAnalyzer JSON output (see `docs/shared/session-analysis-example.md`).
-- `data/processed/muse/daily_brain_scores.csv` (if aggregation performed)
+- Demo-only artifacts (e.g., `daily_brain_scores.csv`) are documented in `docs/data-pipeline/demo-timeline.md` and are not emitted by the cleaning pipeline.
 
 ## Tools & Scripts
 - Recommended: Python (pandas, numpy), stored in `/pipeline_scripts/muse/`.

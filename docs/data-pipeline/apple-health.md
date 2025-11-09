@@ -37,3 +37,12 @@
 - Recommended: Python (lxml or ElementTree, numpy, pandas) stored in `/pipeline_scripts/apple_health/`.
 - Ensure scripts accept source XML path and output directory arguments for integration with Emergent backend workflow.
 
+---
+
+## Demo Slices (Last 20 Days)
+- For the hackathon demo, we export lightweight slices:
+  - `data/processed/apple_health/sleep_last_20_days.json`
+  - `data/processed/apple_health/workouts_last_20_days.json`
+- Sleep slice accepts “coarse nights” when staging is absent (in-bed only), scored via the base method. This ensures we always have up to 20 recent nights.
+- See `pipeline_scripts/apple_health/last20_cli.py` for generating slices and `docs/data-pipeline/demo-timeline.md` for join rules.
+
