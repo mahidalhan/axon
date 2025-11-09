@@ -316,13 +316,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   scoreCard: {
-    marginBottom: 16,
+    marginBottom: 24,
+    paddingVertical: 32,
   },
   scoresContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 24,
+    paddingHorizontal: 8,
   },
   scoreItem: {
     alignItems: 'center',
