@@ -386,7 +386,7 @@ async def get_recent_workouts(days: int = 7):
         
         def sanitize(obj):
             if isinstance(obj, float):
-                if pd.isna(obj) or not pd.isfinite(obj):
+                if pd.isna(obj) or not math.isfinite(obj):
                     return None
                 return obj
             elif isinstance(obj, dict):
@@ -409,7 +409,7 @@ async def get_recent_sleep(days: int = 7):
         
         def sanitize(obj):
             if isinstance(obj, float):
-                if pd.isna(obj) or not pd.isfinite(obj):
+                if pd.isna(obj) or not math.isfinite(obj):
                     return None
                 return obj
             elif isinstance(obj, dict):
