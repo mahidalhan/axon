@@ -6,9 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
-import { OnboardingProvider, useOnboarding } from './src/contexts/OnboardingContext';
-import OnboardingNavigator from './src/navigation/OnboardingNavigator';
-
 import HomeScreen from './src/screens/HomeScreen';
 import SessionScreen from './src/screens/SessionScreen';
 import HealthScreen from './src/screens/HealthScreen';
