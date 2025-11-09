@@ -223,6 +223,14 @@ def find_optimal_windows(self, lri_samples, threshold=70):
                 windows.append(current_window)
                 current_window = None
 
+    if current_window is not None:
+        current_window['end'] = current_window['samples'][-1]['timestamp']
+        current_window['duration_minutes'] = len(current_window['samples']) * 0.5
+        current_window['avg_lri'] = np.mean([s['lri'] for s in current_window['samples']])
+        current_window['quality'] = self._classify_quality(current_window['avg_lri'])
+
+        windows.append(current_window)
+
     return windows
 ```
 
