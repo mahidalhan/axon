@@ -34,7 +34,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.ctaButton}
-          onPress={() => navigation.navigate('NameInput')}
+          onPress={() => navigation.navigate('GoogleSignIn')}
         >
           <Text style={styles.ctaText}>Get Started</Text>
         </TouchableOpacity>
