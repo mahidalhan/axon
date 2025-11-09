@@ -3,23 +3,18 @@ import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
 // Backend URL configuration
-// The tunnel URL points to the frontend, but we need backend on port 8001
-// We'll construct the backend URL from the tunnel host
 const getBackendURL = () => {
   // Get the tunnel host (e.g., "ixgw1ds-anonymous-3000.exp.direct")
   const tunnelHost = Constants.expoConfig?.hostUri;
   
   if (tunnelHost) {
-    // Replace port 3000 with 8001 for backend, and add /api prefix
-    // Format: http://ixgw1ds-anonymous-8001.exp.direct/api
-    const backendHost = tunnelHost.replace('-3000.exp.direct', '-8001.exp.direct');
-    console.log('[API] Using tunnel backend:', `http://${backendHost}/api`);
-    return `http://${backendHost}/api`;
+    // Use HTTPS with the same tunnel host - Kubernetes ingress will proxy /api/* to port 8001
+    console.log('[API] Using tunnel backend:', `https://${tunnelHost}`);
+    return `https://${tunnelHost}`;
   }
   
-  // Fallback for web or local dev
-  console.log('[API] Using fallback backend:', '/api');
-  return '/api';
+  // Fallback
+  return '';
 };
 
 const BACKEND_URL = getBackendURL();
