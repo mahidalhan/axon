@@ -616,11 +616,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#6B7280',
     fontWeight: '500',
+    flex: 1,
   },
   metricDetailValue: {
     fontSize: 20,
     fontWeight: '700',
     color: '#1F2937',
+  },
+  metricWeight: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#6366F1',
+    marginLeft: 8,
   },
   metricExplanation: {
     fontSize: 14,
@@ -630,5 +637,12 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     borderTopWidth: 1,
     borderTopColor: '#E5E7EB',
+  },
+  metricDisclaimer: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    lineHeight: 18,
+    marginTop: 12,
+    fontStyle: 'italic',
   },
 });
