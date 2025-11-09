@@ -71,24 +71,31 @@ export default function SessionScreen() {
     );
   }
 
-  // Format session times
+  // Format session times safely
+  const formatSafeTime = (dateStr: string | undefined) => {
+    if (!dateStr) return 'N/A';
+    try {
+      const date = new Date(dateStr.replace('Z', '+00:00'));
+      if (isNaN(date.getTime())) return 'N/A';
+      return date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
+    } catch {
+      return 'N/A';
+    }
+  };
+
   const sessionStart = contextData?.session_time?.start
-    ? new Date(contextData.session_time.start)
+    ? new Date(contextData.session_time.start.replace('Z', '+00:00'))
     : new Date();
   const sessionEnd = contextData?.session_time?.end
-    ? new Date(contextData.session_time.end)
+    ? new Date(contextData.session_time.end.replace('Z', '+00:00'))
     : new Date();
 
-  const startTimeFormatted = sessionStart.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
-  const endTimeFormatted = sessionEnd.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
+  const startTimeFormatted = formatSafeTime(contextData?.session_time?.start);
+  const endTimeFormatted = formatSafeTime(contextData?.session_time?.end);
 
   const getQualityColor = (quality: string) => {
     switch (quality) {
