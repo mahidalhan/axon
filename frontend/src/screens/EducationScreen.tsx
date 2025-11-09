@@ -141,7 +141,10 @@ export default function EducationScreen() {
                 <Ionicons name={metric.icon as any} size={20} color={metric.color} />
               </View>
               <View style={styles.metricInfo}>
-                <Text style={styles.metricTitle}>{metric.title}</Text>
+                <View style={styles.metricTitleRow}>
+                  <Text style={styles.metricTitle}>{metric.title}</Text>
+                  <Text style={styles.metricWeight}>{metric.weight}</Text>
+                </View>
                 <Text style={styles.metricOptimal}>Optimal: {metric.optimal}</Text>
               </View>
             </View>
