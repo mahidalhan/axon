@@ -97,7 +97,7 @@ export const api = {
   getOptimalWindowStatus: async (participantId: number = 0) => {
     return withFallback(
       async () => {
-        const response = await apiClient.get(`/session/optimal-window-status?participant_id=${participantId}`);
+        const response = await apiClient.get(`/api/session/optimal-window-status?participant_id=${participantId}`);
         return response.data;
       },
       mockData.optimalWindow
@@ -107,7 +107,7 @@ export const api = {
   getTodaySummary: async (participantId: number = 0) => {
     return withFallback(
       async () => {
-        const response = await apiClient.get(`/session/today-summary?participant_id=${participantId}`);
+        const response = await apiClient.get(`/api/session/today-summary?participant_id=${participantId}`);
         return response.data;
       },
       mockData.todaySummary
@@ -117,7 +117,7 @@ export const api = {
   getCurrentMetrics: async (participantId: number = 0) => {
     return withFallback(
       async () => {
-        const response = await apiClient.get(`/session/current-metrics?participant_id=${participantId}`);
+        const response = await apiClient.get(`/api/session/current-metrics?participant_id=${participantId}`);
         return response.data;
       },
       mockData.currentMetrics
@@ -127,7 +127,7 @@ export const api = {
   getBrainScoreToday: async (participantId: number = 0) => {
     return withFallback(
       async () => {
-        const response = await apiClient.get(`/brain-score/today?participant_id=${participantId}`);
+        const response = await apiClient.get(`/api/brain-score/today?participant_id=${participantId}`);
         return response.data;
       },
       mockData.brainScore
