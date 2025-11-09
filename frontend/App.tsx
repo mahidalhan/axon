@@ -73,7 +73,7 @@ export default function App() {
             },
           })}
         >
-          <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Brain Score' }} />
+          <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'AXON' }} />
           <Tab.Screen name="Session" component={SessionScreen} options={{ title: 'Session Analysis' }} />
           <Tab.Screen name="Health" component={HealthScreen} options={{ title: 'Health Data' }} />
           <Tab.Screen name="Learn" component={EducationScreen} options={{ title: 'Learn' }} />
