@@ -412,24 +412,46 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   referenceCard: {
-    flexDirection: 'row',
-    padding: spacing.lg,
+    padding: spacing.xl,
     backgroundColor: colors.background.secondary,
-    borderRadius: 8,
+    borderRadius: borderRadius.lg,
     borderWidth: 1,
     borderColor: 'rgba(229, 231, 235, 0.5)',
+  },
+  referenceHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.lg,
     gap: spacing.md,
   },
   referenceTitle: {
-    fontSize: typography.sizes.bodySmall,
+    fontSize: typography.sizes.h4,
     fontWeight: typography.weights.bold,
     color: colors.text.primary,
-    marginBottom: spacing.xs,
   },
   referenceText: {
+    fontSize: typography.sizes.body,
+    color: colors.text.primary,
+    lineHeight: 22,
+    marginBottom: spacing.lg,
+  },
+  referenceList: {
+    gap: spacing.md,
+  },
+  referenceItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  referenceBullet: {
+    fontSize: typography.sizes.body,
+    color: colors.gradients.neuroplasticity.start,
+    fontWeight: typography.weights.bold,
+    marginRight: spacing.sm,
+  },
+  referenceItemText: {
     flex: 1,
-    fontSize: typography.sizes.caption,
+    fontSize: typography.sizes.bodySmall,
     color: colors.text.secondary,
-    lineHeight: 18,
+    lineHeight: 20,
   },
 });
