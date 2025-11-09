@@ -23,6 +23,21 @@ export default function DailyBrainStateChart({
   events,
 }: DailyBrainStateChartProps) {
   
+  // Debug logging
+  console.log('[Chart] Baseline length:', circadianBaseline?.length);
+  console.log('[Chart] Session data:', sessionData);
+  console.log('[Chart] Gamma peaks:', gammaPeaks?.length);
+  
+  // Provide fallback if no data
+  if (!circadianBaseline || circadianBaseline.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Your Brain State Today</Text>
+        <Text style={styles.subtitle}>Loading chart data...</Text>
+      </View>
+    );
+  }
+  
   // Convert baseline to chart format (sample every 3 hours for clarity)
   const baselineChartData = circadianBaseline
     .filter((_, idx) => idx % 12 === 0)  // Every 3 hours (12 * 15min)
@@ -30,6 +45,8 @@ export default function DailyBrainStateChart({
       value: value,
       label: idx === 0 ? '6am' : idx === 1 ? '9am' : idx === 2 ? '12pm' : idx === 3 ? '3pm' : idx === 4 ? '6pm' : '9pm',
     }));
+    
+  console.log('[Chart] Baseline chart data:', baselineChartData);
 
   // Convert session data to chart format
   const sessionChartData = sessionData.lriValues.map((item) => ({
