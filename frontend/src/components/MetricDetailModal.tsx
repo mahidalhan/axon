@@ -75,6 +75,14 @@ export default function MetricDetailModal({
     return 'Low';
   };
 
+  // Circle progress calculations
+  const circleSize = 140;
+  const strokeWidth = 10;
+  const radius = (circleSize - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const progress = (scoreValue / 100) * circumference;
+  const strokeDashoffset = circumference - progress;
+
   return (
     <Modal
       visible={visible}
