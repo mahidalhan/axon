@@ -123,11 +123,17 @@ async def analyze_session(request: SessionAnalyzeRequest):
         moderate_minutes = len(windows_df[(windows_df['lri'] >= 40) & (windows_df['lri'] < 70)]) * 2.5
         low_minutes = len(windows_df[windows_df['lri'] < 40]) * 2.5
         
-        # Component scores
+        # Component scores - handle NaN values
+        def safe_mean(series, default):
+            if series.empty:
+                return default
+            mean_val = series.mean()
+            return float(mean_val) if not pd.isna(mean_val) else default
+        
         component_scores = {
-            "alertness": float(windows_df['alertness'].mean()) if 'alertness' in windows_df.columns else 65.0,
-            "focus": float(windows_df['focus'].mean()) if 'focus' in windows_df.columns else 58.0,
-            "arousal_balance": float(windows_df['arousal_balance'].mean()) if 'arousal_balance' in windows_df.columns else 42.0
+            "alertness": safe_mean(windows_df.get('alertness', pd.Series()), 65.0),
+            "focus": safe_mean(windows_df.get('focus', pd.Series()), 58.0),
+            "arousal_balance": safe_mean(windows_df.get('arousal_balance', pd.Series()), 42.0)
         }
         
         # Session score (weighted by time in optimal state)
