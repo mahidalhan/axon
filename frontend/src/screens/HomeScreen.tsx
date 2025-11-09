@@ -271,6 +271,93 @@ export default function HomeScreen() {
             <Text style={styles.insightText}>{brainScore.insight}</Text>
           </Card>
         )}
+
+        {/* Metric Detail Modal */}
+        <Modal
+          visible={showMetricModal}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setShowMetricModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>
+                  {selectedMetric === 'neural' && 'Neural State'}
+                  {selectedMetric === 'brain' && 'Brain Score'}
+                  {selectedMetric === 'sleep' && 'Sleep Quality'}
+                </Text>
+                <TouchableOpacity onPress={() => setShowMetricModal(false)}>
+                  <Ionicons name="close" size={28} color="#6B7280" />
+                </TouchableOpacity>
+              </View>
+
+              {selectedMetric === 'neural' && (
+                <View style={styles.modalBody}>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Peak LRI</Text>
+                    <Text style={styles.metricDetailValue}>{todaySummary?.peak_lri || 0}</Text>
+                  </View>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Optimal Time</Text>
+                    <Text style={styles.metricDetailValue}>{todaySummary?.optimal_minutes || 0} min</Text>
+                  </View>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Alertness</Text>
+                    <Text style={styles.metricDetailValue}>{currentMetrics?.alertness?.toFixed(0) || 0}</Text>
+                  </View>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Focus</Text>
+                    <Text style={styles.metricDetailValue}>{currentMetrics?.focus?.toFixed(0) || 0}</Text>
+                  </View>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Balance</Text>
+                    <Text style={styles.metricDetailValue}>{currentMetrics?.arousal_balance?.toFixed(0) || 0}</Text>
+                  </View>
+                  <Text style={styles.metricExplanation}>
+                    Neural State combines your peak cognitive performance, optimal time duration, and current alertness/focus levels.
+                  </Text>
+                </View>
+              )}
+
+              {selectedMetric === 'brain' && (
+                <View style={styles.modalBody}>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Neural State</Text>
+                    <Text style={styles.metricDetailValue}>{brainScore?.components?.neural_state?.toFixed(0) || 0}</Text>
+                  </View>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Sleep Quality</Text>
+                    <Text style={styles.metricDetailValue}>{brainScore?.components?.consolidation?.toFixed(0) || 0}</Text>
+                  </View>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Behavior Alignment</Text>
+                    <Text style={styles.metricDetailValue}>{brainScore?.components?.behavior_alignment?.toFixed(0) || 0}</Text>
+                  </View>
+                  <Text style={styles.metricExplanation}>
+                    Brain Score is a composite of your neural performance (40%), sleep consolidation (40%), and behavioral alignment (20%).
+                  </Text>
+                </View>
+              )}
+
+              {selectedMetric === 'sleep' && (
+                <View style={styles.modalBody}>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Sleep Score</Text>
+                    <Text style={styles.metricDetailValue}>{brainScore?.supporting_metrics?.sleep_score?.value || 0}</Text>
+                  </View>
+                  <View style={styles.metricDetailRow}>
+                    <Text style={styles.metricDetailLabel}>Version</Text>
+                    <Text style={styles.metricDetailValue}>{brainScore?.supporting_metrics?.sleep_score?.version || 'N/A'}</Text>
+                  </View>
+                  <Text style={styles.metricExplanation}>
+                    Sleep Quality reflects how well your brain consolidated memories during sleep. Based on duration, efficiency, HRV, and consistency.
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
