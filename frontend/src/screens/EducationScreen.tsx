@@ -6,217 +6,240 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Card from '../components/Card';
+import AccordionSection from '../components/AccordionSection';
+import FormulaBar from '../components/FormulaBar';
 import { Ionicons } from '@expo/vector-icons';
+import { colors, typography, spacing } from '../constants/designTokens';
+import { appCopy } from '../constants/copy';
 
 export default function EducationScreen() {
-  const sleepMetrics = [
-    {
-      title: 'Sleep Duration',
-      icon: 'time',
-      color: '#6366F1',
-      optimal: '7-9 hours',
-      weight: '30%',
-      description: 'Your brain needs time to complete memory consolidation. Each 90-minute sleep cycle processes different types of learning.',
-    },
-    {
-      title: 'Sleep Efficiency',
-      icon: 'pulse',
-      color: '#10B981',
-      optimal: '>85%',
-      weight: '25%',
-      description: 'Percentage of time in bed actually sleeping. High efficiency means better consolidation.',
-    },
-    {
-      title: 'HRV During Sleep',
-      icon: 'heart',
-      color: '#EF4444',
-      optimal: '60-80 ms',
-      weight: '10%',
-      description: 'Heart Rate Variability indicates nervous system recovery. Higher HRV during sleep correlates with better memory consolidation.',
-    },
-    {
-      title: 'Sleep Consistency',
-      icon: 'calendar',
-      color: '#F59E0B',
-      optimal: '<30 min variance',
-      weight: '10%',
-      description: 'Regular bedtime strengthens your circadian rhythm and improves sleep quality.',
-    },
-    {
-      title: 'WASO (Wake After Sleep Onset)',
-      icon: 'alert-circle',
-      color: '#8B5CF6',
-      optimal: '<20 minutes',
-      weight: '10%',
-      description: 'Time spent awake during the night. Less WASO means more consolidated sleep and better memory formation.',
-    },
-    {
-      title: 'Sleep Onset Latency',
-      icon: 'moon',
-      color: '#06B6D4',
-      optimal: '<15 minutes',
-      weight: '5%',
-      description: 'How quickly you fall asleep. Falling asleep within 15 minutes indicates good sleep drive and timing.',
-    },
-    {
-      title: 'Respiratory Rate',
-      icon: 'fitness',
-      color: '#14B8A6',
-      optimal: '12-16 bpm',
-      weight: '5%',
-      description: 'Breathing rate during sleep. Stable, moderate rate indicates relaxed parasympathetic state.',
-    },
-    {
-      title: 'Deep Sleep %',
-      icon: 'bed',
-      color: '#A855F7',
-      optimal: '15-25%',
-      weight: '5%',
-      description: 'Percentage of sleep in deep/slow-wave sleep. Critical for physical recovery and memory consolidation.',
-    },
-  ];
-
-  const neuroplasticityInfo = [
-    {
-      phase: 'Trigger',
-      description: 'Exercise or focused learning creates the signal for brain change.',
-      icon: 'flash',
-      color: '#F59E0B',
-    },
-    {
-      phase: 'Signal',
-      description: 'Optimal windows (1-4h post-exercise) when brain is primed for learning.',
-      icon: 'thunderbolt',
-      color: '#6366F1',
-    },
-    {
-      phase: 'Consolidation',
-      description: 'Sleep locks in new neural connections and clears metabolic waste.',
-      icon: 'moon',
-      color: '#10B981',
-    },
-  ];
-
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         {/* Hero Section */}
-        <Card style={styles.heroCard}>
-          <View style={styles.heroIcon}>
-            <Ionicons name="school" size={40} color="#4F46E5" />
+        <View style={styles.hero}>
+          <View style={styles.heroIconContainer}>
+            <Ionicons name="school" size={40} color={colors.gradients.neuroplasticity.start} />
           </View>
-          <Text style={styles.heroTitle}>Sleep & Neuroplasticity</Text>
+          <Text style={styles.heroTitle}>Understanding AXON</Text>
           <Text style={styles.heroSubtitle}>
-            Understanding how sleep, exercise, and learning work together to optimize your brain
+            Science-backed insights into your brain's readiness for peak performance
           </Text>
-        </Card>
+        </View>
 
-        {/* How Your Scores Work */}
-        <Text style={styles.sectionTitle}>How Your Scores Work</Text>
-        <Card style={styles.infoCard}>
-          <Text style={styles.cardTitle}>Neuroplasticity Readiness</Text>
-          <Text style={styles.infoText}>
-            Your daily score combining session performance (55%), sleep consolidation (25%), and behavioral timing (20%).
-          </Text>
-          <View style={styles.formulaBox}>
-            <Text style={styles.formulaText}>55% Learning Readiness (best session)</Text>
-            <Text style={styles.formulaText}>25% Sleep Consolidation (last night)</Text>
-            <Text style={styles.formulaText}>20% Behavior Alignment (workout timing)</Text>
-          </View>
-          <Text style={styles.disclaimerText}>
-            <Text style={styles.boldText}>What this measures:</Text> Brain states and conditions correlated with neuroplasticity, based on neuroscience research.{'\n\n'}
-            <Text style={styles.boldText}>What it doesn't measure:</Text> Actual learning outcomes or guaranteed plasticity. Individual results vary.
-          </Text>
-        </Card>
+        {/* Section 1: Understanding Your Scores */}
+        <AccordionSection
+          title="Understanding Your Scores"
+          icon="analytics"
+          iconColor={colors.gradients.neuroplasticity.start}
+          defaultExpanded={true}
+        >
+          {/* Current Neuro State */}
+          <View style={styles.scoreCard}>
+            <Text style={styles.scoreTitle}>{appCopy.scores.currentNeuroState.title}</Text>
+            <Text style={styles.scoreDescription}>
+              {appCopy.scores.currentNeuroState.description}
+            </Text>
 
-        <Card>
-          <Text style={styles.cardTitle}>Learning Readiness Score</Text>
-          <Text style={styles.infoText}>
-            Indicates when your brain shows patterns associated with optimal learning states.
-          </Text>
-          <View style={styles.componentList}>
-            <Text style={styles.componentItem}>• 50% Average LRI during session</Text>
-            <Text style={styles.componentItem}>• 30% Time in optimal state (LRI ≥70)</Text>
-            <Text style={styles.componentItem}>• 20% Previous night's sleep quality</Text>
-          </View>
-          <Text style={styles.disclaimerText}>
-            Based on EEG beta/theta patterns correlated with alertness and focus. Not a direct measurement of neuroplasticity.
-          </Text>
-        </Card>
-
-        {/* Three Phase Model */}
-        <Text style={styles.sectionTitle}>Three-Phase Neuroplasticity Model</Text>
-        {neuroplasticityInfo.map((phase, index) => (
-          <Card key={index} style={styles.phaseCard}>
-            <View style={styles.phaseHeader}>
-              <View style={[styles.phaseIcon, { backgroundColor: phase.color + '20' }]}>
-                <Ionicons name={phase.icon as any} size={24} color={phase.color} />
-              </View>
-              <Text style={styles.phaseTitle}>{phase.phase}</Text>
+            <View style={styles.formulaSection}>
+              <Text style={styles.formulaTitle}>How it's calculated:</Text>
+              <FormulaBar
+                label="Alertness"
+                weight={0.4}
+                value={78}
+                color={colors.gradients.neuroplasticity.start}
+              />
+              <FormulaBar
+                label="Focus"
+                weight={0.4}
+                value={86}
+                color={colors.gradients.currentNeuroState.start}
+              />
+              <FormulaBar
+                label="Balance"
+                weight={0.2}
+                value={72}
+                color={colors.gradients.sleepConsolidation.start}
+              />
             </View>
-            <Text style={styles.phaseDescription}>{phase.description}</Text>
-          </Card>
-        ))}
 
-        {/* Sleep Metrics */}
-        <Text style={styles.sectionTitle}>Why We Track 8 Sleep Metrics</Text>
-        <Card style={styles.infoCard}>
-          <Text style={styles.infoText}>
-            Your sleep score isn't just about duration. Research shows that <Text style={styles.boldText}>sleep quality matters just as much</Text> for memory consolidation and neuroplasticity.
-          </Text>
-        </Card>
+            <View style={styles.scienceBox}>
+              <Text style={styles.scienceLabel}>THE SCIENCE</Text>
+              <Text style={styles.scienceText}>
+                {appCopy.scores.currentNeuroState.science}
+              </Text>
+            </View>
+          </View>
 
-        {sleepMetrics.map((metric, index) => (
-          <Card key={index}>
-            <View style={styles.metricHeader}>
-              <View style={[styles.metricIcon, { backgroundColor: metric.color + '20' }]}>
-                <Ionicons name={metric.icon as any} size={20} color={metric.color} />
+          {/* Neuro Readiness */}
+          <View style={styles.scoreCard}>
+            <Text style={styles.scoreTitle}>{appCopy.scores.neuroplasticity.title}</Text>
+            <Text style={styles.scoreDescription}>
+              {appCopy.scores.neuroplasticity.description}
+            </Text>
+
+            <View style={styles.formulaSection}>
+              <Text style={styles.formulaTitle}>How it's calculated:</Text>
+              <FormulaBar
+                label="Session Quality"
+                weight={0.55}
+                value={76}
+                color={colors.gradients.currentNeuroState.start}
+              />
+              <FormulaBar
+                label="Sleep Consolidation"
+                weight={0.25}
+                value={82}
+                color={colors.gradients.sleepConsolidation.start}
+              />
+              <FormulaBar
+                label="Behavior Alignment"
+                weight={0.20}
+                value={65}
+                color={colors.gradients.neuroplasticity.start}
+              />
+            </View>
+
+            <View style={styles.scienceBox}>
+              <Text style={styles.scienceLabel}>THE SCIENCE</Text>
+              <Text style={styles.scienceText}>
+                {appCopy.scores.neuroplasticity.science}
+              </Text>
+            </View>
+          </View>
+
+          {/* Sleep Consolidation */}
+          <View style={styles.scoreCard}>
+            <Text style={styles.scoreTitle}>{appCopy.scores.sleepConsolidation.title}</Text>
+            <Text style={styles.scoreDescription}>
+              {appCopy.scores.sleepConsolidation.description}
+            </Text>
+
+            <View style={styles.bulletList}>
+              <View style={styles.bulletItem}>
+                <Text style={styles.bullet}>•</Text>
+                <Text style={styles.bulletText}>How well your brain consolidates today's work</Text>
               </View>
-              <View style={styles.metricInfo}>
-                <View style={styles.metricTitleRow}>
-                  <Text style={styles.metricTitle}>{metric.title}</Text>
-                  <Text style={styles.metricWeight}>{metric.weight}</Text>
-                </View>
-                <Text style={styles.metricOptimal}>Optimal: {metric.optimal}</Text>
+              <View style={styles.bulletItem}>
+                <Text style={styles.bullet}>•</Text>
+                <Text style={styles.bulletText}>Memory formation quality</Text>
+              </View>
+              <View style={styles.bulletItem}>
+                <Text style={styles.bullet}>•</Text>
+                <Text style={styles.bulletText}>Neural recovery strength</Text>
               </View>
             </View>
-            <Text style={styles.metricDescription}>{metric.description}</Text>
-          </Card>
-        ))}
 
-        {/* Tips Section */}
-        <Text style={styles.sectionTitle}>Actionable Tips</Text>
-        <Card style={styles.tipsCard}>
-          <View style={styles.tipItem}>
-            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-            <Text style={styles.tipText}>Set consistent bedtime (within 30 minutes)</Text>
+            <View style={styles.scienceBox}>
+              <Text style={styles.scienceLabel}>THE SCIENCE</Text>
+              <Text style={styles.scienceText}>
+                {appCopy.scores.sleepConsolidation.science}
+              </Text>
+            </View>
           </View>
-          <View style={styles.tipItem}>
-            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-            <Text style={styles.tipText}>Keep bedroom cool (60-67°F)</Text>
-          </View>
-          <View style={styles.tipItem}>
-            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-            <Text style={styles.tipText}>Avoid screens 1 hour before bed</Text>
-          </View>
-          <View style={styles.tipItem}>
-            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-            <Text style={styles.tipText}>Schedule learning 1-4 hours after exercise</Text>
-          </View>
-          <View style={styles.tipItem}>
-            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-            <Text style={styles.tipText}>No intense exercise &lt;3 hours before bed</Text>
-          </View>
-        </Card>
+        </AccordionSection>
 
-        {/* Research References */}
-        <Card style={styles.referenceCard}>
+        {/* Section 2: The Science Behind AXON */}
+        <AccordionSection
+          title="The Science Behind AXON"
+          icon="flask"
+          iconColor={colors.gradients.currentNeuroState.start}
+        >
+          <View style={styles.scienceArticle}>
+            <Text style={styles.articleTitle}>EEG Band Powers</Text>
+            <Text style={styles.articleText}>
+              <Text style={styles.bold}>Beta waves (13-30 Hz)</Text> measure alertness and cognitive control. 
+              Higher beta power correlates with norepinephrine release from the locus coeruleus.
+              {' \n\n'}
+              <Text style={styles.bold}>Theta waves (4-8 Hz)</Text> indicate focus and memory encoding. 
+              Associated with acetylcholine release from the nucleus basalis.
+              {' \n\n'}
+              <Text style={styles.bold}>Alpha suppression</Text> shows active engagement versus idle state.
+            </Text>
+            <Text style={styles.citation}>
+              Research: PMC 2024, Huberman Lab (2024-2025)
+            </Text>
+          </View>
+
+          <View style={styles.scienceArticle}>
+            <Text style={styles.articleTitle}>Post-Exercise Window</Text>
+            <Text style={styles.articleText}>
+              Exercise activates the vagus nerve, triggering norepinephrine and acetylcholine release. 
+              This creates a <Text style={styles.bold}>1-4 hour window</Text> of heightened neuroplasticity.
+            </Text>
+            <Text style={styles.citation}>
+              Huberman Lab: "Organize learning bouts 1-2 hours after exercise"
+            </Text>
+          </View>
+
+          <View style={styles.scienceArticle}>
+            <Text style={styles.articleTitle}>Sleep Consolidation</Text>
+            <Text style={styles.articleText}>
+              Deep slow-wave sleep drives hippocampal-cortical memory transfer. 
+              REM sleep solidifies neural connections through synaptic remodeling.
+            </Text>
+            <Text style={styles.citation}>
+              Walker (2017), Stickgold (2005), Frontiers (2025)
+            </Text>
+          </View>
+        </AccordionSection>
+
+        {/* Section 3: Optimization Protocols */}
+        <AccordionSection
+          title="Optimization Protocols"
+          icon="fitness"
+          iconColor={colors.status.excellent}
+        >
+          <View style={styles.protocolCard}>
+            <View style={styles.protocolHeader}>
+              <Ionicons name="checkmark-circle" size={24} color={colors.status.excellent} />
+              <Text style={styles.protocolTitle}>Timing Your Sessions</Text>
+            </View>
+            <Text style={styles.protocolText}>
+              • Schedule focus work 1-2 hours after exercise{' \n'}
+              • Morning workouts create afternoon peaks{' \n'}
+              • Avoid intense sessions when baseline is low
+            </Text>
+          </View>
+
+          <View style={styles.protocolCard}>
+            <View style={styles.protocolHeader}>
+              <Ionicons name="moon" size={24} color={colors.gradients.sleepConsolidation.start} />
+              <Text style={styles.protocolTitle}>Sleep Optimization</Text>
+            </View>
+            <Text style={styles.protocolText}>
+              • Consistent bedtime (within 30 minutes){' \n'}
+              • 7-9 hours of sleep{' \n'}
+              • Cool bedroom (60-67°F){' \n'}
+              • No screens 1 hour before bed
+            </Text>
+          </View>
+
+          <View style={styles.protocolCard}>
+            <View style={styles.protocolHeader}>
+              <Ionicons name="barbell" size={24} color={colors.gradients.currentNeuroState.start} />
+              <Text style={styles.protocolTitle}>Exercise Strategy</Text>
+            </View>
+            <Text style={styles.protocolText}>
+              • High-intensity workouts boost neuroplasticity{' \n'}
+              • Morning exercise = afternoon learning window{' \n'}
+              • Avoid intense exercise 3h before bed
+            </Text>
+          </View>
+        </AccordionSection>
+
+        {/* Research Foundation */}
+        <View style={styles.referenceCard}>
+          <Ionicons name="library" size={24} color={colors.text.secondary} />
           <Text style={styles.referenceTitle}>Scientific Foundation</Text>
           <Text style={styles.referenceText}>
-            This app is based on research from the Huberman Lab, Matthew Walker's "Why We Sleep", and peer-reviewed studies on neuroplasticity and sleep consolidation.
+            AXON is based on peer-reviewed research from the Huberman Lab, 
+            Matthew Walker's sleep science, and 2024-2025 EEG studies on 
+            neuroplasticity and cognitive performance.
           </Text>
-        </Card>
+        </View>
+
+        <View style={{ height: 40 }} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -225,193 +248,174 @@ export default function EducationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: colors.background.primary,
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    padding: 16,
-    paddingBottom: 32,
+    padding: spacing.lg,
   },
-  heroCard: {
+  hero: {
     alignItems: 'center',
-    paddingVertical: 32,
-    backgroundColor: '#EEF2FF',
-    borderWidth: 1,
-    borderColor: '#C7D2FE',
+    paddingVertical: spacing.xl,
+    marginBottom: spacing.lg,
   },
-  heroIcon: {
+  heroIconContainer: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
+    backgroundColor: colors.gradients.neuroplasticity.start + '15',
     alignItems: 'center',
-    marginBottom: 16,
+    justifyContent: 'center',
+    marginBottom: spacing.lg,
   },
   heroTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#1F2937',
-    marginBottom: 8,
-    textAlign: 'center',
+    fontSize: typography.sizes.h2,
+    fontWeight: typography.weights.bold,
+    color: colors.text.primary,
+    marginBottom: spacing.sm,
   },
   heroSubtitle: {
-    fontSize: 14,
-    color: '#6B7280',
+    fontSize: typography.sizes.bodySmall,
+    color: colors.text.secondary,
     textAlign: 'center',
     lineHeight: 20,
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.xl,
   },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#1F2937',
-    marginTop: 24,
-    marginBottom: 12,
+  scoreCard: {
+    marginBottom: spacing.xl,
+    paddingBottom: spacing.xl,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(229, 231, 235, 0.3)',
   },
-  phaseCard: {
-    marginBottom: 12,
+  scoreTitle: {
+    fontSize: typography.sizes.h4,
+    fontWeight: typography.weights.bold,
+    color: colors.text.primary,
+    marginBottom: spacing.sm,
   },
-  phaseHeader: {
+  scoreDescription: {
+    fontSize: typography.sizes.body,
+    color: colors.text.primary,
+    lineHeight: 22,
+    marginBottom: spacing.lg,
+  },
+  formulaSection: {
+    marginBottom: spacing.lg,
+  },
+  formulaTitle: {
+    fontSize: typography.sizes.bodySmall,
+    fontWeight: typography.weights.bold,
+    color: colors.text.secondary,
+    marginBottom: spacing.md,
+    letterSpacing: 0.5,
+  },
+  bulletList: {
+    marginBottom: spacing.lg,
+  },
+  bulletItem: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: spacing.sm,
   },
-  phaseIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
+  bullet: {
+    fontSize: typography.sizes.body,
+    color: colors.gradients.sleepConsolidation.start,
+    marginRight: spacing.sm,
+    fontWeight: typography.weights.bold,
   },
-  phaseTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1F2937',
-  },
-  phaseDescription: {
-    fontSize: 14,
-    color: '#6B7280',
+  bulletText: {
+    flex: 1,
+    fontSize: typography.sizes.bodySmall,
+    color: colors.text.primary,
     lineHeight: 20,
   },
-  infoCard: {
-    backgroundColor: '#FFFBEB',
-    borderWidth: 1,
-    borderColor: '#FEF3C7',
-    marginBottom: 16,
+  scienceBox: {
+    padding: spacing.lg,
+    backgroundColor: colors.background.primary,
+    borderRadius: 8,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.gradients.neuroplasticity.start,
   },
-  infoText: {
-    fontSize: 14,
-    color: '#78350F',
+  scienceLabel: {
+    fontSize: typography.sizes.caption,
+    fontWeight: typography.weights.bold,
+    color: colors.text.secondary,
+    letterSpacing: 1,
+    marginBottom: spacing.sm,
+  },
+  scienceText: {
+    fontSize: typography.sizes.bodySmall,
+    color: colors.text.secondary,
     lineHeight: 20,
   },
-  boldText: {
-    fontWeight: '700',
+  scienceArticle: {
+    marginBottom: spacing.xl,
+    paddingBottom: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(229, 231, 235, 0.2)',
   },
-  metricHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
+  articleTitle: {
+    fontSize: typography.sizes.body,
+    fontWeight: typography.weights.bold,
+    color: colors.text.primary,
+    marginBottom: spacing.md,
   },
-  metricIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
+  articleText: {
+    fontSize: typography.sizes.bodySmall,
+    color: colors.text.primary,
+    lineHeight: 22,
+    marginBottom: spacing.md,
   },
-  metricInfo: {
-    flex: 1,
+  bold: {
+    fontWeight: typography.weights.bold,
   },
-  metricTitleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  citation: {
+    fontSize: typography.sizes.caption,
+    color: colors.text.tertiary,
+    fontStyle: 'italic',
   },
-  metricTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#1F2937',
-    flex: 1,
-  },
-  metricWeight: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#6366F1',
-    backgroundColor: '#EEF2FF',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+  protocolCard: {
+    marginBottom: spacing.lg,
+    padding: spacing.lg,
+    backgroundColor: colors.background.primary,
     borderRadius: 8,
   },
-  metricOptimal: {
-    fontSize: 12,
-    color: '#10B981',
-    fontWeight: '600',
-    marginTop: 2,
-  },
-  metricDescription: {
-    fontSize: 14,
-    color: '#6B7280',
-    lineHeight: 20,
-  },
-  tipsCard: {
-    gap: 12,
-  },
-  tipItem: {
+  protocolHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    marginBottom: spacing.md,
   },
-  tipText: {
-    flex: 1,
-    fontSize: 14,
-    color: '#374151',
+  protocolTitle: {
+    fontSize: typography.sizes.body,
+    fontWeight: typography.weights.bold,
+    color: colors.text.primary,
+    marginLeft: spacing.sm,
+  },
+  protocolText: {
+    fontSize: typography.sizes.bodySmall,
+    color: colors.text.primary,
     lineHeight: 20,
   },
   referenceCard: {
-    backgroundColor: '#F3F4F6',
-    marginTop: 8,
+    flexDirection: 'row',
+    padding: spacing.lg,
+    backgroundColor: colors.background.secondary,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(229, 231, 235, 0.5)',
+    gap: spacing.md,
   },
   referenceTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#1F2937',
-    marginBottom: 8,
+    fontSize: typography.sizes.bodySmall,
+    fontWeight: typography.weights.bold,
+    color: colors.text.primary,
+    marginBottom: spacing.xs,
   },
   referenceText: {
-    fontSize: 12,
-    color: '#6B7280',
+    flex: 1,
+    fontSize: typography.sizes.caption,
+    color: colors.text.secondary,
     lineHeight: 18,
-  },
-  formulaBox: {
-    backgroundColor: '#F3F4F6',
-    padding: 12,
-    borderRadius: 8,
-    marginVertical: 12,
-    gap: 4,
-  },
-  formulaText: {
-    fontSize: 13,
-    color: '#374151',
-    fontWeight: '500',
-  },
-  disclaimerText: {
-    fontSize: 13,
-    color: '#6B7280',
-    lineHeight: 20,
-    marginTop: 12,
-  },
-  componentList: {
-    marginVertical: 12,
-    gap: 6,
-  },
-  componentItem: {
-    fontSize: 14,
-    color: '#374151',
-    lineHeight: 20,
   },
 });
