@@ -30,7 +30,7 @@ export default function HomeScreen() {
   const [optimalWindow, setOptimalWindow] = useState<any>(null);
   const [currentMetrics, setCurrentMetrics] = useState<any>(null);
   const [showMetricModal, setShowMetricModal] = useState(false);
-  const [selectedMetric, setSelectedMetric] = useState<string>('');
+  const [selectedMetric, setSelectedMetric] = useState<string>('brain');
 
   const loadData = async () => {
     try {
