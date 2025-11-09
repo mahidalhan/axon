@@ -217,8 +217,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background.secondary,
     borderTopLeftRadius: borderRadius.xl,
     borderTopRightRadius: borderRadius.xl,
-    maxHeight: SCREEN_HEIGHT * 0.85,
-    minHeight: SCREEN_HEIGHT * 0.5,
+    height: SCREEN_HEIGHT * 0.85,
+    paddingBottom: 0,
   },
   header: {
     flexDirection: 'row',
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: spacing.xl,
     paddingTop: spacing.xl,
-    paddingBottom: spacing.xxl,
+    paddingBottom: 100,
   },
   scoreSection: {
     alignItems: 'center',
