@@ -218,7 +218,20 @@ async def get_workouts_last_20():
     try:
         workouts_file = APPLE_HEALTH_DIR / "workouts_last_20_days.json"
         data = load_json(workouts_file)
-        return data
+        
+        # Sanitize NaN values
+        def sanitize(obj):
+            if isinstance(obj, float):
+                if pd.isna(obj) or not pd.isfinite(obj):
+                    return None
+                return obj
+            elif isinstance(obj, dict):
+                return {k: sanitize(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [sanitize(item) for item in obj]
+            return obj
+        
+        return sanitize(data)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -369,7 +382,20 @@ async def get_recent_workouts(days: int = 7):
     try:
         workouts_file = APPLE_HEALTH_DIR / "workouts_last_20_days.json"
         data = load_json(workouts_file)
-        return data[:days] if len(data) > days else data
+        
+        def sanitize(obj):
+            if isinstance(obj, float):
+                if pd.isna(obj) or not pd.isfinite(obj):
+                    return None
+                return obj
+            elif isinstance(obj, dict):
+                return {k: sanitize(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [sanitize(item) for item in obj]
+            return obj
+        
+        result = data[:days] if len(data) > days else data
+        return sanitize(result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -379,7 +405,20 @@ async def get_recent_sleep(days: int = 7):
     try:
         sleep_file = APPLE_HEALTH_DIR / "sleep_last_20_days.json"
         data = load_json(sleep_file)
-        return {"sleep_records": data[:days] if len(data) > days else data}
+        
+        def sanitize(obj):
+            if isinstance(obj, float):
+                if pd.isna(obj) or not pd.isfinite(obj):
+                    return None
+                return obj
+            elif isinstance(obj, dict):
+                return {k: sanitize(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [sanitize(item) for item in obj]
+            return obj
+        
+        result = data[:days] if len(data) > days else data
+        return {"sleep_records": sanitize(result)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
