@@ -38,7 +38,7 @@ export default function NameInputScreen({ navigation }: NameInputScreenProps) {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.content}>
             <View style={styles.iconContainer}>
-              <Iconicons name="person" size={60} color="#6366F1" />
+              <Ionicons name="person" size={60} color="#6366F1" />
             </View>
 
             <Text style={styles.title}>What's your first name?</Text>
