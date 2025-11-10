@@ -16,11 +16,11 @@ export const appCopy = {
 
 This moment. This session.
 
-Optimal for:
-• Focused deep work sessions
-• High-stakes decision making
-• Intense problem-solving
-• Peak performance tasks`,
+Perfect for:
+• Today's focus session
+• This hour's deep work
+• Right now performance
+• Immediate cognitive tasks`,
       science: 'Real-time EEG patterns measuring current alertness (beta waves), focus (theta waves), and cognitive control. Shows your brain state RIGHT NOW.',
     },
     neuroplasticity: {
@@ -31,11 +31,11 @@ Optimal for:
 
 Not just performance. Lasting change.
 
-Supports:
-• Learning new skills
-• Building mental resilience  
-• Forming new neural pathways
-• Adapting to challenges`,
+Predicts success for:
+• Practice that builds mastery
+• Learning that becomes permanent
+• Training that reshapes your brain
+• Efforts that compound over time`,
       science: 'Combines session quality (55%), sleep consolidation (25%), and behavioral timing (20%). Predicts your capacity for neuroplastic change over days and weeks.',
     },
     sleepConsolidation: {
