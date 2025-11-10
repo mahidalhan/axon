@@ -11,33 +11,32 @@ export const appCopy = {
     currentNeuroState: {
       title: 'Current Neuro State',
       subtitle: 'Right now',
-      description: 'Your brain\'s readiness for peak cognitive performance.',
-      longDescription: `Your brain's readiness for peak cognitive performance.
+      description: 'Your brain\'s immediate readiness for peak cognitive tasks.',
+      longDescription: `Your brain's immediate readiness for peak cognitive tasks.
 
-Right now. This moment.
+This moment. This session.
 
-Perfect for:
-• Deep work that demands focus
-• Complex problem-solving
-• Creative breakthroughs
-• Strategic thinking
-• High-stakes decisions`,
-      science: 'EEG patterns show when your brain enters states of heightened alertness, focus, and cognitive control.',
+Optimal for:
+• Focused deep work sessions
+• High-stakes decision making
+• Intense problem-solving
+• Peak performance tasks`,
+      science: 'Real-time EEG patterns measuring current alertness (beta waves), focus (theta waves), and cognitive control. Shows your brain state RIGHT NOW.',
     },
     neuroplasticity: {
       title: 'Neuro Readiness',
       subtitle: 'Brain state',
-      description: 'Your brain\'s capacity to adapt, learn, and rewire.',
-      longDescription: `Your brain's capacity to adapt, learn, and rewire.
+      description: 'Your brain\'s capacity for long-term adaptation and growth.',
+      longDescription: `Your brain's capacity for long-term adaptation and growth.
 
-Not just performance. Growth.
+Not just performance. Lasting change.
 
-This is your brain's readiness to:
-• Form new neural connections
-• Master new skills
-• Adapt to challenges
-• Build mental resilience`,
-      science: 'Combines neural state, sleep quality, and behavioral timing. Based on Huberman Lab\'s neuroplasticity protocols.',
+Supports:
+• Learning new skills
+• Building mental resilience  
+• Forming new neural pathways
+• Adapting to challenges`,
+      science: 'Combines session quality (55%), sleep consolidation (25%), and behavioral timing (20%). Predicts your capacity for neuroplastic change over days and weeks.',
     },
     sleepConsolidation: {
       title: 'Sleep Consolidation',
