@@ -25,6 +25,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Import and include Muse real-time router
+try:
+    from muse_realtime import router as muse_router
+    app.include_router(muse_router)
+    print("✅ Muse real-time streaming endpoints enabled")
+except ImportError as e:
+    print(f"⚠️  Muse real-time streaming not available: {e}")
+
 # Data paths
 DATA_DIR = Path("/app/data/processed")
 MUSE_DIR = DATA_DIR / "muse"
